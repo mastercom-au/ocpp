@@ -1,7 +1,10 @@
-extern crate serde_json;
-extern crate serde;
-extern crate jsonschema;
+#[macro_use]
+use serde;
+use chrono::DateTime;
+use chrono::Utc;
+use jsonschema;
 use serde::{Serialize, Deserialize};
+use serde_json;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -27,9 +30,8 @@ pub struct BootNotification{
 #[serde(rename_all = "camelCase")]
 pub struct ChangeAvailability{
     pub connector_id: u32,
-    pub r#type: String,                                   //ENUM "Inoperative", "Operative"
+    pub r#type: String,                                   //ENUM "Inoperative", "Operative" 
 }
-
 
 
 #[derive(Serialize, Deserialize, Debug)]

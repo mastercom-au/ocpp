@@ -108,6 +108,7 @@ dependencies = [
  "libc",
  "num-integer",
  "num-traits",
+ "serde",
  "time",
  "winapi",
 ]
@@ -522,15 +523,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "mp70_interface"
-version = "0.1.0"
-dependencies = [
- "jsonschema",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "native-tls"
 version = "0.2.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -648,6 +640,16 @@ checksum = "05499f3756671c15885fee9034446956fff3f243d6077b91e5767df161f766b3"
 dependencies = [
  "hermit-abi",
  "libc",
+]
+
+[[package]]
+name = "ocpp"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "jsonschema",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
