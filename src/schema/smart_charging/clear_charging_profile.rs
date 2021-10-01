@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 pub struct ClearChargingProfileRequest {
     pub id: u32,
     pub charging_profile_purpose: ChargingProfilePurpose,
-    pub stackLevel: u32,
+    pub stack_level: u32,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
