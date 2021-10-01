@@ -1,5 +1,5 @@
-use chrono::{Utc, DateTime};
-use serde::{Serialize, Deserialize};
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 /*Structure
 idTag String
@@ -18,8 +18,6 @@ transactionData vec<obj>
         unit enum String
 */
 
-
-
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StopTransactionRequest {
@@ -28,7 +26,7 @@ pub struct StopTransactionRequest {
     pub time_stamp: DateTime<Utc>,
     pub transaction_id: u32,
     pub reason: Reason,
-    pub transaction_data: Vec<TransactionData>
+    pub transaction_data: Vec<TransactionData>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -51,7 +49,7 @@ pub struct SampledValue {
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
-pub enum Reason{
+pub enum Reason {
     EmergencyStop,
     EVDisconnected,
     HardReset,
@@ -88,8 +86,6 @@ pub enum SampledFormat {
     Raw,
     SignedData,
 }
-
-
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub enum SampledMeasurand {

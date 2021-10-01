@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
-use chrono::{Utc, DateTime};
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -14,7 +14,7 @@ pub struct StatusNotificationRequest {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum ErrorCode{
+pub enum ErrorCode {
     ConnectorLockFailure,
     EVCommunicationError,
     GroundFailure,
@@ -34,7 +34,7 @@ pub enum ErrorCode{
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum Status{
+pub enum Status {
     Available,
     Preparing,
     Charging,
@@ -45,5 +45,3 @@ pub enum Status{
     Unavailable,
     Faulted,
 }
-
-

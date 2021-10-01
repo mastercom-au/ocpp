@@ -1,7 +1,7 @@
 use crate::schema;
 
 #[test]
-fn boot_notification_test () {
+fn boot_notification_test() {
     println!("Compiles!");
     let test = schema::boot_notification::BootNotificationRequest {
         charge_point_vendor: "test1".to_string(),

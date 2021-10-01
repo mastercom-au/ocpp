@@ -4,8 +4,7 @@ use serde::{Deserialize, Serialize};
 /* Structure
 
 ConnectorId u32
-idTag String
-chargingProfile struct
+csChargingProfile struct
     chargingProfileId u32
     transactionId u32
     stackLevel u32
@@ -29,19 +28,18 @@ chargingProfile struct
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStartTransactionRequest {
     pub connector_id: Option<u32>,
-    pub id_tag: String,
-    pub charging_profile: Option<StartChargingProfile>,
+    pub cs_charging_profile: Option<CsChargingProfile>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct StartChargingProfile {
+pub struct CsChargingProfile {
     charging_profile_id: u32,
     transaction_id: Option<u32>,
     stack_level: u32,
-    charging_profile_purpose: StartChargingProfilePurpose,
-    charging_profile_kind: StartChargingProfileKind,
-    recurrency_kind: Option<StartRecurrencyKind>,
+    charging_profile_purpose: ChargingProfilePurpose,
+    charging_profile_kind: ChargingProfileKind,
+    recurrency_kind: Option<RecurrencyKind>,
     valid_from: Option<DateTime<Utc>>,
     valid_to: Option<DateTime<Utc>>,
     charging_schedule: ProfileSchedule,
@@ -66,21 +64,21 @@ pub struct ProfileSchedulePeriod {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum StartChargingProfilePurpose {
+pub enum ChargingProfilePurpose {
     ChargePointMaxProfile,
     TxDefaultProfile,
     TxProfile,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum StartChargingProfileKind {
+pub enum ChargingProfileKind {
     Absolute,
     Recurring,
     Relative,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum StartRecurrencyKind {
+pub enum RecurrencyKind {
     Daily,
     Weekly,
 }

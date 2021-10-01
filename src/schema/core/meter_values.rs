@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
-use chrono::{Utc, DateTime};
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 /* Structure
 connectorId u32
