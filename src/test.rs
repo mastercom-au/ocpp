@@ -16,7 +16,7 @@ fn test() {
     meter_serial_number: Some("test9".to_string()),
 };
 
-    let string_schema = String::from(include_str!(concat!(env!("CARGO_MANIFEST_DIR"),"/src/json_schemas/core/test.txt")));
+    let string_schema = String::from(include_str!("json_schemas/core/BootNotification.json"));
 
     println!("\n\nString: \n\n {}", string_schema);
 
