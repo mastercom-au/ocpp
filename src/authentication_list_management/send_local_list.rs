@@ -13,6 +13,7 @@ localAuthorizationList vec<obj>
 
 */
 
+// -------------------------- REQUEST --------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SendlocalListRequest {
@@ -51,7 +52,7 @@ pub enum RequestStatus {
     ConcurrentTx,
 }
 
-
+// -------------------------- RESPONSE --------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SendLocalListResponse {

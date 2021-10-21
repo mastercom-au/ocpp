@@ -11,7 +11,6 @@
 pub mod boot_notification;
 pub use boot_notification::*;
 
-
 pub mod authorize;
 //pub mod boot_notification::{};
 pub mod change_availability;

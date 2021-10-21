@@ -16,6 +16,7 @@ meterValue Vec<obj>
         unit enum String
 */
 
+// -------------------------- REQUEST ---------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct MeterValuesRequest {
@@ -167,3 +168,8 @@ pub enum SampledUnit {
     Fahrenheit,
     Percent,
 }
+
+// -------------------------- RESPONSE --------------------------
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct MeterValuesResponse {}

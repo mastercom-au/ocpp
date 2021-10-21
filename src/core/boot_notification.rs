@@ -1,5 +1,7 @@
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
+// -------------------------- REQUEST --------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct BootNotificationRequest {
@@ -14,3 +16,18 @@ pub struct BootNotificationRequest {
     pub meter_serial_number: Option<String>,
 }
 
+// -------------------------- RESPONSE --------------------------
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct BootNotificationResponse {
+    pub status: Status,
+    pub current_time: DateTime<Utc>,
+    pub interval: u32,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+pub enum Status {
+    Accepted,
+    Pending,
+    Rejected,
+}

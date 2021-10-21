@@ -1,6 +1,7 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
+// -------------------------- REQUEST ---------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StatusNotificationRequest {
@@ -45,3 +46,8 @@ pub enum Status {
     Unavailable,
     Faulted,
 }
+
+// -------------------------- RESPONSE --------------------------
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct StatusNotificationResponse {}

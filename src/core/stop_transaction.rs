@@ -18,6 +18,7 @@ transactionData vec<obj>
         unit enum String
 */
 
+// -------------------------- REQUEST ---------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StopTransactionRequest {
@@ -186,4 +187,28 @@ pub enum SampledUnit {
     Celsius,
     Fahrenheit,
     Percent,
+}
+
+// -------------------------- RESPONSE --------------------------
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct StopTransactionResponse {
+    pub id_tag_info: Option<IdTagInfo>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct IdTagInfo {
+    pub expiry_date: Option<DateTime<Utc>>,
+    pub parent_id_tag: Option<String>,
+    pub status: Status,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+pub enum Status {
+    Accepted,
+    Rejected,
+    Expired,
+    Invalid,
+    ConcurrentTx,
 }
