@@ -1,20 +1,20 @@
-use crate::schema::core as core;
+use crate::core;
 use jsonschema::JSONSchema;
 //use serde_json::json;
 
 #[test]
 fn test() {
-    let boot_notification_test = core::boot_notification::BootNotificationRequest {
-    charge_point_vendor: "test1".to_string(),
-    charge_point_model: "THIS_FIELD_IS_WAY_LONGER_THAN_SHOULD_BE_REASONABLY_ALLOWED_ACCORDING_TO_THE_SCHEMA".to_string(),
-    charge_point_serial_number: Some("test3".to_string()),
-    charge_box_serial_number: Some("test4".to_string()),
-    firmware_version: Some("test5".to_string()),
-    iccid: Some("test6".to_string()),
-    imsi: Some("test7".to_string()),
-    meter_type: Some("test8".to_string()),
-    meter_serial_number: Some("test9".to_string()),
-};
+    let boot_notification_test = core::BootNotificationRequest {
+        charge_point_vendor: "test1".to_string(),
+        charge_point_model: "THIS_FIELD_IS_WAY_LONGER_THAN_SHOULD_BE_REASONABLY_ALLOWED_ACCORDING_TO_THE_SCHEMA".to_string(),
+        charge_point_serial_number: Some("test3".to_string()),
+        charge_box_serial_number: Some("test4".to_string()),
+        firmware_version: Some("test5".to_string()),
+        iccid: Some("test6".to_string()),
+        imsi: Some("test7".to_string()),
+        meter_type: Some("test8".to_string()),
+        meter_serial_number: Some("test9".to_string()),
+    };
 
     let string_schema = String::from(include_str!("json_schemas/core/BootNotification.json"));
 
