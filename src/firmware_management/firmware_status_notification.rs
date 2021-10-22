@@ -4,11 +4,11 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct FirmwareStatusNotificationRequest {
-    pub status: FSMStatus,
+    pub status: FirmwareNotificationStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
-pub enum FSMStatus {
+pub enum FirmwareNotificationStatus {
     Downloaded,
     DownloadFailed,
     Downloading,

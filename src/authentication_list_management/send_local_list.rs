@@ -26,15 +26,15 @@ pub struct SendlocalListRequest {
 #[serde(rename_all = "camelCase")]
 pub struct LocalAuthorizationList {
     pub id_tag: String,
-    pub id_tag_info: IdTagInfo,
+    pub id_tag_info: LocalListIdTagInfo,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct IdTagInfo {
+pub struct LocalListIdTagInfo {
     pub expiry_date: DateTime<Utc>,
     pub parent_id_tag: String,
-    pub status: SLLRequestStatus,
+    pub status: SendLocalListRequestStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
@@ -44,7 +44,7 @@ pub enum UpdateType {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum SLLRequestStatus {
+pub enum SendLocalListRequestStatus {
     Accepted,
     Blocked,
     Expired,
@@ -56,11 +56,11 @@ pub enum SLLRequestStatus {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SendLocalListResponse {
-    pub status: SLLResponseStatus,
+    pub status: SendLocalListResponseStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum SLLResponseStatus {
+pub enum SendLocalListResponseStatus {
     Accepted,
     Failed,
     NotSupported,

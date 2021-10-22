@@ -1,5 +1,6 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+use crate::common_types::{ChargingRateUnit, RecurrencyKind};
 
 /* Structure
 
@@ -76,18 +77,6 @@ pub enum ChargingProfileKind {
     Absolute,
     Recurring,
     Relative,
-}
-
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum RecurrencyKind {
-    Daily,
-    Weekly,
-}
-
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum ChargingRateUnit {
-    A,
-    W,
 }
 
 // -------------------------- RESPONSE --------------------------

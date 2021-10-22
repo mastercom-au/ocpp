@@ -1,5 +1,6 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+use crate::common_types::{ChargingRateUnit, RecurrencyKind, SimpleStatus};
 
 /* Structure
 
@@ -42,7 +43,7 @@ pub struct StartChargingProfile {
     stack_level: u32,
     charging_profile_purpose: StartChargingProfilePurpose,
     charging_profile_kind: StartChargingProfileKind,
-    recurrency_kind: Option<StartRecurrencyKind>,
+    recurrency_kind: Option<RecurrencyKind>,
     valid_from: Option<DateTime<Utc>>,
     valid_to: Option<DateTime<Utc>>,
     charging_schedule: ProfileSchedule,
@@ -80,27 +81,9 @@ pub enum StartChargingProfileKind {
     Relative,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum StartRecurrencyKind {
-    Daily,
-    Weekly,
-}
-
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum ChargingRateUnit {
-    A,
-    W,
-}
-
 // -------------------------- REQUEST ---------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStartTransactionResponse {
-    pub status: RStartStatus,
-}
-
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum RStartStatus {
-    Accepted,
-    Rejected,
+    pub status: SimpleStatus,
 }

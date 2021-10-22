@@ -1,3 +1,4 @@
+use crate::common_types::SimpleStatus;
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------
@@ -17,11 +18,7 @@ pub enum ResetType {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ResetResponse {
-    status: ResetStatus,
+    status: SimpleStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum ResetStatus {
-    Accepted,
-    Rejected,
-}
+

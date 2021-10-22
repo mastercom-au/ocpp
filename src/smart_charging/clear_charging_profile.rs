@@ -20,11 +20,11 @@ pub enum ChargingProfilePurpose {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ClearChargingProfileResponse {
-    pub status: CCPStatus,
+    pub status: ClearChargeProfileStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum CCPStatus {
+pub enum ClearChargeProfileStatus {
     Accepted,
     Unknown,
 }

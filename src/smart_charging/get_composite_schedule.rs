@@ -1,5 +1,6 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+use crate::common_types::{ChargingRateUnit, SimpleStatus};
 
 // -------------------------- REQUEST ---------------------------
 #[derive(Serialize, Deserialize, Debug)]
@@ -8,12 +9,6 @@ pub struct GetCompositeScheduleRequest {
     connector_id: u32,
     duration: u32,
     charging_rate_unit: Option<ChargingRateUnit>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
-pub enum ChargingRateUnit {
-    A,
-    W,
 }
 
 // -------------------------- RESPONSE --------------------------
@@ -34,30 +29,24 @@ chargingSchedule struct
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetCompositeScheduleResponse {
-    pub status: GCSStatus,
+    pub status: SimpleStatus,
     pub connector_id: u32,
-    pub charging_schedule: ChargingSchedule,
-}
-
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum GCSStatus {
-    Accepted,
-    Rejected,
+    pub charging_schedule: GetCompChargingSchedule,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct ChargingSchedule {
+pub struct GetCompChargingSchedule {
     pub duration: u32,
     pub start_schedule: DateTime<Utc>,
     pub charging_rate_unit: ChargingRateUnit,
-    pub charging_schedule_period: Vec<ChargingSchedulePeriod>,
+    pub charging_schedule_period: Vec<GetCompChargingSchedulePeriod>,
     pub min_charging_rate: f32,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct ChargingSchedulePeriod {
+pub struct GetCompChargingSchedulePeriod {
     pub start_period: u32,
     pub limit: f32,
     pub number_phases: u32,

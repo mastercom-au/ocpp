@@ -11,11 +11,11 @@ pub struct UnlockConnectorRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct UnlockConnectorResponse {
-    pub status: UCStatus,
+    pub status: UnlockConnectorStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum UCStatus {
+pub enum UnlockConnectorStatus {
     Unlocked,
     UnlockFailed,
     NotSupported,

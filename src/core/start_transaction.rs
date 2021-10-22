@@ -14,20 +14,20 @@ pub struct StartTransactionRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StartTransactionResponse {
-    pub id_tag_info: IdTagInfo,
+    pub id_tag_info: StartTransactionIdTagInfo,
     pub transaction_id: u32,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct IdTagInfo {
+pub struct StartTransactionIdTagInfo {
     pub expiry_date: Option<DateTime<Utc>>,
     pub parent_id_tag: Option<String>,
-    pub status: StartStatus,
+    pub status: StartTransactionStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum StartStatus {
+pub enum StartTransactionStatus {
     Accepted,
     Rejected,
     Expired,

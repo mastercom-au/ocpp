@@ -12,12 +12,12 @@ pub struct AuthorizeRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct AuthorizeResponse {
-    pub id_tag_info: IdTagInfo,
+    pub id_tag_info: AuthIdTagInfo,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct IdTagInfo {
+pub struct AuthIdTagInfo {
     pub expiry_date: Option<DateTime<Utc>>,
     pub parent_id_tag: Option<String>,
     pub status: AuthStatus,
