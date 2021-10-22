@@ -14,4 +14,4 @@ pub struct UpdateFirmwareRequest {
 // -------------------------- RESPONSE --------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct UpdateFirmwareResponse{}
+pub struct UpdateFirmwareResponse {}

@@ -15,6 +15,6 @@ pub struct GetDiagnosticsRequest {
 // -------------------------- RESPONSE --------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct GetDiagnosticsResponse{
+pub struct GetDiagnosticsResponse {
     pub file_name: String,
 }

@@ -21,4 +21,4 @@ pub enum Status {
 // -------------------------- RESPONSE --------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct FirmwareStatusNotificationResponse{}
+pub struct FirmwareStatusNotificationResponse {}

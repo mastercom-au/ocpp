@@ -17,10 +17,10 @@ mod data_transfer;
 pub use data_transfer::{DataTransferRequest, DataTransferResponse};
 
 mod get_configuration;
-pub use get_configuration::{GetConfigurationRequest,GetConfigurationResponse};
+pub use get_configuration::{GetConfigurationRequest, GetConfigurationResponse};
 
 mod heartbeat;
-pub use heartbeat::{HeartbeatRequest, HeartBeatResponse };
+pub use heartbeat::{HeartBeatResponse, HeartbeatRequest};
 
 mod meter_values;
 pub use meter_values::{MeterValuesRequest, MeterValuesResponse};
