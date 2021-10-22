@@ -34,7 +34,7 @@ pub struct LocalAuthorizationList {
 pub struct IdTagInfo {
     pub expiry_date: DateTime<Utc>,
     pub parent_id_tag: String,
-    pub status: RequestStatus,
+    pub status: SLLRequestStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
@@ -44,7 +44,7 @@ pub enum UpdateType {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum RequestStatus {
+pub enum SLLRequestStatus {
     Accepted,
     Blocked,
     Expired,
@@ -56,11 +56,11 @@ pub enum RequestStatus {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SendLocalListResponse {
-    pub status: ResponseStatus,
+    pub status: SLLResponseStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum ResponseStatus {
+pub enum SLLResponseStatus {
     Accepted,
     Failed,
     NotSupported,

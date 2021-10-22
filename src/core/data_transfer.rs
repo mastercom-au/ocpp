@@ -13,11 +13,11 @@ pub struct DataTransferRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct DataTransferResponse {
-    pub status: Status,
+    pub status: DTStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum Status {
+pub enum DTStatus {
     Accepted,
     Rejected,
     UnknownMessageId,

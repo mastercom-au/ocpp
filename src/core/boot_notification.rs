@@ -20,13 +20,13 @@ pub struct BootNotificationRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct BootNotificationResponse {
-    pub status: Status,
+    pub status: BNStatus,
     pub current_time: DateTime<Utc>,
     pub interval: u32,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum Status {
+pub enum BNStatus {
     Accepted,
     Pending,
     Rejected,

@@ -5,11 +5,11 @@ use serde::{Deserialize, Serialize};
 pub struct ClearCacheRequest {}
 
 pub struct ClearCacheResponse {
-    pub status: Status,
+    pub status: CCaStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum Status {
+pub enum CCaStatus {
     Accepted,
     Rejected,
 }

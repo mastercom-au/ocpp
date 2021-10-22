@@ -20,11 +20,11 @@ pub struct AuthorizeResponse {
 pub struct IdTagInfo {
     pub expiry_date: Option<DateTime<Utc>>,
     pub parent_id_tag: Option<String>,
-    pub status: Status,
+    pub status: AuthStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
-pub enum Status {
+pub enum AuthStatus {
     Accepted,
     Blocked,
     Expired,

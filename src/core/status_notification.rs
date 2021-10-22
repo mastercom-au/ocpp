@@ -8,7 +8,7 @@ pub struct StatusNotificationRequest {
     pub connector_id: u32,
     error_code: ErrorCode,
     info: Option<String>,
-    status: Status,
+    status: SNStatus,
     timestamp: DateTime<Utc>,
     vendor_id: Option<String>,
     vendor_error_code: Option<String>,
@@ -35,7 +35,7 @@ pub enum ErrorCode {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum Status {
+pub enum SNStatus {
     Available,
     Preparing,
     Charging,

@@ -10,12 +10,12 @@ pub struct RemoteStopTransactionRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStopTransactionResponse {
-    pub status: Status,
+    pub status: RStopStatus,
 }
 
 // -------------------------- RESPONSE --------------------------
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum Status {
+pub enum RStopStatus {
     Accepted,
     Rejected,
 }

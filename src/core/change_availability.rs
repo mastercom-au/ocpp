@@ -18,11 +18,11 @@ pub enum ChangeAvailabilityType {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeAvailabilityResponse {
-    pub status: Status,
+    pub status: CAStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum Status {
+pub enum CAStatus {
     Accepted,
     Rejected,
     Scheduled,

@@ -96,11 +96,11 @@ pub enum ChargingRateUnit {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStartTransactionResponse {
-    pub status: Status,
+    pub status: RStartStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum Status {
+pub enum RStartStatus {
     Accepted,
     Rejected,
 }

@@ -23,11 +23,11 @@ pub struct StartTransactionResponse {
 pub struct IdTagInfo {
     pub expiry_date: Option<DateTime<Utc>>,
     pub parent_id_tag: Option<String>,
-    pub status: Status,
+    pub status: StartStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum Status {
+pub enum StartStatus {
     Accepted,
     Rejected,
     Expired,

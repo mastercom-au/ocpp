@@ -94,11 +94,11 @@ pub enum ChargingRateUnit {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SetChargingProfileResponse {
-    pub status: Status,
+    pub status: SCPStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum Status {
+pub enum SCPStatus {
     Accepted,
     Rejected,
     NotSupported,

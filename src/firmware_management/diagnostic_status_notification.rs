@@ -4,11 +4,11 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct DiagnosticStatusNotificationRequest {
-    pub status: Status,
+    pub status: DSNStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
-pub enum Status {
+pub enum DSNStatus {
     Idle,
     Uploaded,
     UploadFailed,

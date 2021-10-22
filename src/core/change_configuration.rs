@@ -12,11 +12,11 @@ pub struct ChangeConfigurationRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeConfigurationResponse {
-    pub status: Status,
+    pub status: CCoStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum Status {
+pub enum CCoStatus {
     Accepted,
     Rejected,
     RebootRequired,
