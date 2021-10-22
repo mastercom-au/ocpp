@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+// -------------------------- REQUEST ---------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct DiagnosticStatusNotificationRequest {
@@ -13,3 +14,8 @@ pub enum Status {
     UploadFailed,
     Uploading,
 }
+
+// -------------------------- RESPONSE --------------------------
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct DiagnosticStatusNotificationResponse{}

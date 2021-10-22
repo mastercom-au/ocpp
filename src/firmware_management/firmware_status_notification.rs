@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+// -------------------------- REQUEST ---------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct FirmwareStatusNotificationRequest {
@@ -16,3 +17,8 @@ pub enum Status {
     Installing,
     Installed,
 }
+
+// -------------------------- RESPONSE --------------------------
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct FirmwareStatusNotificationResponse{}
