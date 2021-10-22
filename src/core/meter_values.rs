@@ -1,7 +1,6 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use crate::common_types::{
-    SampledFormat, SampledContext, SampledMeasurand, SampledPhase, SampledLocation, SampledUnit};
+use crate::common_types::SampledValue;
 
 /* Structure
 connectorId u32
@@ -33,19 +32,6 @@ pub struct MeterValues {
     pub timestamp: DateTime<Utc>,
     pub sampled_value: Vec<SampledValue>,
 }
-
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")]
-pub struct SampledValue {
-    pub value: String,
-    pub context: Option<SampledContext>,
-    pub format: Option<SampledFormat>,
-    pub measurant: Option<SampledMeasurand>,
-    pub phase: Option<SampledPhase>,
-    pub location: Option<SampledLocation>,
-    pub unit: Option<SampledUnit>,
-}
-
 // -------------------------- RESPONSE --------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]

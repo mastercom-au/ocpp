@@ -39,8 +39,6 @@ pub struct TransactionData {
     pub sampled_value: Vec<SampledValue>,
 }
 
-
-
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
 pub enum Reason {
     EmergencyStop,
