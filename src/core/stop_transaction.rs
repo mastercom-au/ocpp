@@ -1,6 +1,6 @@
+use crate::common_types::SampledValue;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use crate::common_types::{SampledValue};
 
 /*Structure
 idTag String
@@ -28,19 +28,19 @@ pub struct StopTransactionRequest {
     pub meter_stop: u32,
     pub time_stamp: DateTime<Utc>,
     pub transaction_id: u32,
-    pub reason: Option<Reason>,
-    pub transaction_data: Option<Vec<TransactionData>>,
+    pub reason: Option<StopReason>,
+    pub transaction_data: Option<Vec<StopTransactionData>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct TransactionData {
+pub struct StopTransactionData {
     pub time_stamp: DateTime<Utc>,
     pub sampled_value: Vec<SampledValue>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
-pub enum Reason {
+pub enum StopReason {
     EmergencyStop,
     EVDisconnected,
     HardReset,
@@ -58,12 +58,12 @@ pub enum Reason {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StopTransactionResponse {
-    pub id_tag_info: Option<IdTagInfo>,
+    pub id_tag_info: Option<StopIdTagInfo>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct IdTagInfo {
+pub struct StopIdTagInfo {
     pub expiry_date: Option<DateTime<Utc>>,
     pub parent_id_tag: Option<String>,
     pub status: StopTransactionStatus,

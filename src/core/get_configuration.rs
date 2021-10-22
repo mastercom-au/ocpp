@@ -11,13 +11,13 @@ pub struct GetConfigurationRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetConfigurationResponse {
-    pub configuration_key: Option<Vec<ConfigurationKey>>,
+    pub configuration_key: Option<Vec<GetConfigConfigurationKey>>,
     pub unknown_key: Option<Vec<String>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct ConfigurationKey {
+pub struct GetConfigConfigurationKey {
     pub key: String,
     pub readonly: bool,
     pub value: Option<String>,

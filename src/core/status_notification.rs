@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct StatusNotificationRequest {
     pub connector_id: u32,
-    error_code: ErrorCode,
+    error_code: StatusNotificationErrorCode,
     info: Option<String>,
     status: StatusNotificationStatus,
     timestamp: DateTime<Utc>,
@@ -15,7 +15,7 @@ pub struct StatusNotificationRequest {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum ErrorCode {
+pub enum StatusNotificationErrorCode {
     ConnectorLockFailure,
     EVCommunicationError,
     GroundFailure,

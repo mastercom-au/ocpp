@@ -20,5 +20,3 @@ pub enum ResetType {
 pub struct ResetResponse {
     status: SimpleStatus,
 }
-
-

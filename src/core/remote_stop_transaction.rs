@@ -8,7 +8,6 @@ pub struct RemoteStopTransactionRequest {
     pub transaction_id: u32,
 }
 
-
 // -------------------------- RESPONSE --------------------------
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -16,4 +15,3 @@ pub struct RemoteStopTransactionRequest {
 pub struct RemoteStopTransactionResponse {
     pub status: SimpleStatus,
 }
-

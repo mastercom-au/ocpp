@@ -18,7 +18,7 @@ localAuthorizationList vec<obj>
 #[serde(rename_all = "camelCase")]
 pub struct SendlocalListRequest {
     pub list_version: u32,
-    pub update_type: UpdateType,
+    pub update_type: SendLocalListUpdateType,
     pub local_authorization_list: Vec<LocalAuthorizationList>,
 }
 
@@ -38,7 +38,7 @@ pub struct LocalListIdTagInfo {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum UpdateType {
+pub enum SendLocalListUpdateType {
     Differential,
     Full,
 }

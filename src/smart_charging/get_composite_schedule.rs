@@ -1,6 +1,6 @@
+use crate::common_types::{ChargingRateUnit, SimpleStatus};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use crate::common_types::{ChargingRateUnit, SimpleStatus};
 
 // -------------------------- REQUEST ---------------------------
 #[derive(Serialize, Deserialize, Debug)]

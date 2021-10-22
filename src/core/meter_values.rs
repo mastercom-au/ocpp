@@ -1,6 +1,6 @@
+use crate::common_types::SampledValue;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use crate::common_types::SampledValue;
 
 /* Structure
 connectorId u32

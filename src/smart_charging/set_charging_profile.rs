@@ -1,5 +1,5 @@
+use crate::common_types::ChargingProfile;
 use serde::{Deserialize, Serialize};
-use crate::common_types::{ChargingProfile};
 
 /* Structure
 
