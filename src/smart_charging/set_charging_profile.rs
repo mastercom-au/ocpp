@@ -24,9 +24,10 @@ csChargingProfile struct
             numberPhases u32
 */
 
+// -------------------------- REQUEST ---------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct RemoteStartTransactionRequest {
+pub struct SetChargingProfileRequest {
     pub connector_id: Option<u32>,
     pub cs_charging_profile: Option<CsChargingProfile>,
 }
@@ -87,4 +88,18 @@ pub enum RecurrencyKind {
 pub enum ChargingRateUnit {
     A,
     W,
+}
+
+// -------------------------- RESPONSE --------------------------
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct SetChargingProfileResponse{
+    pub status: Status,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+pub enum Status{
+    Accepted,
+    Rejected,
+    NotSupported,
 }

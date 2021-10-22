@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+// -------------------------- REQUEST ---------------------------
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ClearChargingProfileRequest {
@@ -13,4 +14,17 @@ pub enum ChargingProfilePurpose {
     ChargePointMaxProfile,
     TxDefaultProfile,
     TxProfile,
+}
+
+// -------------------------- RESPONSE --------------------------
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct ClearChargingProfileResponse{
+    pub status: Status,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+pub enum Status{
+    Accepted,
+    Unknown,
 }
