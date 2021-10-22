@@ -19,12 +19,7 @@ pub enum SimpleStatus {
     Rejected,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum SampledFormat {
-    Raw,
-    SignedData,
-}
-
+//START Value Field
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SampledValue {
@@ -53,6 +48,12 @@ pub enum SampledContext {
     TransactionEnd,
     Trigger,
     Other,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+pub enum SampledFormat {
+    Raw,
+    SignedData,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
@@ -156,7 +157,9 @@ pub enum SampledUnit {
     Fahrenheit,
     Percent,
 }
+//END Value Field
 
+//START Profile Field
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingProfile {
@@ -202,3 +205,4 @@ pub enum ChargingProfileKind {
     Recurring,
     Relative,
 }
+//END Profile Field
