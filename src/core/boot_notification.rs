@@ -1,5 +1,21 @@
+use std::fs::read_to_string;
+
 use chrono::{DateTime, Utc};
+use jsonschema::JSONSchema;
+
 use serde::{Deserialize, Serialize};
+
+const REQUEST_SCHEMA: &str = include_str!("../json_schemas/Requests/Core/BootNotification.json");
+const RESPONSE_SCHEMA: &str = include_str!("../json_schemas/Responses/Core/BootNotification.json");
+
+lazy_static! {
+    static ref RESPONSE_JSON: serde_json::Value = serde_json::from_str(RESPONSE_SCHEMA).unwrap();
+    static ref RESPONSE_VALIDATOR: jsonschema::JSONSchema =
+        JSONSchema::compile(&RESPONSE_JSON).expect("Valid Schema");
+    static ref REQUEST_JSON: serde_json::Value = serde_json::from_str(REQUEST_SCHEMA).unwrap();
+    static ref REQUEST_VALIDATOR: jsonschema::JSONSchema =
+        JSONSchema::compile(&REQUEST_JSON).expect("Valid Schema");
+}
 
 // -------------------------- REQUEST --------------------------
 #[derive(Serialize, Deserialize, Debug)]
@@ -30,4 +46,20 @@ pub enum BootNotificationStatus {
     Accepted,
     Pending,
     Rejected,
+}
+
+use crate::core::JsonValidate;
+
+impl JsonValidate for BootNotificationRequest {
+    fn validate(&self) {
+        let struct_json_value = serde_json::to_value(&self).unwrap();
+        let result = REQUEST_VALIDATOR.validate(&struct_json_value);
+        if let Err(errors) = result {
+            println!("Errors Found");
+            for error in errors {
+                println!("Validation error: {}", error)
+            }
+            panic!("Validation Error")
+        }
+    }
 }

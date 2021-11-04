@@ -1,5 +1,9 @@
-mod boot_notification;
-pub use boot_notification::{BootNotificationRequest, BootNotificationResponse};
+pub trait JsonValidate {
+    fn validate(&self);
+}
+
+pub mod boot_notification;
+pub use boot_notification::*;
 
 mod authorize;
 pub use authorize::{AuthorizeRequest, AuthorizeResponse};

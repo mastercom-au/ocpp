@@ -8,5 +8,5 @@ repository = "https://bitbucket.org/mastercomms/ocpp"
 serde_json = "^1.0"
 serde = { version = "^1.0", features = ["derive"] }
 chrono = { version = "^0.4", features = ["serde"] }
-jsonschema = { version = "^0.12.1", default-features = false }
-
+jsonschema = { version = "^0.13.1", default-features = false }
+lazy_static = "1.4.0"

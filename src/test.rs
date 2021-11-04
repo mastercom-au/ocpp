@@ -1,14 +1,23 @@
-use crate::core;
+use std::fs::read_to_string;
+
+use crate::core::{self, BootNotificationRequest, BootNotificationResponse, JsonValidate};
+use chrono::{Date, DateTime, Utc};
 use jsonschema::JSONSchema;
-//use serde_json::json;
+use serde_json;
+
+pub const REQUESTPATH: &str = "json_schemas/Requests/Core/BootNotification.json";
 
 #[test]
 fn test() {
-    let boot_notification_test = core::BootNotificationRequest {
+    let bn_res = BootNotificationResponse {
+        current_time: Utc::now(),
+        status: core::BootNotificationStatus::Accepted,
+        interval: 10,
+    };
+
+    let bn_req = BootNotificationRequest {
         charge_point_vendor: "test1".to_string(),
-        charge_point_model:
-            "THIS_FIELD_IS_WAY_LONGER_THAN_SHOULD_BE_REASONABLY_ALLOWED_ACCORDING_TO_THE_SCHEMA"
-                .to_string(),
+        charge_point_model: "test2".to_string(),
         charge_point_serial_number: Some("test3".to_string()),
         charge_box_serial_number: Some("test4".to_string()),
         firmware_version: Some("test5".to_string()),
@@ -18,28 +27,24 @@ fn test() {
         meter_serial_number: Some("test9".to_string()),
     };
 
-    let string_schema = String::from(include_str!(
-        "json_schemas/Requests/Core/BootNotification.json"
-    ));
-
-    println!("\n\nString: \n\n {}", string_schema);
-
-    let json_schema = serde_json::from_str(&string_schema).unwrap();
-
-    let value = serde_json::to_value(boot_notification_test).unwrap();
-    if let Ok(compiled_schema) = JSONSchema::compile(&json_schema) {
-        let result = compiled_schema.validate(&value);
-        if let Err(errors) = result {
-            for error in errors {
-                println!("Validation error: {}", error)
-            }
-            panic!("Validation Error")
-        }
-    } else {
-        panic!("Compile of JSON failed")
-    }
+    bn_req.validate();
 }
 
 /*fn test_schema(schema_path: String) -> Result<{
 
 }*/
+
+/*
+let value = serde_json::to_value(boot_notification_test).unwrap();
+if let Ok(compiled_schema) = JSONSchema::compile(&json_schema) {
+    let result = compiled_schema.validate(&value);
+    if let Err(errors) = result {
+        for error in errors {
+            println!("Validation error: {}", error)
+        }
+        panic!("Validation Error")
+    }
+} else {
+    panic!("Compile of JSON failed")
+}
+*/
