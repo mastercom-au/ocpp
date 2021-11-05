@@ -55,6 +55,7 @@ pub enum BootNotificationStatus {
 impl JsonValidate for BootNotificationRequest {
     fn validate(&self) -> Result<(), Vec<String>> {
         self.generic_validate(&*REQUEST_VALIDATOR)?;
+        println!("Request Validated Succesfully");
         Ok(())
     }
 }
@@ -62,6 +63,7 @@ impl JsonValidate for BootNotificationRequest {
 impl JsonValidate for BootNotificationResponse {
     fn validate(&self) -> Result<(), Vec<String>> {
         self.generic_validate(&*RESPONSE_VALIDATOR)?;
+        println!("Response Validated Succesfully");
         Ok(())
     }
 }
