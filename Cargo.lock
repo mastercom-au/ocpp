@@ -160,9 +160,9 @@ checksum = "b71991ff56294aa922b450139ee08b3bfc70982c6b2c7562771375cf73542dd4"
 
 [[package]]
 name = "jsonschema"
-version = "0.13.1"
+version = "0.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc76cf62dfe956360a07295747c3afd6164a94b5f4f20980d63d2ec14d38c6ea"
+checksum = "6144050d3d8d90794363fa80eb36c04fd7b566edbc54fd690272d27300246a28"
 dependencies = [
  "ahash",
  "base64",

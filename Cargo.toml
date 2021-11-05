@@ -1,13 +1,13 @@
 [package]
 name = "ocpp"
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
 repository = "https://bitbucket.org/mastercomms/ocpp"
 
 [dependencies]
 serde_json = "^1.0"
 serde = { version = "^1.0", features = ["derive"] }
 chrono = { version = "^0.4", features = ["serde"] }
-jsonschema = { version = "^0.13.1", default-features = false }
+jsonschema = { version = "^0.13.2", default-features = false }
 lazy_static = "1.4.0"
 thiserror = "1.0.30"

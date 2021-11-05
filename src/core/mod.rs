@@ -1,4 +1,6 @@
 use jsonschema::{error::ValidationErrorKind, JSONSchema, ValidationError};
+use serde::{Deserialize, Serialize};
+use serde_json::json;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -12,7 +14,25 @@ pub enum ValidateError {
 }
 
 pub trait JsonValidate {
-    fn validate(&self) -> Result<(), Vec<ValidationErrorKind>>;
+    fn generic_validate(&self, schema_validator: &jsonschema::JSONSchema) -> Result<(), Vec<String>>
+    where
+        Self: Serialize,
+    {
+        let mut output = Vec::new();
+        if let Err(errors) = schema_validator.validate(&json!(&self)) {
+            for error in errors {
+                println!("{}", &error);
+                output.push(error.to_string());
+            }
+            Err(output)
+        } else {
+            Ok(())
+        }
+    }
+
+    fn validate(&self) -> Result<(), Vec<String>> {
+        return Ok(());
+    }
 }
 
 pub mod boot_notification;

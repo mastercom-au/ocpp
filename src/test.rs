@@ -27,5 +27,5 @@ fn test() {
         meter_serial_number: Some("test9".to_string()),
     };
 
-    let output = bn_req.validate();
+    let output = bn_req.validateMe();
 }

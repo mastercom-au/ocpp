@@ -3,6 +3,7 @@ use std::fs::read_to_string;
 use chrono::{DateTime, Utc};
 use jsonschema::{error::ValidationErrorKind, JSONSchema, ValidationError};
 
+use crate::core::{JsonValidate, ValidateError};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
@@ -10,10 +11,12 @@ const REQUEST_SCHEMA: &str = include_str!("../json_schemas/Requests/Core/BootNot
 const RESPONSE_SCHEMA: &str = include_str!("../json_schemas/Responses/Core/BootNotification.json");
 
 lazy_static! {
-    static ref RESPONSE_JSON: serde_json::Value = serde_json::from_str(RESPONSE_SCHEMA).unwrap();
+    static ref RESPONSE_JSON: serde_json::Value =
+        serde_json::from_str(RESPONSE_SCHEMA).expect("Valid File");
     static ref RESPONSE_VALIDATOR: jsonschema::JSONSchema =
         JSONSchema::compile(&RESPONSE_JSON).expect("Valid Schema");
-    static ref REQUEST_JSON: serde_json::Value = serde_json::from_str(REQUEST_SCHEMA).unwrap();
+    static ref REQUEST_JSON: serde_json::Value =
+        serde_json::from_str(REQUEST_SCHEMA).expect("Valid File");
     static ref REQUEST_VALIDATOR: jsonschema::JSONSchema =
         JSONSchema::compile(&REQUEST_JSON).expect("Valid Schema");
 }
@@ -49,18 +52,16 @@ pub enum BootNotificationStatus {
     Rejected,
 }
 
-use crate::core::{JsonValidate, ValidateError};
 impl JsonValidate for BootNotificationRequest {
-    fn validate(&self) -> Result<(), Vec<ValidationErrorKind>> {
-        let mut output = Vec::new();
-        if let Err(errors) = RESPONSE_VALIDATOR.validate(&json!(&self)) {
-            for error in errors {
-                println!("{:?}", &error.kind);
-                output.push(error.kind);
-            }
-            Err(output)
-        } else {
-            Ok(())
-        }
+    fn validate(&self) -> Result<(), Vec<String>> {
+        self.generic_validate(&*REQUEST_VALIDATOR)?;
+        Ok(())
+    }
+}
+
+impl JsonValidate for BootNotificationResponse {
+    fn validate(&self) -> Result<(), Vec<String>> {
+        self.generic_validate(&*RESPONSE_VALIDATOR)?;
+        Ok(())
     }
 }
