@@ -27,24 +27,5 @@ fn test() {
         meter_serial_number: Some("test9".to_string()),
     };
 
-    bn_req.validate();
+    let output = bn_req.validate();
 }
-
-/*fn test_schema(schema_path: String) -> Result<{
-
-}*/
-
-/*
-let value = serde_json::to_value(boot_notification_test).unwrap();
-if let Ok(compiled_schema) = JSONSchema::compile(&json_schema) {
-    let result = compiled_schema.validate(&value);
-    if let Err(errors) = result {
-        for error in errors {
-            println!("Validation error: {}", error)
-        }
-        panic!("Validation Error")
-    }
-} else {
-    panic!("Compile of JSON failed")
-}
-*/

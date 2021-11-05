@@ -1,5 +1,18 @@
+use jsonschema::{error::ValidationErrorKind, JSONSchema, ValidationError};
+use thiserror::Error;
+
+#[derive(Error, Debug)]
+pub enum ValidateError {
+    #[error("Failed to read json schema file: {0}")]
+    FailToReadSchema(String),
+    #[error("Failed to read compile schema file: {0}")]
+    FailToCompileSchema(String),
+    #[error("Failed to read validate struct against compiled schema: ")]
+    FailToValidateJson(),
+}
+
 pub trait JsonValidate {
-    fn validate(&self);
+    fn validate(&self) -> Result<(), Vec<ValidationErrorKind>>;
 }
 
 pub mod boot_notification;
