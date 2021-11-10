@@ -2,7 +2,8 @@ use chrono::{DateTime, Utc};
 use jsonschema::JSONSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::core::{JsonValidate, ValidateError};
+use crate::error::ValidateError;
+use crate::validate::JsonValidate;
 
 const REQUEST_SCHEMA: &str = include_str!("../json_schemas/Requests/Core/BootNotification.json");
 const RESPONSE_SCHEMA: &str = include_str!("../json_schemas/Responses/Core/BootNotification.json");
