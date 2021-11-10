@@ -1,8 +1,8 @@
 use crate::common_types::ChargingProfile;
+use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 
 /* Structure
-
 ConnectorId u32
 csChargingProfile struct
     chargingProfileId u32
@@ -25,6 +25,7 @@ csChargingProfile struct
 */
 
 // -------------------------- REQUEST ---------------------------
+#[json_validate("../json_schemas/Requests/SmartCharging/SetChargingProfile.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SetChargingProfileRequest {
@@ -33,6 +34,7 @@ pub struct SetChargingProfileRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
+#[json_validate("../json_schemas/Responses/SmartCharging/SetChargingProfile.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SetChargingProfileResponse {

@@ -1,8 +1,10 @@
 use crate::common_types::{ChargingRateUnit, SimpleStatus};
 use chrono::{DateTime, Utc};
+use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------
+#[json_validate("../json_schemas/Requests/SmartCharging/GetCompositeSchedule.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetCompositeScheduleRequest {
@@ -26,6 +28,7 @@ chargingSchedule struct
     minChargingRate float
 */
 
+#[json_validate("../json_schemas/Responses/SmartCharging/GetCompositeSchedule.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetCompositeScheduleResponse {

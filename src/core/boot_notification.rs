@@ -1,7 +1,6 @@
 use chrono::{DateTime, Utc};
-use serde::{Deserialize, Serialize};
-
 use ocpp_json_validate::json_validate;
+use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST --------------------------
 #[json_validate("../json_schemas/Requests/Core/BootNotification.json")]

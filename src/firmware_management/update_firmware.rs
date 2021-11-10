@@ -1,7 +1,9 @@
 use chrono::{DateTime, Utc};
+use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------
+#[json_validate("../json_schemas/Requests/FirmwareManagement/UpdateFirmware.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct UpdateFirmwareRequest {
@@ -12,6 +14,7 @@ pub struct UpdateFirmwareRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
+#[json_validate("../json_schemas/Responses/FirmwareManagement/UpdateFirmware.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct UpdateFirmwareResponse {}

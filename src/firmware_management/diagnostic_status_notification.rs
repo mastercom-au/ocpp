@@ -1,6 +1,8 @@
+use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------
+#[json_validate("../json_schemas/Requests/FirmwareManagement/DiagnosticsStatusNotification.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct DiagnosticStatusNotificationRequest {
@@ -16,6 +18,7 @@ pub enum DiagnosticNotificationStatus {
 }
 
 // -------------------------- RESPONSE --------------------------
+#[json_validate("../json_schemas/Responses/FirmwareManagement/DiagnosticsStatusNotification.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct DiagnosticStatusNotificationResponse {}

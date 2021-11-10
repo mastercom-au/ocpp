@@ -1,7 +1,9 @@
 use chrono::{DateTime, Utc};
+use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST --------------------------
+#[json_validate("../json_schemas/Requests/Core/Authorize.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct AuthorizeRequest {
@@ -9,6 +11,7 @@ pub struct AuthorizeRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
+#[json_validate("../json_schemas/Responses/Core/Authorize.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct AuthorizeResponse {

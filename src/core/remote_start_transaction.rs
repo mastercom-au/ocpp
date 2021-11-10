@@ -1,8 +1,8 @@
 use crate::common_types::{ChargingProfile, SimpleStatus};
+use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 
 /* Structure
-
 ConnectorId u32
 idTag String
 chargingProfile struct
@@ -26,6 +26,7 @@ chargingProfile struct
 */
 
 // -------------------------- RESPONSE --------------------------
+#[json_validate("../json_schemas/Requests/Core/RemoteStartTransaction.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStartTransactionRequest {
@@ -35,6 +36,7 @@ pub struct RemoteStartTransactionRequest {
 }
 
 // -------------------------- REQUEST ---------------------------
+#[json_validate("../json_schemas/Responses/Core/RemoteStartTransaction.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStartTransactionResponse {

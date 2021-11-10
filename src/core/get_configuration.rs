@@ -1,6 +1,8 @@
+use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------
+#[json_validate("../json_schemas/Requests/Core/GetConfiguration.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetConfigurationRequest {
@@ -8,6 +10,7 @@ pub struct GetConfigurationRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
+#[json_validate("../json_schemas/Responses/Core/GetConfiguration.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetConfigurationResponse {

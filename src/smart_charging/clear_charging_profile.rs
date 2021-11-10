@@ -1,6 +1,8 @@
+use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------
+#[json_validate("../json_schemas/Requests/SmartCharging/ClearChargingProfile.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ClearChargingProfileRequest {
@@ -17,6 +19,7 @@ pub enum ChargingProfilePurpose {
 }
 
 // -------------------------- RESPONSE --------------------------
+#[json_validate("../json_schemas/Responses/SmartCharging/ClearChargingProfile.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ClearChargingProfileResponse {

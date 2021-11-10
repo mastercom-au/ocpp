@@ -1,5 +1,6 @@
 use crate::common_types::SampledValue;
 use chrono::{DateTime, Utc};
+use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 
 /*Structure
@@ -21,6 +22,7 @@ transactionData vec<obj>
 */
 
 // -------------------------- REQUEST ---------------------------
+#[json_validate("../json_schemas/Requests/Core/StopTransaction.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StopTransactionRequest {
@@ -55,6 +57,7 @@ pub enum StopReason {
 }
 
 // -------------------------- RESPONSE --------------------------
+#[json_validate("../json_schemas/Responses/Core/StopTransaction.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StopTransactionResponse {
