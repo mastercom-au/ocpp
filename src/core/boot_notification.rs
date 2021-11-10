@@ -1,39 +1,10 @@
 use chrono::{DateTime, Utc};
-use jsonschema::JSONSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::error::ValidateError;
-use crate::validate::JsonValidate;
-
-const REQUEST_SCHEMA: &str = include_str!("../json_schemas/Requests/Core/BootNotification.json");
-const RESPONSE_SCHEMA: &str = include_str!("../json_schemas/Responses/Core/BootNotification.json");
-
-lazy_static! {
-    static ref RESPONSE_JSON: serde_json::Value =
-        serde_json::from_str(RESPONSE_SCHEMA).expect(&format!("Valid File: {}", RESPONSE_SCHEMA));
-    static ref RESPONSE_VALIDATOR: jsonschema::JSONSchema =
-        JSONSchema::compile(&RESPONSE_JSON).expect(&format!("Valid File: {}", RESPONSE_SCHEMA));
-    static ref REQUEST_JSON: serde_json::Value =
-        serde_json::from_str(REQUEST_SCHEMA).expect(&format!("Valid File: {}", REQUEST_SCHEMA));
-    static ref REQUEST_VALIDATOR: jsonschema::JSONSchema =
-        JSONSchema::compile(&REQUEST_JSON).expect(&format!("Valid File: {}", REQUEST_SCHEMA));
-}
-
-impl JsonValidate for BootNotificationRequest {
-    fn validate(&self) -> Result<(), ValidateError> {
-        self.generic_validate(&*REQUEST_VALIDATOR)?;
-        Ok(())
-    }
-}
-
-impl JsonValidate for BootNotificationResponse {
-    fn validate(&self) -> Result<(), ValidateError> {
-        self.generic_validate(&*RESPONSE_VALIDATOR)?;
-        Ok(())
-    }
-}
+use ocpp_json_validate::json_validate;
 
 // -------------------------- REQUEST --------------------------
+#[json_validate("../json_schemas/Requests/Core/BootNotification.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct BootNotificationRequest {
@@ -49,6 +20,7 @@ pub struct BootNotificationRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
+#[json_validate("../json_schemas/Responses/Core/BootNotification.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct BootNotificationResponse {
