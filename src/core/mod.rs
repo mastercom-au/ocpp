@@ -1,20 +1,12 @@
-use jsonschema::{error::ValidationErrorKind, JSONSchema, ValidationError};
-use serde::{Deserialize, Serialize};
+use crate::error::ValidateError;
+use serde::Serialize;
 use serde_json::json;
-use thiserror::Error;
-
-#[derive(Error, Debug)]
-pub enum ValidateError {
-    #[error("Failed to read json schema file: {0}")]
-    FailToReadSchema(String),
-    #[error("Failed to read compile schema file: {0}")]
-    FailToCompileSchema(String),
-    #[error("Failed to read validate struct against compiled schema: ")]
-    FailToValidateJson(),
-}
 
 pub trait JsonValidate {
-    fn generic_validate(&self, schema_validator: &jsonschema::JSONSchema) -> Result<(), Vec<String>>
+    fn generic_validate(
+        &self,
+        schema_validator: &jsonschema::JSONSchema,
+    ) -> Result<(), ValidateError>
     where
         Self: Serialize,
     {
@@ -25,16 +17,12 @@ pub trait JsonValidate {
                 //Stripping it down to a string stops errors generated when it drops from scope
                 output.push(error.to_string());
             }
-            for out in &output {
-                println!("{}", out);
-            }
-            Err(output)
-        } else {
-            Ok(())
+            return Err(ValidateError::FailToValidateJson(output));
         }
+        Ok(())
     }
 
-    fn validate(&self) -> Result<(), Vec<String>> {
+    fn validate(&self) -> Result<(), ValidateError> {
         return Ok(());
     }
 }

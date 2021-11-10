@@ -1,11 +1,8 @@
-use std::fs::read_to_string;
-
 use chrono::{DateTime, Utc};
-use jsonschema::{error::ValidationErrorKind, JSONSchema, ValidationError};
+use jsonschema::JSONSchema;
+use serde::{Deserialize, Serialize};
 
 use crate::core::{JsonValidate, ValidateError};
-use serde::{Deserialize, Serialize};
-use serde_json::json;
 
 const REQUEST_SCHEMA: &str = include_str!("../json_schemas/Requests/Core/BootNotification.json");
 const RESPONSE_SCHEMA: &str = include_str!("../json_schemas/Responses/Core/BootNotification.json");
@@ -19,6 +16,20 @@ lazy_static! {
         serde_json::from_str(REQUEST_SCHEMA).expect("Valid File");
     static ref REQUEST_VALIDATOR: jsonschema::JSONSchema =
         JSONSchema::compile(&REQUEST_JSON).expect("Valid Schema");
+}
+
+impl JsonValidate for BootNotificationRequest {
+    fn validate(&self) -> Result<(), ValidateError> {
+        self.generic_validate(&*REQUEST_VALIDATOR)?;
+        Ok(())
+    }
+}
+
+impl JsonValidate for BootNotificationResponse {
+    fn validate(&self) -> Result<(), ValidateError> {
+        self.generic_validate(&*RESPONSE_VALIDATOR)?;
+        Ok(())
+    }
 }
 
 // -------------------------- REQUEST --------------------------
@@ -50,20 +61,4 @@ pub enum BootNotificationStatus {
     Accepted,
     Pending,
     Rejected,
-}
-
-impl JsonValidate for BootNotificationRequest {
-    fn validate(&self) -> Result<(), Vec<String>> {
-        self.generic_validate(&*REQUEST_VALIDATOR)?;
-        println!("Request Validated Succesfully");
-        Ok(())
-    }
-}
-
-impl JsonValidate for BootNotificationResponse {
-    fn validate(&self) -> Result<(), Vec<String>> {
-        self.generic_validate(&*RESPONSE_VALIDATOR)?;
-        println!("Response Validated Succesfully");
-        Ok(())
-    }
 }
