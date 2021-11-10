@@ -5,7 +5,7 @@ pub mod core;
 pub mod error;
 pub mod firmware_management;
 pub mod smart_charging;
-pub mod validate;
+//pub mod validate;
 #[cfg(test)]
 pub mod test;
 #[macro_use]
