@@ -22,6 +22,7 @@ fn test() {
         meter_type: Some("test8".to_string()),
         meter_serial_number: Some("test9".to_string()),
     };
-    assert!(bn_req.validate().is_ok());
-    assert!(bn_res.validate().is_ok());
+
+    assert_eq!(bn_req.validate(), Ok(()));
+    assert_eq!(bn_res.validate(), Ok(()));
 }

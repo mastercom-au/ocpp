@@ -10,13 +10,13 @@ const RESPONSE_SCHEMA: &str = include_str!("../json_schemas/Responses/Core/BootN
 
 lazy_static! {
     static ref RESPONSE_JSON: serde_json::Value =
-        serde_json::from_str(RESPONSE_SCHEMA).expect("Valid File");
+        serde_json::from_str(RESPONSE_SCHEMA).expect(&format!("Valid File: {}", RESPONSE_SCHEMA));
     static ref RESPONSE_VALIDATOR: jsonschema::JSONSchema =
-        JSONSchema::compile(&RESPONSE_JSON).expect("Valid Schema");
+        JSONSchema::compile(&RESPONSE_JSON).expect(&format!("Valid File: {}", RESPONSE_SCHEMA));
     static ref REQUEST_JSON: serde_json::Value =
-        serde_json::from_str(REQUEST_SCHEMA).expect("Valid File");
+        serde_json::from_str(REQUEST_SCHEMA).expect(&format!("Valid File: {}", REQUEST_SCHEMA));
     static ref REQUEST_VALIDATOR: jsonschema::JSONSchema =
-        JSONSchema::compile(&REQUEST_JSON).expect("Valid Schema");
+        JSONSchema::compile(&REQUEST_JSON).expect(&format!("Valid File: {}", REQUEST_SCHEMA));
 }
 
 impl JsonValidate for BootNotificationRequest {
