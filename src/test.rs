@@ -35,8 +35,7 @@ fn test_boot_notification_request_validates() {
 fn test_boot_notification_request_charge_point_model_string_length_limit() {
     let bn_req = BootNotificationRequest {
         charge_point_vendor: "test1".to_string(),
-        charge_point_model: "test2 AND SOME ARBITRARILY LONG STRING HERE TO BREAK THINGS"
-            .to_string(),
+        charge_point_model: "test2 AND SOME ARBITRARILY LONG STRING HERE TO BREAK THINGS".to_string(),
         charge_point_serial_number: Some("test3".to_string()),
         charge_box_serial_number: Some("test4".to_string()),
         firmware_version: Some("test5".to_string()),
