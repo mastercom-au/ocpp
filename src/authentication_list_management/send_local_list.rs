@@ -26,6 +26,7 @@ pub struct SendlocalListRequest {
     pub local_authorization_list: Option<Vec<LocalAuthorizationList>>,
 }
 
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct LocalAuthorizationList {
@@ -33,6 +34,7 @@ pub struct LocalAuthorizationList {
     pub id_tag_info: Option<LocalListIdTagInfo>,
 }
 
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct LocalListIdTagInfo {
