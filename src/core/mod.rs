@@ -1,4 +1,4 @@
-pub mod boot_notification;
+mod boot_notification;
 pub use boot_notification::*;
 
 mod authorize;

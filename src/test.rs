@@ -1,10 +1,10 @@
-use crate::core::{self, BootNotificationRequest, BootNotificationResponse};
+use crate::core;
 use chrono::Utc;
 use ocpp_json_validate::JsonValidate;
 
 #[test]
 fn test_boot_notification_response_validates() {
-    let bn_res = BootNotificationResponse {
+    let bn_res = core::BootNotificationResponse {
         current_time: Utc::now(),
         status: core::BootNotificationStatus::Accepted,
         interval: 10,
@@ -13,10 +13,9 @@ fn test_boot_notification_response_validates() {
     assert!(bn_res.validate().is_ok());
 }
 
-//ARBITRARY LINE OF CODE HERE TO TEST CRATE PUSH?
 #[test]
 fn test_boot_notification_request_validates() {
-    let bn_req = BootNotificationRequest {
+    let bn_req = core::BootNotificationRequest {
         charge_point_vendor: "test1".to_string(),
         charge_point_model: "test2".to_string(),
         charge_point_serial_number: Some("test3".to_string()),
@@ -24,8 +23,8 @@ fn test_boot_notification_request_validates() {
         firmware_version: Some("test5".to_string()),
         iccid: Some("test6".to_string()),
         imsi: Some("test7".to_string()),
-        meter_type: Some("test8".to_string()),
-        meter_serial_number: Some("test9".to_string()),
+        meter_type: None,
+        meter_serial_number: None,
     };
 
     assert!(bn_req.validate().is_ok());
@@ -33,7 +32,7 @@ fn test_boot_notification_request_validates() {
 
 #[test]
 fn test_boot_notification_request_charge_point_model_string_length_limit() {
-    let bn_req = BootNotificationRequest {
+    let bn_req = core::BootNotificationRequest {
         charge_point_vendor: "test1".to_string(),
         charge_point_model: "test2 AND SOME ARBITRARILY LONG STRING HERE TO BREAK THINGS".to_string(),
         charge_point_serial_number: Some("test3".to_string()),
