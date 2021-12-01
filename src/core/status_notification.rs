@@ -1,19 +1,21 @@
 use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
+use serde_with::skip_serializing_none;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/Requests/Core/StatusNotification.json")]
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StatusNotificationRequest {
     pub connector_id: u32,
-    error_code: StatusNotificationErrorCode,
-    info: Option<String>,
-    status: StatusNotificationStatus,
-    timestamp: DateTime<Utc>,
-    vendor_id: Option<String>,
-    vendor_error_code: Option<String>,
+    pub error_code: StatusNotificationErrorCode,
+    pub info: Option<String>,
+    pub status: StatusNotificationStatus,
+    pub timestamp: Option<DateTime<Utc>>,
+    pub vendor_id: Option<String>,
+    pub vendor_error_code: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]

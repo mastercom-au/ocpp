@@ -2,6 +2,7 @@ use crate::common_types::SampledValue;
 use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
+use serde_with::skip_serializing_none;
 
 /*Structure
 idTag String
@@ -23,12 +24,13 @@ transactionData vec<obj>
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/Requests/Core/StopTransaction.json")]
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StopTransactionRequest {
     pub id_tag: Option<String>,
     pub meter_stop: u32,
-    pub time_stamp: DateTime<Utc>,
+    pub timestamp: DateTime<Utc>,
     pub transaction_id: u32,
     pub reason: Option<StopReason>,
     pub transaction_data: Option<Vec<StopTransactionData>>,
@@ -58,12 +60,14 @@ pub enum StopReason {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/Responses/Core/StopTransaction.json")]
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StopTransactionResponse {
     pub id_tag_info: Option<StopIdTagInfo>,
 }
 
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StopIdTagInfo {

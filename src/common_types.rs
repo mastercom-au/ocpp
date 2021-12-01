@@ -1,5 +1,6 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+use serde_with::skip_serializing_none;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub enum ChargingRateUnit {
@@ -20,6 +21,7 @@ pub enum SimpleStatus {
 }
 
 //START Value Field
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SampledValue {
@@ -160,6 +162,7 @@ pub enum SampledUnit {
 //END Value Field
 
 //START Profile Field
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingProfile {
@@ -174,6 +177,7 @@ pub struct ChargingProfile {
     charging_schedule: ProfileSchedule,
 }
 
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ProfileSchedule {
@@ -184,6 +188,7 @@ pub struct ProfileSchedule {
     pub min_charging_rate: Option<f32>,
 }
 
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ProfileSchedulePeriod {
