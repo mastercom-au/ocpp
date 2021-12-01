@@ -1,14 +1,16 @@
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
+use serde_with::skip_serializing_none;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/Requests/SmartCharging/ClearChargingProfile.json")]
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ClearChargingProfileRequest {
-    pub id: u32,
-    pub charging_profile_purpose: ChargingProfilePurpose,
-    pub stack_level: u32,
+    pub id: Option<u32>,
+    pub charging_profile_purpose: Option<ChargingProfilePurpose>,
+    pub stack_level: Option<u32>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]

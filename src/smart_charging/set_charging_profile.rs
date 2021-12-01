@@ -29,8 +29,8 @@ csChargingProfile struct
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SetChargingProfileRequest {
-    pub connector_id: Option<u32>,
-    pub cs_charging_profile: Option<ChargingProfile>,
+    pub connector_id: u32,
+    pub cs_charging_profile: ChargingProfile,
 }
 
 // -------------------------- RESPONSE --------------------------
