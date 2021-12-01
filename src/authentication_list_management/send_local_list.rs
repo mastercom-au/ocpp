@@ -1,6 +1,7 @@
 use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
+use serde_with::skip_serializing_none;
 
 /*Structure
 listVersion u32
@@ -16,26 +17,27 @@ localAuthorizationList vec<obj>
 
 // -------------------------- REQUEST --------------------------
 #[json_validate("../json_schemas/Requests/AuthenticationListManagement/SendLocalList.json")]
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SendlocalListRequest {
     pub list_version: u32,
     pub update_type: SendLocalListUpdateType,
-    pub local_authorization_list: Vec<LocalAuthorizationList>,
+    pub local_authorization_list: Option<Vec<LocalAuthorizationList>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct LocalAuthorizationList {
     pub id_tag: String,
-    pub id_tag_info: LocalListIdTagInfo,
+    pub id_tag_info: Option<LocalListIdTagInfo>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct LocalListIdTagInfo {
-    pub expiry_date: DateTime<Utc>,
-    pub parent_id_tag: String,
+    pub expiry_date: Option<DateTime<Utc>>,
+    pub parent_id_tag: Option<String>,
     pub status: SendLocalListRequestStatus,
 }
 
