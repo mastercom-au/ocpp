@@ -1,5 +1,5 @@
-use std::fmt;
 use std::error::Error;
+use std::fmt;
 
 #[derive(Debug, PartialEq)]
 pub enum JsonValidateError
@@ -19,13 +19,9 @@ impl fmt::Display for JsonValidateError
 
 impl Error for JsonValidateError {}
 
-
-
 pub trait JsonValidate
 {
     fn validate(&self) -> Result<(), JsonValidateError>;
 }
-
-
 
 pub use ocpp_json_validate_attribute::json_validate;
