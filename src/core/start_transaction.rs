@@ -13,7 +13,7 @@ pub struct StartTransactionRequest {
     pub id_tag: String,
     pub meter_start: i32,
     pub reservation_id: Option<i32>,
-    pub timestamp: String,
+    pub timestamp: DateTime<Utc>,
 }
 
 // -------------------------- RESPONSE --------------------------
