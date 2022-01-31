@@ -37,7 +37,7 @@ pub fn json_validate(attr: TokenStream, item: TokenStream) -> TokenStream {
                 use tracing::{warn, trace};
 
                 if let Err(val) = #validator_name.validate(&serde_json::json!(self)).map_err(|errors| ocpp_json_validate::JsonValidateError::ValidationError(Vec::from_iter(errors.map(|e| e.to_string())))){
-                    warn!("Validate failed on Json Value Struct. {} ", val);
+                    warn!("Validate failed on Json Value Struct {:?}, with error: {} ", &self, val);
                     return Err(val);
                 } else {
                     trace!("Succesfully validated Json Value Struct {:?}", &self);
