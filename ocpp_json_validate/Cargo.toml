@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 ocpp_json_validate_attribute = { version = "^1.0", path = "./ocpp_json_validate_attribute" }
+tracing = "^0.1"

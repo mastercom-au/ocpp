@@ -1,14 +1,13 @@
-use syn::Ident;
-use syn::LitStr;
-use quote::quote;
-use syn::ItemStruct;
-use proc_macro2::Span;
-use syn::parse_macro_input;
 use proc_macro::TokenStream;
+use proc_macro2::Span;
+use quote::quote;
+use syn::parse_macro_input;
+use syn::Ident;
+use syn::ItemStruct;
+use syn::LitStr;
 
 #[proc_macro_attribute]
-pub fn json_validate(attr: TokenStream, item: TokenStream) -> TokenStream
-{
+pub fn json_validate(attr: TokenStream, item: TokenStream) -> TokenStream {
     let item = parse_macro_input!(item as ItemStruct);
     let filename = parse_macro_input!(attr as LitStr);
 
@@ -33,8 +32,17 @@ pub fn json_validate(attr: TokenStream, item: TokenStream) -> TokenStream
         }
 
         impl ocpp_json_validate::JsonValidate for #struct_name {
+
             fn validate(&self) -> Result<(), ocpp_json_validate::JsonValidateError> {
-                #validator_name.validate(&serde_json::json!(self)).map_err(|errors| ocpp_json_validate::JsonValidateError::ValidationError(Vec::from_iter(errors.map(|e| e.to_string()))))
+                use tracing::{warn, info};
+
+                if let Err(val) = #validator_name.validate(&serde_json::json!(self)).map_err(|errors| ocpp_json_validate::JsonValidateError::ValidationError(Vec::from_iter(errors.map(|e| e.to_string())))){
+                    warn!("Validate failed on Json Value Struct. {} ", val);
+                    return Err(val);
+                } else {
+                    trace!("Succesfully validated Json Value Struct {:?}", &self);
+                    return Ok(());
+                }
             }
         }
 

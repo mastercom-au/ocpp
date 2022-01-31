@@ -2,15 +2,12 @@ use std::error::Error;
 use std::fmt;
 
 #[derive(Debug, PartialEq)]
-pub enum JsonValidateError
-{
+pub enum JsonValidateError {
     ValidationError(Vec<String>),
 }
 
-impl fmt::Display for JsonValidateError
-{
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
-    {
+impl fmt::Display for JsonValidateError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Self::ValidationError(e) => write!(f, "Validation Error: {:?}", e),
         }
@@ -19,8 +16,7 @@ impl fmt::Display for JsonValidateError
 
 impl Error for JsonValidateError {}
 
-pub trait JsonValidate
-{
+pub trait JsonValidate {
     fn validate(&self) -> Result<(), JsonValidateError>;
 }
 

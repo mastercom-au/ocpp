@@ -12,6 +12,7 @@ jsonschema = { version = "^0.13.2", default-features = false }
 lazy_static = "1.4.0"
 thiserror = "1.0.30"
 serde_with = "^1"
+tracing = "^0.1"
 
 
 ocpp_json_validate = { version = "^1.0", path = "./ocpp_json_validate" }
