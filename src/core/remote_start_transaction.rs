@@ -27,7 +27,7 @@ chargingProfile struct
 */
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Requests/Core/RemoteStartTransaction.json")]
+#[json_validate("../json_schemas/Core/RemoteStartTransaction.json")]
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -38,7 +38,7 @@ pub struct RemoteStartTransactionRequest {
 }
 
 // -------------------------- REQUEST ---------------------------
-#[json_validate("../json_schemas/Responses/Core/RemoteStartTransaction.json")]
+#[json_validate("../json_schemas/Core/RemoteStartTransaction.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStartTransactionResponse {

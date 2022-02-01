@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
 // -------------------------- REQUEST ---------------------------
-#[json_validate("../json_schemas/Requests/FirmwareManagement/UpdateFirmware.json")]
+#[json_validate("../json_schemas/FirmwareManagement/UpdateFirmware.json")]
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -16,7 +16,7 @@ pub struct UpdateFirmwareRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Responses/FirmwareManagement/UpdateFirmware.json")]
+#[json_validate("../json_schemas/FirmwareManagement/UpdateFirmware.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct UpdateFirmwareResponse {}

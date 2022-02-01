@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
 // -------------------------- REQUEST ---------------------------
-#[json_validate("../json_schemas/Requests/Core/GetConfiguration.json")]
+#[json_validate("../json_schemas/Core/GetConfiguration.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetConfigurationRequest {
@@ -11,7 +11,7 @@ pub struct GetConfigurationRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Responses/Core/GetConfiguration.json")]
+#[json_validate("../json_schemas/Core/GetConfiguration.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetConfigurationResponse {

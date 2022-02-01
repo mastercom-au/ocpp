@@ -1,6 +1,7 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
+use std::fmt;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub enum ChargingRateUnit {
@@ -211,3 +212,49 @@ pub enum ChargingProfileKind {
     Relative,
 }
 //END Profile Field
+
+impl fmt::Display for ChargingRateUnit {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for RecurrencyKind {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for SimpleStatus {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for SampledValue {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for SampledContext {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for SampledMeasurand {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for SampledFormat {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for SampledPhase {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for SampledLocation {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for SampledUnit {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for ChargingProfile {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for ProfileSchedule {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for ProfileSchedulePeriod {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for ChargingProfilePurpose {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}
+impl fmt::Display for ChargingProfileKind {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
+}

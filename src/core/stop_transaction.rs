@@ -23,7 +23,7 @@ transactionData vec<obj>
 */
 
 // -------------------------- REQUEST ---------------------------
-#[json_validate("../json_schemas/Requests/Core/StopTransaction.json")]
+#[json_validate("../json_schemas/Core/StopTransaction.json")]
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -59,7 +59,7 @@ pub enum StopReason {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Responses/Core/StopTransaction.json")]
+#[json_validate("../json_schemas/Core/StopTransaction.json")]
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]

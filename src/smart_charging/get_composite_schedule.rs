@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
 // -------------------------- REQUEST ---------------------------
-#[json_validate("../json_schemas/Requests/SmartCharging/GetCompositeSchedule.json")]
+#[json_validate("../json_schemas/SmartCharging/GetCompositeSchedule.json")]
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -31,7 +31,7 @@ chargingSchedule struct
 */
 
 #[skip_serializing_none]
-#[json_validate("../json_schemas/Responses/SmartCharging/GetCompositeSchedule.json")]
+#[json_validate("../json_schemas/SmartCharging/GetCompositeSchedule.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetCompositeScheduleResponse {

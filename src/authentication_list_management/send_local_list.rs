@@ -16,7 +16,7 @@ localAuthorizationList vec<obj>
 */
 
 // -------------------------- REQUEST --------------------------
-#[json_validate("../json_schemas/Requests/AuthenticationListManagement/SendLocalList.json")]
+#[json_validate("../json_schemas/AuthenticationListManagement/SendLocalList.json")]
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -59,7 +59,7 @@ pub enum SendLocalListRequestStatus {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Responses/AuthenticationListManagement/SendLocalList.json")]
+#[json_validate("../json_schemas/AuthenticationListManagement/SendLocalList.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SendLocalListResponse {

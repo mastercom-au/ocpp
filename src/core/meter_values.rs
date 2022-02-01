@@ -19,7 +19,7 @@ meterValue Vec<obj>
 */
 
 // -------------------------- REQUEST ---------------------------
-#[json_validate("../json_schemas/Requests/Core/MeterValues.json")]
+#[json_validate("../json_schemas/Core/MeterValues.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct MeterValuesRequest {
@@ -35,7 +35,7 @@ pub struct MeterValues {
     pub sampled_value: Vec<SampledValue>,
 }
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Responses/Core/MeterValues.json")]
+#[json_validate("../json_schemas/Core/MeterValues.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct MeterValuesResponse {}

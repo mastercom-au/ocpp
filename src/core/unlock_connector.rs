@@ -2,7 +2,7 @@ use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------
-#[json_validate("../json_schemas/Requests/Core/UnlockConnector.json")]
+#[json_validate("../json_schemas/Core/UnlockConnector.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct UnlockConnectorRequest {
@@ -10,7 +10,7 @@ pub struct UnlockConnectorRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Responses/Core/UnlockConnector.json")]
+#[json_validate("../json_schemas/Core/UnlockConnector.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct UnlockConnectorResponse {

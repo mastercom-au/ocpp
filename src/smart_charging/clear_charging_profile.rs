@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
 // -------------------------- REQUEST ---------------------------
-#[json_validate("../json_schemas/Requests/SmartCharging/ClearChargingProfile.json")]
+#[json_validate("../json_schemas/SmartCharging/ClearChargingProfile.json")]
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -21,7 +21,7 @@ pub enum ChargingProfilePurpose {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Responses/SmartCharging/ClearChargingProfile.json")]
+#[json_validate("../json_schemas/SmartCharging/ClearChargingProfile.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ClearChargingProfileResponse {

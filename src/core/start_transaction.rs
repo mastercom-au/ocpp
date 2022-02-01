@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
 // -------------------------- REQUEST ---------------------------
-#[json_validate("../json_schemas/Requests/Core/StartTransaction.json")]
+#[json_validate("../json_schemas/Core/StartTransaction.json")]
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -17,7 +17,7 @@ pub struct StartTransactionRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Responses/Core/StartTransaction.json")]
+#[json_validate("../json_schemas/Core/StartTransaction.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StartTransactionResponse {

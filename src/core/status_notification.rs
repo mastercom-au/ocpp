@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
 // -------------------------- REQUEST ---------------------------
-#[json_validate("../json_schemas/Requests/Core/StatusNotification.json")]
+#[json_validate("../json_schemas/Core/StatusNotification.json")]
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -52,7 +52,7 @@ pub enum StatusNotificationStatus {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Responses/Core/StatusNotification.json")]
+#[json_validate("../json_schemas/Core/StatusNotification.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StatusNotificationResponse {}

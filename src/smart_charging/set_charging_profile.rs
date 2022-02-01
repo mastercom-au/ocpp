@@ -25,7 +25,7 @@ csChargingProfile struct
 */
 
 // -------------------------- REQUEST ---------------------------
-#[json_validate("../json_schemas/Requests/SmartCharging/SetChargingProfile.json")]
+#[json_validate("../json_schemas/SmartCharging/SetChargingProfile.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SetChargingProfileRequest {
@@ -34,7 +34,7 @@ pub struct SetChargingProfileRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Responses/SmartCharging/SetChargingProfile.json")]
+#[json_validate("../json_schemas/SmartCharging/SetChargingProfile.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SetChargingProfileResponse {
