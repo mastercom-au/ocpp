@@ -14,10 +14,10 @@ fn test_boot_notification_response_validates() {
     assert!(bn_res.validate().is_ok());
 }
 
+fn implements_display<T: std::fmt::Display>() {}
 #[test]
 fn test_enum_display() {
-    let val = crate::common_types::SimpleStatus::Accepted;
-    assert_eq!(String::from("Accepted"), val.to_string());
+    implements_display::<crate::common_types::SimpleStatus>();
 }
 
 #[test]
