@@ -34,7 +34,7 @@ pub struct SetChargingProfileRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/SmartCharging/SetChargingProfile.json")]
+#[json_validate("../json_schemas/SmartCharging/SetChargingProfileResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SetChargingProfileResponse {

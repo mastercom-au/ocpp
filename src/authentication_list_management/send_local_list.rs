@@ -59,7 +59,7 @@ pub enum SendLocalListRequestStatus {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/AuthenticationListManagement/SendLocalList.json")]
+#[json_validate("../json_schemas/AuthenticationListManagement/SendLocalListResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SendLocalListResponse {

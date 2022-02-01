@@ -21,7 +21,7 @@ pub enum FirmwareNotificationStatus {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/FirmwareManagement/FirmwareStatusNotification.json")]
+#[json_validate("../json_schemas/FirmwareManagement/FirmwareStatusNotificationResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct FirmwareStatusNotificationResponse {}

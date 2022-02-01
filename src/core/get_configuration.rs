@@ -11,7 +11,7 @@ pub struct GetConfigurationRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Core/GetConfiguration.json")]
+#[json_validate("../json_schemas/Core/GetConfigurationResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetConfigurationResponse {

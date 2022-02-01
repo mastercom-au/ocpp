@@ -21,7 +21,7 @@ pub enum ChargingProfilePurpose {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/SmartCharging/ClearChargingProfile.json")]
+#[json_validate("../json_schemas/SmartCharging/ClearChargingProfileResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ClearChargingProfileResponse {

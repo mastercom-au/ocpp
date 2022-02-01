@@ -35,7 +35,7 @@ pub struct MeterValues {
     pub sampled_value: Vec<SampledValue>,
 }
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Core/MeterValues.json")]
+#[json_validate("../json_schemas/Core/MeterValuesResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct MeterValuesResponse {}

@@ -21,7 +21,7 @@ pub struct BootNotificationRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Core/BootNotification.json")]
+#[json_validate("../json_schemas/Core/BootNotificationResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct BootNotificationResponse {

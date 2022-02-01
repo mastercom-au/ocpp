@@ -13,7 +13,7 @@ pub struct AuthorizeRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Core/Authorize.json")]
+#[json_validate("../json_schemas/Core/AuthorizeResponse.json")]
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]

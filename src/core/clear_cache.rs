@@ -9,7 +9,7 @@ use ocpp_json_validate::json_validate;
 pub struct ClearCacheRequest {}
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Core/ClearCache.json")]
+#[json_validate("../json_schemas/Core/ClearCacheResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ClearCacheResponse {

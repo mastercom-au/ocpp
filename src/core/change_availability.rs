@@ -17,7 +17,7 @@ pub enum ChangeAvailabilityType {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Core/ChangeAvailability.json")]
+#[json_validate("../json_schemas/Core/ChangeAvailabilityResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeAvailabilityResponse {

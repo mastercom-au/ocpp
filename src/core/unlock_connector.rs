@@ -10,7 +10,7 @@ pub struct UnlockConnectorRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Core/UnlockConnector.json")]
+#[json_validate("../json_schemas/Core/UnlockConnectorResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct UnlockConnectorResponse {

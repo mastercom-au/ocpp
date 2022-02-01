@@ -18,7 +18,7 @@ pub enum DiagnosticNotificationStatus {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/FirmwareManagement/DiagnosticsStatusNotification.json")]
+#[json_validate("../json_schemas/FirmwareManagement/DiagnosticsStatusNotificationResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct DiagnosticStatusNotificationResponse {}

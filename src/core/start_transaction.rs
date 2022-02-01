@@ -17,7 +17,7 @@ pub struct StartTransactionRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Core/StartTransaction.json")]
+#[json_validate("../json_schemas/Core/StartTransactionResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StartTransactionResponse {

@@ -17,7 +17,7 @@ pub struct GetDiagnosticsRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/FirmwareManagement/GetDiagnostics.json")]
+#[json_validate("../json_schemas/FirmwareManagement/GetDiagnosticsResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetDiagnosticsResponse {

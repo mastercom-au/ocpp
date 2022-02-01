@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 pub struct GetLocalListVersionRequest {}
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/AuthenticationListManagement/GetLocalListVersion.json")]
+#[json_validate("../json_schemas/AuthenticationListManagement/GetLocalListVersionResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetLocalListVersionResponse {

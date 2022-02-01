@@ -38,7 +38,7 @@ pub struct RemoteStartTransactionRequest {
 }
 
 // -------------------------- REQUEST ---------------------------
-#[json_validate("../json_schemas/Core/RemoteStartTransaction.json")]
+#[json_validate("../json_schemas/Core/RemoteStartTransactionResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStartTransactionResponse {

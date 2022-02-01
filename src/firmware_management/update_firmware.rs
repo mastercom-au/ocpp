@@ -16,7 +16,7 @@ pub struct UpdateFirmwareRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/FirmwareManagement/UpdateFirmware.json")]
+#[json_validate("../json_schemas/FirmwareManagement/UpdateFirmwareResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct UpdateFirmwareResponse {}

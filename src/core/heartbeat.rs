@@ -9,7 +9,7 @@ use ocpp_json_validate::json_validate;
 pub struct HeartbeatRequest {}
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Core/Heartbeat.json")]
+#[json_validate("../json_schemas/Core/HeartbeatResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct HeartBeatResponse {

@@ -31,7 +31,7 @@ chargingSchedule struct
 */
 
 #[skip_serializing_none]
-#[json_validate("../json_schemas/SmartCharging/GetCompositeSchedule.json")]
+#[json_validate("../json_schemas/SmartCharging/GetCompositeScheduleResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetCompositeScheduleResponse {

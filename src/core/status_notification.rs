@@ -52,7 +52,7 @@ pub enum StatusNotificationStatus {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Core/StatusNotification.json")]
+#[json_validate("../json_schemas/Core/StatusNotificationResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StatusNotificationResponse {}

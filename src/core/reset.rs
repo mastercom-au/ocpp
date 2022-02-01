@@ -17,7 +17,7 @@ pub enum ResetType {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Core/Reset.json")]
+#[json_validate("../json_schemas/Core/ResetResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ResetResponse {

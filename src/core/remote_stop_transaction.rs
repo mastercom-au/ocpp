@@ -11,7 +11,7 @@ pub struct RemoteStopTransactionRequest {
 }
 
 // -------------------------- RESPONSE --------------------------
-#[json_validate("../json_schemas/Core/RemoteStopTransaction.json")]
+#[json_validate("../json_schemas/Core/RemoteStopTransactionResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStopTransactionResponse {
