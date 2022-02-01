@@ -1,21 +1,21 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
-use std::fmt;
+use strum_macros::Display;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum ChargingRateUnit {
     A,
     W,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum RecurrencyKind {
     Daily,
     Weekly,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SimpleStatus {
     Accepted,
     Rejected,
@@ -35,7 +35,7 @@ pub struct SampledValue {
     pub unit: Option<SampledUnit>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SampledContext {
     #[serde(rename = "Interruption.Begin")]
     InterruptionBegin,
@@ -53,13 +53,13 @@ pub enum SampledContext {
     Other,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SampledFormat {
     Raw,
     SignedData,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SampledMeasurand {
     #[serde(rename = "Energy.Active.Export.Register")]
     EnergyActiveExportRegister,
@@ -102,7 +102,7 @@ pub enum SampledMeasurand {
     RPM,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SampledPhase {
     L1,
     L2,
@@ -122,7 +122,7 @@ pub enum SampledPhase {
     L3L1,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SampledLocation {
     Cable,
     EV,
@@ -131,7 +131,7 @@ pub enum SampledLocation {
     Body,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 #[warn(non_camel_case_types)]
 pub enum SampledUnit {
     #[serde(rename = "Wh")]
@@ -198,63 +198,17 @@ pub struct ProfileSchedulePeriod {
     pub number_phases: Option<u32>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum ChargingProfilePurpose {
     ChargePointMaxProfile,
     TxDefaultProfile,
     TxProfile,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum ChargingProfileKind {
     Absolute,
     Recurring,
     Relative,
 }
 //END Profile Field
-
-impl fmt::Display for ChargingRateUnit {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for RecurrencyKind {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for SimpleStatus {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for SampledValue {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for SampledContext {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for SampledMeasurand {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for SampledFormat {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for SampledPhase {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for SampledLocation {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for SampledUnit {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for ChargingProfile {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for ProfileSchedule {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for ProfileSchedulePeriod {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for ChargingProfilePurpose {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}
-impl fmt::Display for ChargingProfileKind {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result { write!(f, "{:?}", self) }
-}

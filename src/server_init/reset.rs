@@ -1,6 +1,7 @@
 pub use crate::common_types::SimpleStatus;
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
+use strum_macros::Display;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/Reset.json")]
@@ -10,7 +11,7 @@ pub struct ResetRequest {
     pub r#type: ResetType,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum ResetType {
     Hard,
     Soft,

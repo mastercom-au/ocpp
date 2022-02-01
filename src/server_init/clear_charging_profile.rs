@@ -1,6 +1,7 @@
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
+use strum_macros::Display;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/ClearChargingProfile.json")]
@@ -13,7 +14,7 @@ pub struct ClearChargingProfileRequest {
     pub stack_level: Option<u32>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum ChargingProfilePurpose {
     ChargePointMaxProfile,
     TxDefaultProfile,
@@ -28,7 +29,7 @@ pub struct ClearChargingProfileResponse {
     pub status: ClearChargeProfileStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum ClearChargeProfileStatus {
     Accepted,
     Unknown,

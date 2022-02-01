@@ -3,6 +3,7 @@ use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
+use strum_macros::Display;
 
 /*Structure
 idTag String
@@ -43,7 +44,7 @@ pub struct StopTransactionData {
     pub sampled_value: Vec<SampledValue>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum StopReason {
     EmergencyStop,
     EVDisconnected,
@@ -76,7 +77,7 @@ pub struct StopIdTagInfo {
     pub status: StopTransactionStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum StopTransactionStatus {
     Accepted,
     Rejected,

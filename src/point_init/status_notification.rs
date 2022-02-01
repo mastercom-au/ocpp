@@ -2,6 +2,7 @@ use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
+use strum_macros::Display;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/StatusNotification.json")]
@@ -18,7 +19,7 @@ pub struct StatusNotificationRequest {
     pub vendor_error_code: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum StatusNotificationErrorCode {
     ConnectorLockFailure,
     EVCommunicationError,
@@ -38,7 +39,7 @@ pub enum StatusNotificationErrorCode {
     WeakSignal,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum StatusNotificationStatus {
     Available,
     Preparing,

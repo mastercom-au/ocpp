@@ -1,6 +1,5 @@
-//use crate::point_init::meter_values::SampledValue;
-use crate::point_init::*;
-use crate::server_init::*;
+use crate::point_init::boot_notification::*;
+//use crate::server_init::*;
 use chrono::Utc;
 use ocpp_json_validate::JsonValidate;
 
@@ -13,6 +12,12 @@ fn test_boot_notification_response_validates() {
     };
 
     assert!(bn_res.validate().is_ok());
+}
+
+#[test]
+fn test_enum_display() {
+    let val = crate::common_types::SimpleStatus::Accepted;
+    assert_eq!(String::from("Accepted"), val.to_string());
 }
 
 #[test]

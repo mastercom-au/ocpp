@@ -2,6 +2,7 @@ use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
+use strum_macros::Display;
 
 /*Structure
 listVersion u32
@@ -43,13 +44,13 @@ pub struct LocalListIdTagInfo {
     pub status: SendLocalListRequestStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SendLocalListUpdateType {
     Differential,
     Full,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SendLocalListRequestStatus {
     Accepted,
     Blocked,
@@ -66,7 +67,7 @@ pub struct SendLocalListResponse {
     pub status: SendLocalListResponseStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SendLocalListResponseStatus {
     Accepted,
     Failed,
