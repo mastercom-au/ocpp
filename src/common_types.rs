@@ -212,3 +212,23 @@ pub enum ChargingProfileKind {
     Relative,
 }
 //END Profile Field
+
+//START ID Tag Field
+#[skip_serializing_none]
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct IdTagInfo {
+    expiry_date: DateTime<Utc>,
+    parent_id_tag: String,
+    status: AuthorizationStatus,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+pub enum AuthorizationStatus {
+    Accepted,
+    Blocked,
+    Expired,
+    Invalid,
+    ConcurrentTx,
+}
+//END ID Tag FIeld

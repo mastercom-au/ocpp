@@ -1,8 +1,8 @@
+pub use crate::common_types::IdTagInfo;
 use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
-use strum_macros::Display;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/StartTransaction.json")]
@@ -22,24 +22,6 @@ pub struct StartTransactionRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StartTransactionResponse {
-    pub id_tag_info: StartTransactionIdTagInfo,
+    pub id_tag_info: IdTagInfo,
     pub transaction_id: u32,
-}
-
-#[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")]
-pub struct StartTransactionIdTagInfo {
-    pub expiry_date: Option<DateTime<Utc>>,
-    pub parent_id_tag: Option<String>,
-    pub status: StartTransactionStatus,
-}
-
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
-pub enum StartTransactionStatus {
-    Accepted,
-    Rejected,
-    Expired,
-    Invalid,
-    ConcurrentTx,
 }

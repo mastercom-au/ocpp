@@ -1,4 +1,4 @@
-pub use crate::common_types::SampledValue;
+pub use crate::common_types::{IdTagInfo, SampledValue};
 use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
@@ -65,23 +65,5 @@ pub enum StopReason {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StopTransactionResponse {
-    pub id_tag_info: Option<StopIdTagInfo>,
-}
-
-#[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")]
-pub struct StopIdTagInfo {
-    pub expiry_date: Option<DateTime<Utc>>,
-    pub parent_id_tag: Option<String>,
-    pub status: StopTransactionStatus,
-}
-
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
-pub enum StopTransactionStatus {
-    Accepted,
-    Rejected,
-    Expired,
-    Invalid,
-    ConcurrentTx,
+    pub id_tag_info: Option<IdTagInfo>,
 }
