@@ -1,14 +1,15 @@
 [package]
 name = "ocpp"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 repository = "https://bitbucket.org/mastercomms/ocpp"
+authors = [ "Mastercom <software@mastercom.com.au>", "Cameron Duff <cameron.duff@mastercom.com.au>", "Lewis Hyman <lewis.hyman@mastercom.com.au>" ]
 
 [dependencies]
 serde_json = "^1.0"
 serde = { version = "^1.0", features = [ "derive" ] }
 chrono = { version = "^0.4", features = [ "serde" ] }
-jsonschema = { version = "^0.14", default-features = false }
+jsonschema = { version = "0.15.0", default-features = false }
 lazy_static = "1.4.0"
 thiserror = "1.0.30"
 serde_with = "^1"
