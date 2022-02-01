@@ -1,4 +1,4 @@
-use crate::common_types::SimpleStatus;
+pub use crate::common_types::SimpleStatus;
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------

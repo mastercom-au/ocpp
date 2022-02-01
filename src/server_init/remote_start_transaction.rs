@@ -1,4 +1,4 @@
-use crate::common_types::{ChargingProfile, SimpleStatus};
+pub use crate::common_types::{ChargingProfile, SimpleStatus};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;

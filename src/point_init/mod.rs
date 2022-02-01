@@ -1,14 +1,14 @@
 ///Collection of messages initiated by the charge point
-mod authorize;
-mod boot_notification;
-mod data_transfer;
-mod diagnostic_status_notification;
-mod firmware_status_notification;
-mod heartbeat;
-mod meter_values;
-mod start_transaction;
-mod status_notification;
-mod stop_transaction;
+pub mod authorize;
+pub mod boot_notification;
+pub mod data_transfer;
+pub mod diagnostic_status_notification;
+pub mod firmware_status_notification;
+pub mod heartbeat;
+pub mod meter_values;
+pub mod start_transaction;
+pub mod status_notification;
+pub mod stop_transaction;
 
 pub use authorize::*;
 pub use boot_notification::*;

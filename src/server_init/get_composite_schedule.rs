@@ -1,4 +1,4 @@
-use crate::common_types::{ChargingRateUnit, SimpleStatus};
+pub use crate::common_types::{ChargingRateUnit, SimpleStatus};
 use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};

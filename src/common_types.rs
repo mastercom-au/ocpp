@@ -167,15 +167,15 @@ pub enum SampledUnit {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingProfile {
-    charging_profile_id: u32,
-    transaction_id: Option<u32>,
-    stack_level: u32,
-    charging_profile_purpose: ChargingProfilePurpose,
-    charging_profile_kind: ChargingProfileKind,
-    recurrency_kind: Option<RecurrencyKind>,
-    valid_from: Option<DateTime<Utc>>,
-    valid_to: Option<DateTime<Utc>>,
-    charging_schedule: ProfileSchedule,
+    pub charging_profile_id: u32,
+    pub transaction_id: Option<u32>,
+    pub stack_level: u32,
+    pub charging_profile_purpose: ChargingProfilePurpose,
+    pub charging_profile_kind: ChargingProfileKind,
+    pub recurrency_kind: Option<RecurrencyKind>,
+    pub valid_from: Option<DateTime<Utc>>,
+    pub valid_to: Option<DateTime<Utc>>,
+    pub charging_schedule: ProfileSchedule,
 }
 
 #[skip_serializing_none]
