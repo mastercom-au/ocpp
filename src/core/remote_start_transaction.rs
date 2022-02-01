@@ -26,7 +26,7 @@ chargingProfile struct
             numberPhases u32
 */
 
-// -------------------------- RESPONSE --------------------------
+// -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/Core/RemoteStartTransaction.json")]
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
@@ -37,7 +37,7 @@ pub struct RemoteStartTransactionRequest {
     pub charging_profile: Option<ChargingProfile>,
 }
 
-// -------------------------- REQUEST ---------------------------
+// -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/Core/RemoteStartTransactionResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
