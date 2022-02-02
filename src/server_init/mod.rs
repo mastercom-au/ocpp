@@ -1,4 +1,4 @@
-///Collection of messages initiated by the charge point
+//! Collection of messages initiated by the charge point
 mod change_availability;
 mod change_configuration;
 mod clear_cache;
