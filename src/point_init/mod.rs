@@ -1,5 +1,4 @@
-//!Collection of messages initiated by the charge point
-
+//! # A collection of messages initiated by the charge point
 pub mod authorize;
 pub mod boot_notification;
 pub mod data_transfer;
