@@ -1,7 +1,6 @@
 //! # A collection of messages initiated by the charge point
 pub mod authorize;
 pub mod boot_notification;
-pub mod data_transfer;
 pub mod diagnostic_status_notification;
 pub mod firmware_status_notification;
 pub mod heartbeat;
@@ -12,7 +11,6 @@ pub mod stop_transaction;
 
 pub use authorize::*;
 pub use boot_notification::*;
-pub use data_transfer::*;
 pub use diagnostic_status_notification::*;
 pub use firmware_status_notification::*;
 pub use heartbeat::*;

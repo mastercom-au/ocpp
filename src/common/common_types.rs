@@ -8,7 +8,7 @@ use strum_macros::Display;
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 ///Unit of power consumption in which a charging schedule is defined
 pub enum ChargingRateUnit {
-    ///Amperes per phase 
+    ///Amperes per phase
     A,
     ///Total power in Watts
     W,
@@ -100,19 +100,19 @@ pub enum SampledMeasurand {
     /// Numerical value read from the "reactive electrical energy" (VARh or kVARh) register of the (most authoritative) electrical meter measuring energy imported (from the grid supply).
     #[serde(rename = "Energy.Reactive.Import.Register")]
     EnergyReactiveImportRegister,
-    /// Absolute amount of "active electrical energy" (Wh or kWh) exported (to the grid) during an associated time "interval", specified by a Metervalues ReadingContext, and applicable interval duration 
+    /// Absolute amount of "active electrical energy" (Wh or kWh) exported (to the grid) during an associated time "interval", specified by a Metervalues ReadingContext, and applicable interval duration
     /// configuration values (in seconds) for "ClockAlignedDataInterval" and "MeterValueSampleInterval".
     #[serde(rename = "Energy.Active.Export.Interval")]
     EnergyActiveExportInterval,
-    /// Absolute amount of "active electrical energy" (Wh or kWh) imported (from the grid supply) during an associated time "interval", specified by a Metervalues ReadingContext, and applicable interval 
+    /// Absolute amount of "active electrical energy" (Wh or kWh) imported (from the grid supply) during an associated time "interval", specified by a Metervalues ReadingContext, and applicable interval
     /// duration configuration values (in seconds) for "ClockAlignedDataInterval" and "MeterValueSampleInterval".
     #[serde(rename = "Energy.Active.Import.Interval")]
     EnergyActiveImportInterval,
-    /// Absolute amount of "reactive electrical energy" (VARh or kVARh) exported (to the grid) during an associated time "interval", specified by a Metervalues ReadingContext, and applicable interval 
+    /// Absolute amount of "reactive electrical energy" (VARh or kVARh) exported (to the grid) during an associated time "interval", specified by a Metervalues ReadingContext, and applicable interval
     /// duration configuration values (in seconds) for "ClockAlignedDataInterval" and "MeterValueSampleInterval".
     #[serde(rename = "Energy.Reactive.Export.Interval")]
     EnergyReactiveExportInterval,
-    /// Absolute amount of "reactive electrical energy" (VARh or kVARh) imported (from the grid supply) during an associated time "interval", specified by a Metervalues ReadingContext, and applicable 
+    /// Absolute amount of "reactive electrical energy" (VARh or kVARh) imported (from the grid supply) during an associated time "interval", specified by a Metervalues ReadingContext, and applicable
     /// interval duration configuration values (in seconds) for "ClockAlignedDataInterval" and "MeterValueSampleInterval".
     #[serde(rename = "Energy.Reactive.Import.Interval")]
     EnergyReactiveImportInterval,
@@ -277,7 +277,7 @@ pub struct ChargingSchedule {
     pub charging_rate_unit: ChargingRateUnit,
     /// Required. List of ChargingSchedulePeriod elements defining maximum power or current usage over time. The startSchedule of the first ChargingSchedulePeriod SHALL always be 0.
     pub charging_schedule_period: Vec<ChargingSchedulePeriod>,
-    /// Optional. Minimum charging rate supported by the electric vehicle. The unit of measure is defined by the chargingRateUnit. 
+    /// Optional. Minimum charging rate supported by the electric vehicle. The unit of measure is defined by the chargingRateUnit.
     /// This parameter is intended to be used by a local smart charging algorithm to optimize the power allocation for in the case a charging process is inefficient at lower charging rates. Accepts at most one digit fraction (e.g. 8.1)
     pub min_charging_rate: Option<f32>,
 }
@@ -290,9 +290,9 @@ pub struct ChargingSchedulePeriod {
     /// Required. Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.
     pub start_period: u32,
     /// 1 Required. Charging rate limit during the schedule period, in the applicable chargingRateUnit, for example in Amperes or Watts. Accepts at most one digit fraction (e.g. 8.1).
-    pub limit: f32, 
+    pub limit: f32,
     /// Optional. The number of phases that can be used for charging. If a number of phases is needed, numberPhases=3 will be assumed unless another number is given.
-    pub number_phases: Option<u32>, 
+    pub number_phases: Option<u32>,
 }
 
 /// Purpose of the charging profile, as used in: ChargingProfile.
@@ -300,10 +300,10 @@ pub struct ChargingSchedulePeriod {
 pub enum ChargingProfilePurpose {
     /// Configuration for the maximum power or current available for an entire Charge Point.
     ChargePointMaxProfile,
-    /// Default profile *that can be configured in the Charge Point. When a new transaction is started, this profile SHALL be used, 
+    /// Default profile *that can be configured in the Charge Point. When a new transaction is started, this profile SHALL be used,
     /// unless it was a transaction that was started by a RemoteStartTransaction.req with a ChargeProfile that is accepted by the Charge Point.
     TxDefaultProfile,
-    /// Profile with constraints to be imposed by the Charge Point on the current transaction, or on a new transaction when this is started via a RemoteStartTransaction.req with a ChargeProfile. 
+    /// Profile with constraints to be imposed by the Charge Point on the current transaction, or on a new transaction when this is started via a RemoteStartTransaction.req with a ChargeProfile.
     /// A profile with this purpose SHALL cease to be valid when the transaction terminates.
     TxProfile,
 }
@@ -321,21 +321,31 @@ pub enum ChargingProfileKind {
 //END Profile Field
 
 //START ID Tag Field
+/// Contains status information about an identifier. It is returned in Authorize, Start Transaction and Stop Transaction responses. If expiryDate is not given, the status has no end date.
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct IdTagInfo {
+    /// Optional. This contains the date at which idTag should be removed from the Authorization Cache.
     expiry_date: DateTime<Utc>,
+    /// Optional. This contains the parent-identifier. IdToken
     parent_id_tag: String,
+    /// Required. This contains whether the idTag has been accepted or not by the Central System.
     status: AuthorizationStatus,
 }
 
+/// Status in a response to an AuthorizeRequest
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum AuthorizationStatus {
+    /// Identifier is allowed for charging.
     Accepted,
+    /// Identifier has been blocked. Not allowed for charging.
     Blocked,
+    /// Identifier has expired. Not allowed for charging.
     Expired,
+    /// Identifier is unknown. Not allowed for charging.
     Invalid,
+    /// Identifier is already involved in another transaction and multiple transactions are not allowed. (Only relevant for a StartTransaction.req.)
     ConcurrentTx,
 }
-//END ID Tag FIeld
+//END ID Tag Field
