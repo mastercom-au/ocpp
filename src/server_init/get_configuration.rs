@@ -19,6 +19,7 @@ use serde_with::skip_serializing_none;
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetConfigurationRequest {
+    /// Optional. List of keys for which the configuration value is requested. Keys are separated by ','
     pub key: Option<Vec<String>>,
 }
 
@@ -27,23 +28,20 @@ pub struct GetConfigurationRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetConfigurationResponse {
-    pub configuration_key: Option<Vec<GetConfigConfigurationKey>>,
+    /// Optional. List of requested or known keys
+    pub configuration_key: Option<Vec<KeyValue>>,
+    /// Optional. Requested keys that are unknown
     pub unknown_key: Option<Vec<String>>,
 }
 
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct GetConfigConfigurationKey {
-    pub configuration_key: Option<ConfigurationKey>,
-    pub unknown_key: Option<Vec<String>>,
-}
-
-#[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")]
-pub struct ConfigurationKey {
+pub struct KeyValue {
+    /// Key
     pub key: String,
+    /// Required. False if the value can be set with the ChangeConfiguration message.
     pub readonly: bool,
+    /// Optional. If key is known but not set, this field may be absent.
     pub value: Option<String>,
 }

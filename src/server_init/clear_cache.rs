@@ -19,5 +19,6 @@ pub struct ClearCacheRequest {}
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ClearCacheResponse {
+    /// Required. Accepted if the Charge Point has executed the request, otherwise rejected.
     pub status: SimpleStatus,
 }

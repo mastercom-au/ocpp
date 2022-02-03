@@ -24,5 +24,6 @@ pub struct GetLocalListVersionRequest {}
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetLocalListVersionResponse {
+    /// Required. This contains the current version number of the local authorization list in the Charge Point.
     pub list_version: u32,
 }

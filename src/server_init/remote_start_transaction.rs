@@ -62,8 +62,11 @@ chargingProfile struct
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStartTransactionRequest {
+    /// Optional. Number of the connector on which to start the transaction. connectorId SHALL be > 0
     pub connector_id: Option<u32>,
+    /// Required. The identifier that Charge Point must use to start a transaction.
     pub id_tag: String,
+    /// Optional. Charging Profile to be used by the Charge Point for the requested transaction. ChargingProfilePurpose MUST be set to TxProfile
     pub charging_profile: Option<ChargingProfile>,
 }
 
@@ -72,5 +75,6 @@ pub struct RemoteStartTransactionRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStartTransactionResponse {
+    /// Required. Status indicating whether Charge Point accepts the request to start a transaction.
     pub status: SimpleStatus,
 }

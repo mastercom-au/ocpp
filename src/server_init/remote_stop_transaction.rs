@@ -25,6 +25,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStopTransactionRequest {
+    /// Required. The identifier of the transaction which Charge Point is requested to stop
     pub transaction_id: u32,
 }
 
@@ -33,5 +34,6 @@ pub struct RemoteStopTransactionRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RemoteStopTransactionResponse {
+    /// Required. Status indicating whether Charge Point accepts the request to stop a transaction.
     pub status: SimpleStatus,
 }

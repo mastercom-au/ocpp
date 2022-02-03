@@ -29,13 +29,17 @@ use strum_macros::Display;
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeAvailabilityRequest {
+    /// Required. The id of the connector for which availability needs to change. Id '0' (zero) is used if the availability of the Charge Point and all its connectors needs to change.
     pub connector_id: u32,
+    /// Required. This contains the type of availability change that the Charge Point should perform.
     pub r#type: ChangeAvailabilityType,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum ChangeAvailabilityType {
+    /// Charge point is not available for charging.
     Inoperative,
+    /// Charge point is available for charging.
     Operative,
 }
 
@@ -44,12 +48,16 @@ pub enum ChangeAvailabilityType {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeAvailabilityResponse {
+    /// Required. This contains the type of availability change that the Charge Point should perform.
     pub status: ChangeAvailabilityStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum ChangeAvailabilityStatus {
+    /// Request has been accepted and will be executed.
     Accepted,
+    /// Request has not been accepted and will not be executed.
     Rejected,
+    /// Request has been accepted and will be executed when transaction(s) in progress have finished.
     Scheduled,
 }

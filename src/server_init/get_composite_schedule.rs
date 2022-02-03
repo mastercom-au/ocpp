@@ -17,7 +17,7 @@
 //! If the Charge Point is not able to report the requested schedule, for instance if the connectorId is unknown, it SHALL respond with a status Rejected
 //!
 
-pub use crate::common_types::{ChargingRateUnit, SimpleStatus};
+pub use crate::common_types::{ChargingRateUnit, ChargingSchedule, SimpleStatus};
 use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
@@ -29,8 +29,11 @@ use serde_with::skip_serializing_none;
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetCompositeScheduleRequest {
+    /// Required. The ID of the Connector for which the schedule is requested. When ConnectorId=0, the Charge Point will calculate the expected consumption for the grid connection.
     connector_id: u32,
+    /// Required. Time in seconds. length of requested schedule
     duration: u32,
+    /// Optional. Can be used to force a power or current profile
     charging_rate_unit: Option<ChargingRateUnit>,
 }
 
@@ -54,27 +57,12 @@ chargingSchedule struct
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GetCompositeScheduleResponse {
+    /// Required. Status of the request. The Charge Point will indicate if it was able to process the request
     pub status: SimpleStatus,
+    /// Required. Status of the request. The Charge Point will indicate if it was able to process the request
     pub connector_id: Option<u32>,
-    pub charging_schedule: Option<GetCompChargingSchedule>,
-}
-
-#[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")]
-pub struct GetCompChargingSchedule {
-    pub duration: Option<u32>,
-    pub start_schedule: Option<DateTime<Utc>>,
-    pub charging_rate_unit: ChargingRateUnit,
-    pub charging_schedule_period: Vec<GetCompChargingSchedulePeriod>,
-    pub min_charging_rate: Option<f32>,
-}
-
-#[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")]
-pub struct GetCompChargingSchedulePeriod {
-    pub start_period: u32,
-    pub limit: f32,
-    pub number_phases: Option<u32>,
+    /// Optional. Time. Periods contained in the charging profile are relative to this point in time. If status is "Rejected", this field may be absent.
+    pub schedule_start: DateTime<Utc>,
+    /// Optional. Planned Composite Charging Schedule, the energy consumption over time. Always relative to ScheduleStart. If status is "Rejected", this field may be absent.
+    pub charging_schedule: Option<ChargingSchedule>,
 }

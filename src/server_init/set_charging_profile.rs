@@ -77,7 +77,9 @@ csChargingProfile struct
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SetChargingProfileRequest {
+    /// Required. The connector to which the charging profile applies. If connectorId = 0, the message contains an overall limit for the Charge Point.
     pub connector_id: u32,
+    /// Required. The charging profile to be set at the Charge Point.
     pub cs_charging_profile: ChargingProfile,
 }
 
@@ -86,12 +88,17 @@ pub struct SetChargingProfileRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SetChargingProfileResponse {
+    /// Required. Returns whether the Charge Point has been able to process the message successfully. This does not guarantee the
+    /// schedule will be followed to the letter. There might be other constraints the Charge Point may need to take into account.
     pub status: SetChargingProfileStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SetChargingProfileStatus {
+    /// Request has been accepted and will be executed.
     Accepted,
+    /// Request has not been accepted and will not be executed.
     Rejected,
+    /// Charge Point indicates that the request is not supported.
     NotSupported,
 }

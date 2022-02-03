@@ -21,6 +21,7 @@ use strum_macros::Display;
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct UnlockConnectorRequest {
+    /// Required. This contains the identifier of the connector to be unlocked.
     pub connector_id: u32,
 }
 
@@ -29,12 +30,16 @@ pub struct UnlockConnectorRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct UnlockConnectorResponse {
+    /// Required. This indicates whether the Charge Point has unlocked the connector.
     pub status: UnlockConnectorStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum UnlockConnectorStatus {
+    /// Connector has successfully been unlocked.
     Unlocked,
+    /// Failed to unlock the connector: The Charge Point has tried to unlock the connector and has detected that the connector is still locked or the unlock mechanism failed
     UnlockFailed,
+    /// Charge Point has no connector lock, or ConnectorId is unknown.
     NotSupported,
 }

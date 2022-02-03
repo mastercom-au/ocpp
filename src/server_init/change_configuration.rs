@@ -24,7 +24,9 @@ use strum_macros::Display;
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeConfigurationRequest {
+    /// Required. The name of the configuration setting to change.
     pub key: String,
+    /// Required. The new value as string for the setting.
     pub value: String,
 }
 
@@ -33,13 +35,18 @@ pub struct ChangeConfigurationRequest {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct ChangeConfigurationResponse {
+    /// Required. Returns whether configuration change has been accepted.
     pub status: ChangeConfigurationStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum ChangeConfigurationStatus {
+    /// Configuration key is supported and setting has been changed.
     Accepted,
+    /// Configuration key is supported, but setting could not be changed.
     Rejected,
+    /// Configuration key is supported and setting has been changed, but change will be available after reboot (Charge Point will not reboot itself)
     RebootRequired,
+    /// Configuration key is not supported.
     NotSupported,
 }
