@@ -16,13 +16,11 @@ Support for basic Smart Charging, for instance using control pilot.
 ## Functionality
 
 #### Importing Types
-Types can be imported either as a group organised by their initiation point (ChargePoint or Central Server) i.e.:
-
+Types can be imported either as a group organised by their initiating server (ChargePoint or Central Server) i.e.:
     use ocpp::server_init::*
     use ocpp::point_init::*
 
 or individually: 
-
     use ocpp::server_init::reset::*;
     use ocpp::point_init::boot_notification::*;
 
