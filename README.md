@@ -17,12 +17,14 @@ Support for basic Smart Charging, for instance using control pilot.
 
 #### Importing Types
 Types can be imported either as a group organised by their initiation point (ChargePoint or Central Server) i.e.:
-	use ocpp::server_init::*
-	use ocpp::point_init::*
+
+    use ocpp::server_init::*
+    use ocpp::point_init::*
 
 or individually: 
-	use ocpp::server_init::reset::*;
-	use ocpp::point_init::boot_notification::*;
+
+    use ocpp::server_init::reset::*;
+    use ocpp::point_init::boot_notification::*;
 
 using * to import will export both the request and response messages, as well as allowing easy access to the individual components of the struct.
 
