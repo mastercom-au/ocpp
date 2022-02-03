@@ -1,5 +1,3 @@
-//! A collection of common types shared by multiple messages.
-
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
@@ -29,7 +27,18 @@ pub enum SimpleStatus {
 }
 
 //START Value Field
-///Single sampled value, used by [MeterValues](crate::point_init::MeterValues)
+/// Collection of one or more sampled values (as seen in [MeterValues.req](crate::point_init::meter_values) and [StopTransaction.req](crate::point_init::stop_transaction)), all sampled at the same time.
+#[skip_serializing_none]
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct MeterValue {
+    /// Required. Timestamp for measured value(s).
+    pub timestamp: DateTime<Utc>,
+    /// Required. One or more measured values
+    pub sampled_value: Vec<SampledValue>,
+}
+
+///Single sampled value, used by [MeterValues](crate::point_init::meter_values)
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -264,7 +273,7 @@ pub struct ChargingProfile {
     pub charging_schedule: ChargingSchedule,
 }
 
-/// Charging schedule structure defines a list of charging periods, as used in: [GetCompositeSchedule.conf](crate::server_init::get_composite_schedule) and [ChargingProfile].
+/// Charging schedule structure defines a list of charging periods, as used in: [GetCompositeSchedule.conf](crate::server_init::get_composite_schedule) and [ChargingProfile]).
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -321,7 +330,9 @@ pub enum ChargingProfileKind {
 //END Profile Field
 
 //START ID Tag Field
-/// Contains status information about an identifier. It is returned in Authorize, Start Transaction and Stop Transaction responses. If expiryDate is not given, the status has no end date.
+/// Contains status information about an identifier. It is returned in [Authorize.req](crate::point_init::authorize), [StartTransaction.conf](crate::point_init::start_transaction) and [StopTransaction.conf](crate::point_init::stop_transaction).
+///
+/// If expiryDate is not given, the status has no end date.
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]

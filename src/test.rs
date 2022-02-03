@@ -16,9 +16,7 @@ fn test_boot_notification_response_validates() {
 
 fn implements_display<T: std::fmt::Display>() {}
 #[test]
-fn test_enum_display() {
-    implements_display::<crate::common_types::SimpleStatus>();
-}
+fn test_enum_display() { implements_display::<crate::common_types::SimpleStatus>(); }
 
 #[test]
 fn test_boot_notification_request_validates() {

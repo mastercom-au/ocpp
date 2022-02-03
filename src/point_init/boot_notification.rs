@@ -1,5 +1,6 @@
 //! Initialization message detailing general information about the charge point (e.g version, vendor etc.).
 //!
+//!  # Behaviour
 //! After start-up, a Charge Point SHALL send a request to the Central System with information about its
 //! configuration (e.g. version, vendor, etc.). The Central System SHALL respond to indicate whether it will accept the
 //! Charge Point.
@@ -8,6 +9,7 @@
 //! Pending, the Charge Point SHALL NOT send any other request to the Central System. This includes cached
 //! messages that are still present in the Charge Point from before.
 //!
+//!  # Response
 //! When the Central System responds with a BootNotification.conf with a status Accepted, the Charge Point will
 //! adjust the heartbeat interval in accordance with the interval from the response PDU and it is RECOMMENDED to
 //! synchronize its internal clock with the supplied Central System’s current time. If the Central System returns
@@ -30,6 +32,7 @@
 //! Charge Point or change its configuration. The Charge Point SHOULD respond to these messages. The Charge
 //! Point SHALL NOT send request messages to the Central System unless it has been instructed by the Central
 //! System to do so with a TriggerMessage.req request.
+//!
 //! While in pending state, the following Central System initiated messages are not allowed:
 //! RemoteStartTransaction.req and RemoteStopTransaction.req
 use chrono::{DateTime, Utc};
