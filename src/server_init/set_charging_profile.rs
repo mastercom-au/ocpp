@@ -1,3 +1,50 @@
+//! Server request to set a charging schedule for a ChargePoint
+//!
+//! A Central System can send a SetChargingProfile.req to a Charge Point, to set a charging profile, in the following situations:
+//! 1. At the start of a transaction to set the charging profile for the transaction;
+//! 2. In a RemoteStartTransaction.req sent to a Charge Point
+//! 3. During a transaction to change the active profile for the transaction;
+//! 4. Outside the context of a transaction as a separate message to set a charging profile to a local controller, Charge Point, or a default charging profile to a connector.
+//!
+//! # 1. Setting a charging profile at start of transaction
+//! If the Central System receives a StartTransaction.req the Central System SHALL respond with a StartTransaction.conf. If there is a need for a charging profile, The Central System MAY choose to send a SetChargingProfile.req to the Charge Point.
+//!
+//! It is RECOMMENDED to check the timestamp in the StartTransaction.req PDU prior to sending a charging profile to check if the transaction is likely to be still ongoing. The StartTransaction.req might have been cached during an offline period.
+//!
+//! # 2. Setting a charge profile in a RemoteStartTransaction request
+//! The Central System MAY include a charging profile in a RemoteStartTransaction request.
+//! If the Central System includes a ChargingProfile, the ChargingProfilePurpose MUST be set to TxProfile and the transactionId SHALL NOT be set.
+//!
+//! The Charge Point SHALL apply the given profile to the newly started transaction. This transaction will get a transactionId assigned by Central System via a StartTransaction.conf.
+//!
+//! When the Charge Point receives a SetChargingProfile.req, with the transactionId for this transaction, with the same StackLevel as the profile given in the RemoteStartTransaction.req, the Charge Point SHALL replace the existing charging profile, otherwise it SHALL install/stack the profile next to the already existing profile(s).
+//!
+//! # 3. Setting a charging profile during a transaction.
+//! The Central System MAY send a charging profile to a Charge Point to update the charging profile for that transaction. The Central System SHALL use the SetChargingProfile.req PDU for that purpose. If a charging profile with the same chargingProfileId, or the same combination of stackLevel / ChargingProfilePurpose, exists on the Charge Point, the new charging profile SHALL replace the existing charging profile, otherwise it SHALL be added. The Charge Point SHALL then re-evaluate its collection of charge profiles to determine which charging profile will become active. In order to ensure that the updated charging profile applies only to the current transaction, the chargingProfilePurpose of the ChargingProfile MUST be set to TxProfile. (See section: Charging Profile Purposes)
+//!
+//! # 4. Setting a charging profile outside of a transaction
+//! The Central System MAY send charging profiles to a Charge Point that are to be used as default charging profiles.
+//! The Central System SHALL use the SetChargingProfile.req PDU for that purpose. Such charging profiles MAY be sent at any time. If a charging profile with the same chargingProfileId, or the same combination of stackLevel ChargingProfilePurpose, exists on the Charge Point, the new charging profile SHALL replace the existing charging profile, otherwise it SHALL be added. The Charge Point SHALL then re-evaluate its collection of charge profiles to determine which charging profile will become active.
+//!
+//! # Note
+//!
+//! * To prevent mismatch between transactions and a TxProfile, The Central System SHALL include the transactionId in a SetChargingProfile.req if the profile applies to a specific transaction.
+//!
+//! * It is not possible to set a ChargingProfile with purpose set to TxProfile without presence of an active transaction, or in advance of a transaction.
+//!
+//! * When a ChargingProfile is refreshed during execution, it is advised to put the startSchedule of the new ChargingProfile in the past, so there is no period of default charging behaviour inbetween the ChargingProfiles. The Charge Point SHALL continue to execute the existing ChargingProfile until the new ChargingProfile is installed.
+//!
+//! * If the chargingSchedulePeriod is longer than duration, the remainder periods SHALL not be executed. If duration is longer than the chargingSchedulePeriod, the Charge Point SHALL keep the value of the last chargingSchedulePeriod until duration has ended.
+//!
+//! * When recurrencyKind is used in combination with a chargingSchedulePeriod and/or duration that is longer then the recurrence period duration, the remainder periods SHALL not be executed.
+//!
+//! * The StartSchedule of the first chargingSchedulePeriod in a chargingSchedule SHALL always be 0
+//!
+//! * When recurrencyKind is used in combination with a chargingSchedule duration shorter than the recurrencyKind period, the Charge Point SHALL fall back to default behaviour after the chargingSchedule duration ends.
+//! This fall back means that the Charge Point SHALL use a ChargingProfile with a lower stackLevel if available.
+//! If no other ChargingProfile is available, the Charge Point SHALL allow charging as if no ChargingProfile is installed.
+//! If the chargingSchedulePeriod and/or duration is longer then the recurrence period duration, the remainder periods SHALL not be executed.
+
 pub use crate::common_types::ChargingProfile;
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};

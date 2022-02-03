@@ -15,6 +15,7 @@ pub mod set_charging_profile;
 pub mod unlock_connector;
 pub mod update_firmware;
 
+pub use crate::common::data_transfer::*;
 pub use change_availability::*;
 pub use change_configuration::*;
 pub use clear_cache::*;

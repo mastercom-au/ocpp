@@ -1,3 +1,22 @@
+//! Server request for a ChargePoint to send it's Composite Schedule
+//!
+//! # Behaviour
+//! The reported schedule, in the GetCompositeSchedule.conf PDU, is the result of the calculation of all active schedules and possible
+//! local limits present in the Charge Point. Local Limits might be taken into account.
+//!
+//! # Response
+//! Upon receipt of a GetCompositeSchedule.req, the Charge Point SHALL calculate the Composite Charging Schedule intervals, from the moment
+//! the request PDU is received: Time X, up to X + Duration, and send them in the GetCompositeSchedule.conf PDU to the Central System.
+//!
+//! If the ConnectorId in the request is set to '0', the Charge Point SHALL report the total expected power or current the Charge Point
+//! expects to consume from the grid during the requested time period.
+//!
+//! Please note that the charging schedule sent by the charge point is only indicative for that pointin time. this schedule might change
+//! over time due to external causes (for instance, local balancing based on grid connection capacity is active and one Connector becomes available).
+//!
+//! If the Charge Point is not able to report the requested schedule, for instance if the connectorId is unknown, it SHALL respond with a status Rejected
+//!
+
 pub use crate::common_types::{ChargingRateUnit, SimpleStatus};
 use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;

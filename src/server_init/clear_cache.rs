@@ -1,3 +1,9 @@
+//! Server request for a ChargePoint to clear it's auth cache.
+//!
+//! # Response
+//! Upon receipt of a ClearCache.req PDU, the Charge Point SHALL respond with a ClearCache.conf PDU. The response PDU
+//! SHALL indicate whether the Charge Point was able to clear its Authorization Cache.
+
 pub use crate::common_types::SimpleStatus;
 use serde::{Deserialize, Serialize};
 

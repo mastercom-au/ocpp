@@ -1,4 +1,4 @@
-//! Message type for handling large data packets.
+//! Message type for handling large data packets. Can be initiated by both ChargePoint and Central Server
 //!
 //! If a Charge Point needs to send information to the Central System for a function not supported by OCPP, it
 //! SHALL use the DataTransfer.req PDU.

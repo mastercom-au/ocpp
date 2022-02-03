@@ -1,3 +1,4 @@
+//! A collection of shared types used by mutiple message structures
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;

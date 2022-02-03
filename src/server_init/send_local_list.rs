@@ -1,3 +1,19 @@
+//! Server request for a ChargePoint to send it's local auth list
+//!
+//! # Behaviour
+//! Central System can send a Local Authorization List that a Charge Point can use for authorization of idTags. The list MAY be
+//! either a full list to replace the current list in the Charge Point or it MAY be a differential list with updates to be applied
+//! to the current list in the Charge Point.
+//!
+//! The Central System SHALL send a SendLocalList.req PDU to send the list to a Charge Point. The SendLocalList.req PDU SHALL contain
+//! the type of update (full or differential) and the version number that the Charge Point MUST associate with the local authorization
+//! list after it has been updated.
+//!
+//! # Response
+//! Upon receipt of a SendLocalList.req PDU, the Charge Point SHALL respond with a SendLocalList.conf PDU. The response PDU SHALL
+//! indicate whether the Charge Point has accepted the update of the local authorization list. If the status is Failed or VersionMismatch
+//! and the updateType was Differential, then Central System SHOULD retry sending the full local authorization list with updateType Full.
+
 use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
