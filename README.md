@@ -14,6 +14,18 @@ Support for firmware update management and diagnostic log file download.
 Support for basic Smart Charging, for instance using control pilot.
 
 ## Functionality
+
+#### Importing Types
+Types can be imported either as a group organised by their initiation point (ChargePoint or Central Server) i.e.:
+    use ocpp::server_init::*
+    use ocpp::point_init::*
+
+or individually: 
+    use ocpp::server_init::reset::*;
+    use ocpp::point_init::boot_notification::*;
+
+using * to import will export both the request and response messages, as well as allowing easy access to the individual components of the struct.
+
 #### Validate
 	fn validate(&self) -> Result<(), ValidateError> {...}
 Checks for validation against the relevant schema for a request or response struct defined within the crate. Returns ValidateError if invalid, which implements display to parse a Vec of Strings detailing any errors with the definition.
@@ -42,7 +54,8 @@ Checks for validation against the relevant schema for a request or response stru
         meter_serial_number: Some("test9".to_string()),
     };
 
-    assert_eq!(bn_req.validate(), Ok(()));
-    assert_ne!(bn_res.validate(), Ok(()));
+    assert!(bn_res.validate().is_ok());
+    assert!(bn_req.validate().is_err());
+
 
 

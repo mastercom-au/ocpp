@@ -31,7 +31,6 @@ fn test_boot_notification_request_validates() {
         meter_type: None,
         meter_serial_number: None,
     };
-
     assert!(bn_req.validate().is_ok());
 }
 
