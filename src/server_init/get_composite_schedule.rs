@@ -28,7 +28,7 @@ use serde_with::skip_serializing_none;
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-/// This contains the field definition of the GetCompositeSchedule.req PDU sent by the Central System to the Charge Point.
+/// Field definition of the GetCompositeSchedule.req PDU sent by the Central System to the Charge Point.
 pub struct GetCompositeScheduleRequest {
     /// Required. The ID of the Connector for which the schedule is requested. When ConnectorId=0, the Charge Point will calculate the expected consumption for the grid connection.
     connector_id: u32,
@@ -57,7 +57,7 @@ chargingSchedule struct
 #[json_validate("../json_schemas/GetCompositeScheduleResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-/// This contains the field definition of the GetCompositeSchedule.conf PDU sent by the Charge Point to the Central System in response to a GetCompositeSchedule.req PDU.
+/// Field definition of the GetCompositeSchedule.conf PDU sent by the Charge Point to the Central System in response to a GetCompositeSchedule.req PDU.
 pub struct GetCompositeScheduleResponse {
     /// Required. Status of the request. The Charge Point will indicate if it was able to process the request
     pub status: SimpleStatus,

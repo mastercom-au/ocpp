@@ -61,7 +61,7 @@ chargingProfile struct
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-/// This contains the field definitions of the RemoteStartTransaction.req PDU sent to Charge Point by Central System.
+/// Field definitions of the RemoteStartTransaction.req PDU sent to Charge Point by Central System.
 pub struct RemoteStartTransactionRequest {
     /// Optional. Number of the connector on which to start the transaction. connectorId SHALL be > 0
     pub connector_id: Option<u32>,
@@ -75,7 +75,7 @@ pub struct RemoteStartTransactionRequest {
 #[json_validate("../json_schemas/RemoteStartTransactionResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-/// This contains the field definitions of the RemoteStartTransaction.conf PDU sent from Charge Point to Central System.
+/// Field definitions of the RemoteStartTransaction.conf PDU sent from Charge Point to Central System.
 pub struct RemoteStartTransactionResponse {
     /// Required. Status indicating whether Charge Point accepts the request to start a transaction.
     pub status: SimpleStatus,

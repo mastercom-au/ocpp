@@ -17,14 +17,14 @@ use serde::{Deserialize, Serialize};
 #[json_validate("../json_schemas/GetLocalListVersion.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-/// This contains the field definition of the GetLocalListVersion.req PDU sent by the Central System to the Charge Point
+/// Field definition of the GetLocalListVersion.req PDU sent by the Central System to the Charge Point
 pub struct GetLocalListVersionRequest {}
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/GetLocalListVersionResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-/// This contains the field definition of the GetLocalListVersion.conf PDU sent by the Charge Point to Central System in response to a GetLocalListVersion.req PDU.
+/// Field definition of the GetLocalListVersion.conf PDU sent by the Charge Point to Central System in response to a GetLocalListVersion.req PDU.
 pub struct GetLocalListVersionResponse {
     /// Required. This contains the current version number of the local authorization list in the Charge Point.
     pub list_version: u32,

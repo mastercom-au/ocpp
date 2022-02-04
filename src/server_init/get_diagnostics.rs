@@ -23,7 +23,7 @@ use serde_with::skip_serializing_none;
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-/// This contains the field definition of the GetDiagnostics.req PDU sent by the Central System to the Charge Point.
+/// Field definition of the GetDiagnostics.req PDU sent by the Central System to the Charge Point.
 pub struct GetDiagnosticsRequest {
     /// Required. This contains the location (directory) where the diagnostics file shall be uploaded to.
     pub location: String,
@@ -41,7 +41,7 @@ pub struct GetDiagnosticsRequest {
 #[json_validate("../json_schemas/GetDiagnosticsResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-/// This contains the field definition of the GetDiagnostics.conf PDU sent by the Charge Point to the Central System in response to a GetDiagnostics.req PDU.
+/// Field definition of the GetDiagnostics.conf PDU sent by the Charge Point to the Central System in response to a GetDiagnostics.req PDU.
 pub struct GetDiagnosticsResponse {
     /// Optional. This contains the name of the file with diagnostic information that will be uploaded. This field is not present when no diagnostic information is available.
     pub file_name: String,

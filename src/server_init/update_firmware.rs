@@ -26,7 +26,7 @@ use serde_with::skip_serializing_none;
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-/// This contains the field definition of the UpdateFirmware.req PDU sent by the Central System to the Charge Point.
+/// Field definition of the UpdateFirmware.req PDU sent by the Central System to the Charge Point.
 pub struct UpdateFirmwareRequest {
     /// Required. This contains a string containing a URI pointing to a location from which to retrieve the firmware.
     pub location: String,
@@ -44,5 +44,5 @@ pub struct UpdateFirmwareRequest {
 #[json_validate("../json_schemas/UpdateFirmwareResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-/// This contains the field definition of the UpdateFirmware.conf PDU sent by the Charge Point to the Central System in response to a UpdateFirmware.req PDU.
+/// Field definition of the UpdateFirmware.conf PDU sent by the Charge Point to the Central System in response to a UpdateFirmware.req PDU.
 pub struct UpdateFirmwareResponse {}

@@ -24,7 +24,7 @@ use serde::{Deserialize, Serialize};
 #[json_validate("../json_schemas/RemoteStopTransaction.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-/// This contains the field definitions of the RemoteStopTransaction.req PDU sent to Charge Point by Central System.
+/// Field definitions of the RemoteStopTransaction.req PDU sent to Charge Point by Central System.
 pub struct RemoteStopTransactionRequest {
     /// Required. The identifier of the transaction which Charge Point is requested to stop
     pub transaction_id: u32,
@@ -34,7 +34,7 @@ pub struct RemoteStopTransactionRequest {
 #[json_validate("../json_schemas/RemoteStopTransactionResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-/// This contains the field definitions of the RemoteStopTransaction.conf PDU sent from Charge Point to Central System.
+/// Field definitions of the RemoteStopTransaction.conf PDU sent from Charge Point to Central System.
 pub struct RemoteStopTransactionResponse {
     /// Required. Status indicating whether Charge Point accepts the request to stop a transaction.
     pub status: SimpleStatus,
