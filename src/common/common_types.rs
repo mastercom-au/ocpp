@@ -346,9 +346,9 @@ pub enum ChargingProfileKind {
 #[serde(rename_all = "camelCase")]
 pub struct IdTagInfo {
     /// Optional. This contains the date at which idTag should be removed from the Authorization Cache.
-    expiry_date: DateTime<Utc>,
+    expiry_date: Option<DateTime<Utc>>,
     /// Optional. This contains the parent-identifier. IdToken
-    parent_id_tag: String,
+    parent_id_tag: Option<String>,
     /// Required. This contains whether the idTag has been accepted or not by the Central System.
     status: AuthorizationStatus,
 }
