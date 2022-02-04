@@ -20,6 +20,7 @@ use strum_macros::Display;
 #[json_validate("../json_schemas/UnlockConnector.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// This contains the field definition of the UnlockConnector.req PDU sent by the Central System to the Charge Point.
 pub struct UnlockConnectorRequest {
     /// Required. This contains the identifier of the connector to be unlocked.
     pub connector_id: u32,
@@ -29,12 +30,14 @@ pub struct UnlockConnectorRequest {
 #[json_validate("../json_schemas/UnlockConnectorResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// This contains the field definition of the UnlockConnector.conf PDU sent by the Charge Point to the Central System in response to an UnlockConnector.req PDU.
 pub struct UnlockConnectorResponse {
     /// Required. This indicates whether the Charge Point has unlocked the connector.
     pub status: UnlockConnectorStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+/// Status in response to UnlockConnector.req.
 pub enum UnlockConnectorStatus {
     /// Connector has successfully been unlocked.
     Unlocked,

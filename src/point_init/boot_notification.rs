@@ -46,10 +46,14 @@ use strum_macros::Display;
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-
+/// Field definition of the BootNotification.req PDU sent by the Charge Point to the Central System.
 pub struct BootNotificationRequest {
+    /// Optional. This contains a value that identifies the serial number of the Charge Box inside the Charge Point.
+    /// Deprecated, will be removed in future versio
     pub charge_point_vendor: String,
+    /// Required. This contains a value that identifies the model of the ChargePoint.
     pub charge_point_model: String,
+    /// Optional. This contains a value that identifies the serial number of the Charge Point.
     pub charge_point_serial_number: Option<String>,
     /// Identifies the serial number of the Charge Box inside the Charge Point. Deprecated, will be removed in future version.
     pub charge_box_serial_number: Option<String>,
@@ -69,20 +73,23 @@ pub struct BootNotificationRequest {
 #[json_validate("../json_schemas/BootNotificationResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the BootNotification.conf PDU sent by the Central System to the Charge Point in response to a BootNotification.req PDU.
 pub struct BootNotificationResponse {
     /// Identifies whether the charge point has been registered with the central server.
     pub status: BootNotificationStatus,
+    /// Required. This contains the current time of the Central System.
     pub current_time: DateTime<Utc>,
     /// When status is accepted, contains the heartbeat inverval in seconds. If status is not accepted, contains a timeout value before the charge point can retry bootnotifacion.
     pub interval: u32,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+///Struct Definition
 pub enum BootNotificationStatus {
     /// Chargepoint accepted by central system
     Accepted,
     /// Acceptance pending. Central system may send messages to retrieve information or prepare the charge point.
     Pending,
-    // Charge point not accepted, i.e. chargepointID is not known
+    /// Charge point not accepted, i.e. chargepointID is not known
     Rejected,
 }

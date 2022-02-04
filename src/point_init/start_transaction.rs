@@ -26,6 +26,7 @@ use serde_with::skip_serializing_none;
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the StartTransaction.req PDU sent by the Charge Point to the Central System
 pub struct StartTransactionRequest {
     /// Required. This identifies which connector of the Charge Point is used.
     pub connector_id: u32,
@@ -43,6 +44,7 @@ pub struct StartTransactionRequest {
 #[json_validate("../json_schemas/StartTransactionResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the StartTransaction.conf PDU sent by the Central System to the Charge Point in response to a StartTransaction.req PDU.
 pub struct StartTransactionResponse {
     /// Required. This contains information about authorization status, expiry and parent id
     pub id_tag_info: IdTagInfo,

@@ -37,6 +37,10 @@ localAuthorizationList vec<obj>
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// This contains the field definition of the SendLocalList.req PDU sent by the Central System to the Charge Point. If no (empty)
+/// localAuthorizationList is given and the updateType is Full, all identifications are removed from the list. Requesting a Differential
+/// update without (empty) localAuthorizationList will have no effect on the list. All idTags in the localAuthorizationList MUST be
+/// unique, no duplicate values are allowed.
 pub struct SendlocalListRequest {
     /// Required. In case of a full update this is the version number of the full list. In case of a differential update
     /// it is the version number of the list after the update has been applied.
@@ -46,12 +50,13 @@ pub struct SendlocalListRequest {
     /// Charge Point. Maximum number of AuthorizationData elements is available in the configuration key: SendLocalListMaxLength
     pub local_authorization_list: Option<Vec<LocalAuthorizationList>>,
     /// Required. This contains the type of update (full or differential) of this request.
-    pub update_type: SendLocalListUpdateType,
+    pub update_type: UpdateType,
 }
 
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Elements that constitute an entry of a Local Authorization List update.
 pub struct LocalAuthorizationList {
     /// Required. The identifier to which this authorization applies.
     pub id_tag: String,
@@ -62,7 +67,8 @@ pub struct LocalAuthorizationList {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
-pub enum SendLocalListUpdateType {
+/// Type of update for a SendLocalList.req.
+pub enum UpdateType {
     /// Indicates that the current Local Authorization List must be updated with the values in this message.
     Differential,
     /// Indicates that the current Local Authorization List must be replaced by the values in this message.
@@ -73,12 +79,14 @@ pub enum SendLocalListUpdateType {
 #[json_validate("../json_schemas/SendLocalListResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// This contains the field definition of the SendLocalList.conf PDU sent by the Charge Point to the Central System in response to a SendLocalList.req PDU.
 pub struct SendLocalListResponse {
     /// Required. This indicates whether the Charge Point has successfully received and applied the update of the local authorization list.
     pub status: UpdateStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+/// Type of update for a SendLocalList.req.
 pub enum UpdateStatus {
     /// Local Authorization List successfully updated.
     Accepted,

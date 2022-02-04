@@ -28,13 +28,12 @@ use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
-/// value from the response as described under Authorization Cache.
-
 // -------------------------- REQUEST --------------------------
 #[json_validate("../json_schemas/Authorize.json")]
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the Authorize.req PDU sent by the Charge Point to the Central System.
 pub struct AuthorizeRequest {
     ///This contains the identifier that needs to be authorized.
     pub id_tag: String,
@@ -45,7 +44,7 @@ pub struct AuthorizeRequest {
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-
+/// Field definition of the Authorize.conf PDU sent by the Central System to the Charge Point in response to a Authorize.req PDU.
 pub struct AuthorizeResponse {
     ///This contains information about authorization status, expiry and parent id.
     pub id_tag_info: IdTagInfo,

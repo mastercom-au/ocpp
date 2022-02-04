@@ -2,6 +2,7 @@
 //!
 //! This library is intended to provide a framework for serialising and deserialising OCPP packets as rust types.
 //! The original OCPP protocol is an [Open Charge Alliance ](https://www.openchargealliance.org/) project
+#![warn(missing_docs)]
 
 pub mod common;
 pub use common::common_types;

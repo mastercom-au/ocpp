@@ -76,6 +76,8 @@ csChargingProfile struct
 #[json_validate("../json_schemas/SetChargingProfile.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// This contains the field definition of the SetChargingProfile.req PDU sent by the Central System to the Charge Point.
+/// The Central System uses this message to send charging profiles to a Charge Point.
 pub struct SetChargingProfileRequest {
     /// Required. The connector to which the charging profile applies. If connectorId = 0, the message contains an overall limit for the Charge Point.
     pub connector_id: u32,
@@ -87,14 +89,16 @@ pub struct SetChargingProfileRequest {
 #[json_validate("../json_schemas/SetChargingProfileResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// This contains the field definition of the SetChargingProfile.conf PDU sent by the Charge Point to the Central System in response to a SetChargingProfile.req PDU.
 pub struct SetChargingProfileResponse {
     /// Required. Returns whether the Charge Point has been able to process the message successfully. This does not guarantee the
     /// schedule will be followed to the letter. There might be other constraints the Charge Point may need to take into account.
-    pub status: SetChargingProfileStatus,
+    pub status: ChargingProfileStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
-pub enum SetChargingProfileStatus {
+/// Status returned in response to SetChargingProfile.req.
+pub enum ChargingProfileStatus {
     /// Request has been accepted and will be executed.
     Accepted,
     /// Request has not been accepted and will not be executed.

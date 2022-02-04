@@ -17,12 +17,14 @@ use strum_macros::Display;
 #[json_validate("../json_schemas/DiagnosticsStatusNotification.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the DiagnosticsStatusNotification.req PDU sent by the Charge Point to the Central System
 pub struct DiagnosticStatusNotificationRequest {
     /// Required. This contains the status of the diagnostics upload.
     pub status: DiagnosticsStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+/// Status in DataTransfer.conf.
 pub enum DiagnosticsStatus {
     /// Charge Point is not performing diagnostics related tasks. Status Idle SHALL only be used as in a DiagnosticsStatusNotification.req that was triggered by a TriggerMessage.req
     Idle,
@@ -38,4 +40,5 @@ pub enum DiagnosticsStatus {
 #[json_validate("../json_schemas/DiagnosticsStatusNotificationResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the DataTransfer.conf PDU sent by the Charge Point to the Central System or vice versa in response to a DataTransfer.req PDU.
 pub struct DiagnosticStatusNotificationResponse {}

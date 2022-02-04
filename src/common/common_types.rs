@@ -16,14 +16,18 @@ pub enum ChargingRateUnit {
 ///Denotes whether a charge schedule recurs weekly or daily
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum RecurrencyKind {
+    /// The schedule restarts every 24 hours, at the same time as in the startSchedule.
     Daily,
+    /// The schedule restarts every 7 days, at the same time and day-of-the-week as in the startSchedule.
     Weekly,
 }
 
 ///Generic status message denoting Accepted or Rejected state.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SimpleStatus {
+    /// Command will be executed.
     Accepted,
+    /// Command will not be executed.
     Rejected,
 }
 
@@ -91,7 +95,9 @@ pub enum SampledContext {
 /// Format that specifies how the value element in SampledValue is to be interpreted.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SampledFormat {
+    /// Data is to be interpreted as integer/decimal numeric data.
     Raw,
+    /// Data is represented as a signed binary data block, encoded as hex data.
     SignedData,
 }
 
@@ -166,6 +172,7 @@ pub enum SampledMeasurand {
 }
 
 /// Phase as used in SampledValue. Phase specifies how a measured value is to be interpreted. Please note that not all values of Phase are applicable to all Measurands.
+#[allow(missing_docs)]
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
 pub enum SampledPhase {
     L1,

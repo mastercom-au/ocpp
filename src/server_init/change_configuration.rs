@@ -23,6 +23,8 @@ use strum_macros::Display;
 #[json_validate("../json_schemas/ChangeConfiguration.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the ChangeConfiguration.req PDU sent by Central System to Charge Point. It is RECOMMENDED
+/// that the content and meaning of the 'key' and 'value' fields is agreed upon between Charge Point and Central System.
 pub struct ChangeConfigurationRequest {
     /// Required. The name of the configuration setting to change.
     pub key: String,
@@ -34,12 +36,15 @@ pub struct ChangeConfigurationRequest {
 #[json_validate("../json_schemas/ChangeConfigurationResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the ChangeConfiguration.conf PDU returned from Charge Point to Central System.
 pub struct ChangeConfigurationResponse {
     /// Required. Returns whether configuration change has been accepted.
     pub status: ChangeConfigurationStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+/// Status returned in response to ChangeAvailability.req.
+
 pub enum ChangeConfigurationStatus {
     /// Configuration key is supported and setting has been changed.
     Accepted,

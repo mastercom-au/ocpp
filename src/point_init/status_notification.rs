@@ -42,6 +42,7 @@ use strum_macros::Display;
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the StatusNotification.req PDU sent by the Charge Point to the Central System.
 pub struct StatusNotificationRequest {
     /// Required. The id of the connector for which the status is reported. Id '0' (zero) is used if the status is for the Charge Point main controller
     pub connector_id: u32,
@@ -60,6 +61,7 @@ pub struct StatusNotificationRequest {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+/// Charge Point Error Code reported in StatusNotification.req.
 pub enum StatusNotificationErrorCode {
     /// Failure to lock or unlock connector.
     ConnectorLockFailure,
@@ -97,6 +99,13 @@ pub enum StatusNotificationErrorCode {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+/// Status reported in StatusNotification.req.
+///
+/// A status can be reported for the Charge Point main controller (connectorId = 0) or for a specific connector. Status for the Charge Point main controller is a subset of the enumeration: Available, Unavailable or Faulted.
+///
+/// States considered Operative are: Available, Preparing, Charging, SuspendedEVSE, SuspendedEV, Finishing, Reserved.
+///
+/// States considered Inoperative are: Unavailable, Faulted.
 pub enum StatusNotificationStatus {
     /// When a Connector becomes available for a new user (Operative)
     Available,
@@ -127,4 +136,5 @@ pub enum StatusNotificationStatus {
 #[json_validate("../json_schemas/StatusNotificationResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the StatusNotification.conf PDU sent by the Central System to the Charge Point in response to an StatusNotification.req PDU.
 pub struct StatusNotificationResponse {}

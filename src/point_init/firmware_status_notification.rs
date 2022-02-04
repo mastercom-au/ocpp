@@ -18,11 +18,14 @@ use strum_macros::Display;
 #[json_validate("../json_schemas/FirmwareStatusNotification.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the FirmwareStatusNotifitacion.req PDU sent by the Charge Point to the Central System
 pub struct FirmwareStatusNotificationRequest {
+    /// Required. This contains the progress status of the firmware installation.
     pub status: FirmwareNotificationStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+/// Status of a firmware download as reported in FirmwareStatusNotification.req.
 pub enum FirmwareNotificationStatus {
     /// New firmware has been downloaded by Charge Point.
     Downloaded,
@@ -44,4 +47,5 @@ pub enum FirmwareNotificationStatus {
 #[json_validate("../json_schemas/FirmwareStatusNotificationResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the FirmwareStatusNotification.conf PDU sent by the Central System to the Charge Point in response to a FirmwareStatusNotification.req PDU.
 pub struct FirmwareStatusNotificationResponse {}

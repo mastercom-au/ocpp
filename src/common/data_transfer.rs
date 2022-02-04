@@ -26,6 +26,7 @@ use strum_macros::Display;
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the DataTransfer.req PDU sent either by the Central System to the Charge Point or vice versa.
 pub struct DataTransferRequest {
     /// Required. This identifies the Vendor specific implementation
     pub vendor_id: String,
@@ -39,6 +40,7 @@ pub struct DataTransferRequest {
 #[json_validate("../json_schemas/DataTransferResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the DataTransfer.conf PDU sent by the Charge Point to the Central System or vice versa in response to a DataTransfer.req PDU.
 pub struct DataTransferResponse {
     /// Required. This indicates the success or failure of the data transfer.
     pub status: DataTransferStatus,
@@ -47,6 +49,7 @@ pub struct DataTransferResponse {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+/// Status in [DataTransferResponse]
 pub enum DataTransferStatus {
     /// Message has been accepted and the contained request is accepted.
     Accepted,

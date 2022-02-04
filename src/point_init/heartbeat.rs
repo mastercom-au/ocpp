@@ -18,12 +18,15 @@ use ocpp_json_validate::json_validate;
 #[json_validate("../json_schemas/Heartbeat.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the Heartbeat.req PDU sent by the Charge Point to the Central System.
 pub struct HeartbeatRequest {}
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/HeartbeatResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the Heartbeat.conf PDU sent by the Central System to the Charge Point in response to a Heartbeat.req PDU.
 pub struct HeartBeatResponse {
+    /// Required. This contains the current time of the Central System.
     pub current_time: DateTime<Utc>,
 }

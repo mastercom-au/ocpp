@@ -29,12 +29,14 @@ use strum_macros::Display;
 #[json_validate("../json_schemas/Reset.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// This contains the field definition of the Reset.req PDU sent by the Central System to the Charge Point.
 pub struct ResetRequest {
     /// Required. This contains the type of reset that the Charge Point should perform.
     pub r#type: ResetType,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+/// Type of reset requested by Reset.req.
 pub enum ResetType {
     /// Restart (all) the hardware, the Charge Point is not required to gracefully stop ongoing transaction. If possible the Charge Point sends a StopTransaction.req
     /// for previously ongoing transactions after having restarted and having been accepted by the Central System via a BootNotification.conf. This is a last resort
@@ -49,6 +51,7 @@ pub enum ResetType {
 #[json_validate("../json_schemas/ResetResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// This contains the field definition of the Reset.conf PDU sent by the Charge Point to the Central System in response to a Reset.req PDU.
 pub struct ResetResponse {
     /// Required. This indicates whether the Charge Point is able to perform the reset.
     status: SimpleStatus,

@@ -28,6 +28,7 @@ use strum_macros::Display;
 #[json_validate("../json_schemas/ChangeAvailability.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the ChangeAvailability.req PDU sent by the Central System to the Charge Point
 pub struct ChangeAvailabilityRequest {
     /// Required. The id of the connector for which availability needs to change. Id '0' (zero) is used if the availability of the Charge Point and all its connectors needs to change.
     pub connector_id: u32,
@@ -36,6 +37,7 @@ pub struct ChangeAvailabilityRequest {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+/// Requested availability change in ChangeAvailability.req.
 pub enum ChangeAvailabilityType {
     /// Charge point is not available for charging.
     Inoperative,
@@ -47,12 +49,14 @@ pub enum ChangeAvailabilityType {
 #[json_validate("../json_schemas/ChangeAvailabilityResponse.json")]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the ChangeAvailability.conf PDU return by Charge Point to Central System.
 pub struct ChangeAvailabilityResponse {
     /// Required. This contains the type of availability change that the Charge Point should perform.
     pub status: ChangeAvailabilityStatus,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+/// Elements that constitute an entry of a Local Authorization List update.
 pub enum ChangeAvailabilityStatus {
     /// Request has been accepted and will be executed.
     Accepted,

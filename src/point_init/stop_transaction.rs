@@ -69,6 +69,7 @@ transactionData vec<obj>
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the StopTransaction.req PDU sent by the Charge Point to the Central System.
 pub struct StopTransactionRequest {
     /// Optional. This contains the identifier which requested to stop the charging. It is optional because a Charge
     /// Point may terminate charging without the presence of an idTag, e.g. in case of a reset. A Charge Point SHALL send the idTag if known.
@@ -86,6 +87,7 @@ pub struct StopTransactionRequest {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+/// Reason for stopping a transaction in StopTransaction.req.
 pub enum StopReason {
     /// Emergency stop button was used.
     EmergencyStop,
@@ -116,6 +118,7 @@ pub enum StopReason {
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
+/// Field definition of the StopTransaction.conf PDU sent by the Central System to the Charge Point in response to a StopTransaction.req PDU.
 pub struct StopTransactionResponse {
     /// see [idtaginfo](crate::common_types::IdTagInfo)
     pub id_tag_info: Option<IdTagInfo>,
