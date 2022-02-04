@@ -12,6 +12,7 @@ pub mod remote_stop_transaction;
 pub mod reset;
 pub mod send_local_list;
 pub mod set_charging_profile;
+pub mod trigger_message;
 pub mod unlock_connector;
 pub mod update_firmware;
 
@@ -29,5 +30,6 @@ pub use remote_stop_transaction::*;
 pub use reset::*;
 pub use send_local_list::*;
 pub use set_charging_profile::*;
+pub use trigger_message::*;
 pub use unlock_connector::*;
 pub use update_firmware::*;
