@@ -42,7 +42,7 @@ pub struct ChangeConfigurationResponse {
     pub status: ChangeConfigurationStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Status returned in response to ChangeAvailability.req.
 
 pub enum ChangeConfigurationStatus {

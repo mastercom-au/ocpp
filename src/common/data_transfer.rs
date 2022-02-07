@@ -48,7 +48,7 @@ pub struct DataTransferResponse {
     pub data: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Status in [DataTransferResponse]
 pub enum DataTransferStatus {
     /// Message has been accepted and the contained request is accepted.

@@ -35,7 +35,7 @@ pub struct ResetRequest {
     pub r#type: ResetType,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Type of reset requested by Reset.req.
 pub enum ResetType {
     /// Restart (all) the hardware, the Charge Point is not required to gracefully stop ongoing transaction. If possible the Charge Point sends a StopTransaction.req

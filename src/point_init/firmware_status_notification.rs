@@ -24,7 +24,7 @@ pub struct FirmwareStatusNotificationRequest {
     pub status: FirmwareNotificationStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Status of a firmware download as reported in FirmwareStatusNotification.req.
 pub enum FirmwareNotificationStatus {
     /// New firmware has been downloaded by Charge Point.

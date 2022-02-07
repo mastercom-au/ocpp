@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 ///Unit of power consumption in which a charging schedule is defined
 pub enum ChargingRateUnit {
     ///Amperes per phase
@@ -14,7 +14,7 @@ pub enum ChargingRateUnit {
 }
 
 ///Denotes whether a charge schedule recurs weekly or daily
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 pub enum RecurrencyKind {
     /// The schedule restarts every 24 hours, at the same time as in the startSchedule.
     Daily,
@@ -23,7 +23,7 @@ pub enum RecurrencyKind {
 }
 
 ///Generic status message denoting Accepted or Rejected state.
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 pub enum SimpleStatus {
     /// Command will be executed.
     Accepted,
@@ -65,7 +65,7 @@ pub struct SampledValue {
 }
 
 /// Values of the context field of a value in SampledValue.
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 pub enum SampledContext {
     /// Value taken at start of interruption.
     #[serde(rename = "Interruption.Begin")]
@@ -93,7 +93,7 @@ pub enum SampledContext {
 }
 
 /// Format that specifies how the value element in SampledValue is to be interpreted.
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 pub enum SampledFormat {
     /// Data is to be interpreted as integer/decimal numeric data.
     Raw,
@@ -102,7 +102,7 @@ pub enum SampledFormat {
 }
 
 /// Allowable values of the optional "measurand" field of a Value element, as used in MeterValuesRequest and StopTransaction.req messages. Default value of "measurand" is always "Energy.Active.Import.Register"
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 pub enum SampledMeasurand {
     /// Numerical value read from the "active electrical energy" (Wh or kWh) register of the (most authoritative) electrical meter measuring energy exported (to the grid).
     #[serde(rename = "Energy.Active.Export.Register")]
@@ -173,7 +173,7 @@ pub enum SampledMeasurand {
 
 /// Phase as used in SampledValue. Phase specifies how a measured value is to be interpreted. Please note that not all values of Phase are applicable to all Measurands.
 #[allow(missing_docs)]
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 pub enum SampledPhase {
     L1,
     L2,
@@ -194,7 +194,7 @@ pub enum SampledPhase {
 }
 
 /// Allowable values of the optional "location" field of a value element in SampledValue.
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 pub enum SampledLocation {
     /// Measurement inside body of Charge Point (e.g. Temperature)
     Body,
@@ -209,7 +209,7 @@ pub enum SampledLocation {
 }
 
 /// Allowable values of the optional "unit" field of a Value element, as used in SampledValue. Default value of "unit" is always "Wh".
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 #[warn(non_camel_case_types)]
 pub enum SampledUnit {
     /// Watt-hours (energy). Default.
@@ -313,7 +313,7 @@ pub struct ChargingSchedulePeriod {
 }
 
 /// Purpose of the charging profile, as used in: ChargingProfile.
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 pub enum ChargingProfilePurpose {
     /// Configuration for the maximum power or current available for an entire Charge Point.
     ChargePointMaxProfile,
@@ -326,7 +326,7 @@ pub enum ChargingProfilePurpose {
 }
 
 /// Kind of charging profile, as used in: ChargingProfile.
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 pub enum ChargingProfileKind {
     /// Schedule periods are relative to a fixed point in time defined in the schedule
     Absolute,
@@ -354,7 +354,7 @@ pub struct IdTagInfo {
 }
 
 /// Status in a response to an AuthorizeRequest
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 pub enum AuthorizationStatus {
     /// Identifier is allowed for charging.
     Accepted,

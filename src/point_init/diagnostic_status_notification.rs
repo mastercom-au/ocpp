@@ -23,7 +23,7 @@ pub struct DiagnosticStatusNotificationRequest {
     pub status: DiagnosticsStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Status in DataTransfer.conf.
 pub enum DiagnosticsStatus {
     /// Charge Point is not performing diagnostics related tasks. Status Idle SHALL only be used as in a DiagnosticsStatusNotification.req that was triggered by a TriggerMessage.req

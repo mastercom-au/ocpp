@@ -66,7 +66,7 @@ pub struct LocalAuthorizationList {
     pub id_tag_info: Option<IdTagInfo>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Type of update for a SendLocalList.req.
 pub enum UpdateType {
     /// Indicates that the current Local Authorization List must be updated with the values in this message.
@@ -85,7 +85,7 @@ pub struct SendLocalListResponse {
     pub status: UpdateStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Type of update for a SendLocalList.req.
 pub enum UpdateStatus {
     /// Local Authorization List successfully updated.

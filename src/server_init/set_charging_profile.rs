@@ -96,7 +96,7 @@ pub struct SetChargingProfileResponse {
     pub status: ChargingProfileStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Status returned in response to SetChargingProfile.req.
 pub enum ChargingProfileStatus {
     /// Request has been accepted and will be executed.

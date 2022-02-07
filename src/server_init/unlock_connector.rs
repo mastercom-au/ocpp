@@ -36,7 +36,7 @@ pub struct UnlockConnectorResponse {
     pub status: UnlockConnectorStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Status in response to UnlockConnector.req.
 pub enum UnlockConnectorStatus {
     /// Connector has successfully been unlocked.

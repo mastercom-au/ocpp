@@ -83,7 +83,7 @@ pub struct BootNotificationResponse {
     pub interval: u32,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 ///Struct Definition
 pub enum BootNotificationStatus {
     /// Chargepoint accepted by central system

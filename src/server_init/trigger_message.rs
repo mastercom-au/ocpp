@@ -35,7 +35,7 @@ pub struct TriggerMessageRequest {
     pub connector_id: Option<u32>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 #[allow(missing_docs)]
 /// Type of request to be triggered in a TriggerMessage.req.
 pub enum MessageTrigger {
@@ -57,7 +57,7 @@ pub struct TriggerMessageResponse {
     pub status: TriggerMessageStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Status in TriggerMessage.conf.
 pub enum TriggerMessageStatus {
     /// Requested notification will be sent.

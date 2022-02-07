@@ -36,7 +36,7 @@ pub struct ChangeAvailabilityRequest {
     pub r#type: ChangeAvailabilityType,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Requested availability change in ChangeAvailability.req.
 pub enum ChangeAvailabilityType {
     /// Charge point is not available for charging.
@@ -55,7 +55,7 @@ pub struct ChangeAvailabilityResponse {
     pub status: ChangeAvailabilityStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Elements that constitute an entry of a Local Authorization List update.
 pub enum ChangeAvailabilityStatus {
     /// Request has been accepted and will be executed.

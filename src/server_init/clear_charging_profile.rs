@@ -39,7 +39,7 @@ pub struct ClearChargingProfileResponse {
     pub status: ClearChargeProfileStatus,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Status returned in response to ClearChargingProfile.req.
 pub enum ClearChargeProfileStatus {
     /// Request has been accepted and will be executed.

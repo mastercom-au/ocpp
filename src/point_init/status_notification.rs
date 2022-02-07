@@ -60,7 +60,7 @@ pub struct StatusNotificationRequest {
     pub vendor_error_code: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Charge Point Error Code reported in StatusNotification.req.
 pub enum StatusNotificationErrorCode {
     /// Failure to lock or unlock connector.
@@ -98,7 +98,7 @@ pub enum StatusNotificationErrorCode {
     WeakSignal,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Status reported in StatusNotification.req.
 ///
 /// A status can be reported for the Charge Point main controller (connectorId = 0) or for a specific connector. Status for the Charge Point main controller is a subset of the enumeration: Available, Unavailable or Faulted.

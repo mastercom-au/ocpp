@@ -86,7 +86,7 @@ pub struct StopTransactionRequest {
     pub transaction_data: Option<MeterValue>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 /// Reason for stopping a transaction in StopTransaction.req.
 pub enum StopReason {
     /// Emergency stop button was used.
