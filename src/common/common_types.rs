@@ -4,6 +4,13 @@ use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
 
+/// Deserializable object to enable easier handling of incoming packets
+#[derive(Serialize, Deserialize)]
+pub struct JsonCall(pub u32, pub String, pub String, pub serde_json::value::Value);
+/// Deserializable object to enable easier handling of incoming packets
+#[derive(Serialize, Deserialize)]
+pub struct JsonCallResult(pub u32, pub String, pub serde_json::value::Value);
+
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 ///Unit of power consumption in which a charging schedule is defined
 pub enum ChargingRateUnit {

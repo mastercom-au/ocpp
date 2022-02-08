@@ -50,3 +50,11 @@ fn test_boot_notification_request_charge_point_model_string_length_limit() {
 
     assert!(bn_req.validate().is_err());
 }
+
+#[test]
+fn test_deserialize_json_call() {
+    let json = "[2,\"63:2\",\"StatusNotification\",{\"connectorId\":0,\"errorCode\":\"NoError\",\"status\":\"Available\",\"timestamp\":\"2022-01-24T04:30:50.621Z\"}]";
+    let value: crate::common_types::JsonCall = serde_json::from_str(json).unwrap();
+
+    assert_eq!(value.0, 2);
+}

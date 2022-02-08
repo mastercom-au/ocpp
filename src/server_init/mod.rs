@@ -33,3 +33,24 @@ pub use set_charging_profile::*;
 pub use trigger_message::*;
 pub use unlock_connector::*;
 pub use update_firmware::*;
+
+/// Enum for matching server initiated message types
+#[allow(missing_docs)]
+pub enum ServerInitMessages {
+    ChangeAvailability,
+    ChangeConfiguration,
+    ClearCache,
+    ClearChargingProfile,
+    GetCompositeSchedule,
+    GetConfiguration,
+    GetDiagnostics,
+    GetLocalListVersion,
+    RemoteStartTransaction,
+    RemoteStopTransaction,
+    Reset,
+    SendLocalList,
+    SetChargingProfile,
+    TriggerMessage,
+    UnlockConnector,
+    UpdateFirmware,
+}
