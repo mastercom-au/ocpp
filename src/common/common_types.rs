@@ -99,7 +99,7 @@ pub struct SampledValue {
     /// Optional. Raw or signed data. Default = “Raw”
     pub format: Option<SampledFormat>,
     /// Optional. Type of measurement. Default = “Energy.Active.Import.Register”
-    pub measurant: Option<SampledMeasurand>,
+    pub measurand: Option<SampledMeasurand>,
     /// Optional. indicates how the measured value is to be interpreted. For instance between L1 and neutral (L1-N) Please note that not all values of phase are applicable to all Measurands. When phase is absent, the measured value is interpreted as an overall value.
     pub phase: Option<SampledPhase>,
     /// Optional. Location of measurement. Default=”Outlet”
