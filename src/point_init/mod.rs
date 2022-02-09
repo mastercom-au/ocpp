@@ -19,17 +19,3 @@ pub use meter_values::*;
 pub use start_transaction::*;
 pub use status_notification::*;
 pub use stop_transaction::*;
-
-/// Enum for matching Charge point initiated message types
-#[allow(missing_docs)]
-pub enum PointInitMessages {
-    Authorize,
-    BootNotification,
-    DiagnosticStatusNotification,
-    FirmwareStatusNotification,
-    Heartbeat,
-    MeterValues,
-    StartTransaction,
-    StatusNotification,
-    StopTransaction,
-}
