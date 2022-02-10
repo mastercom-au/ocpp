@@ -35,13 +35,13 @@ localAuthorizationList vec<obj>
 // -------------------------- REQUEST --------------------------
 #[json_validate("../json_schemas/SendLocalList.json")]
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the SendLocalList.req PDU sent by the Central System to the Charge Point. If no (empty)
 /// localAuthorizationList is given and the updateType is Full, all identifications are removed from the list. Requesting a Differential
 /// update without (empty) localAuthorizationList will have no effect on the list. All idTags in the localAuthorizationList MUST be
 /// unique, no duplicate values are allowed.
-pub struct SendlocalListRequest {
+pub struct SendLocalListRequest {
     /// Required. In case of a full update this is the version number of the full list. In case of a differential update
     /// it is the version number of the list after the update has been applied.
     pub list_version: u32,
@@ -54,7 +54,7 @@ pub struct SendlocalListRequest {
 }
 
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Elements that constitute an entry of a Local Authorization List update.
 pub struct LocalAuthorizationList {
@@ -77,7 +77,7 @@ pub enum UpdateType {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/SendLocalListResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the SendLocalList.conf PDU sent by the Charge Point to the Central System in response to a SendLocalList.req PDU.
 pub struct SendLocalListResponse {

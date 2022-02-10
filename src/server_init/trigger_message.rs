@@ -25,7 +25,7 @@ use strum_macros::Display;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/TriggerMessage.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// This contains the field definition of the TriggerMessage.req PDU sent by the Central System to the Charge Point.
 pub struct TriggerMessageRequest {
@@ -49,7 +49,7 @@ pub enum MessageTrigger {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/TriggerMessageResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// This contains the field definition of the TriggerMessage.conf PDU sent by the Charge Point to the Central System in response to a TriggerMessage.req PDU.
 pub struct TriggerMessageResponse {

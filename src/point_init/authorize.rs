@@ -31,7 +31,7 @@ use serde_with::skip_serializing_none;
 // -------------------------- REQUEST --------------------------
 #[json_validate("../json_schemas/Authorize.json")]
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the Authorize.req PDU sent by the Charge Point to the Central System.
 pub struct AuthorizeRequest {
@@ -42,7 +42,7 @@ pub struct AuthorizeRequest {
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/AuthorizeResponse.json")]
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the Authorize.conf PDU sent by the Central System to the Charge Point in response to a Authorize.req PDU.
 pub struct AuthorizeResponse {

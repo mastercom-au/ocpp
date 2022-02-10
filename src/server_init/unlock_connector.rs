@@ -18,7 +18,7 @@ use strum_macros::Display;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/UnlockConnector.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the UnlockConnector.req PDU sent by the Central System to the Charge Point.
 pub struct UnlockConnectorRequest {
@@ -28,7 +28,7 @@ pub struct UnlockConnectorRequest {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/UnlockConnectorResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the UnlockConnector.conf PDU sent by the Charge Point to the Central System in response to an UnlockConnector.req PDU.
 pub struct UnlockConnectorResponse {

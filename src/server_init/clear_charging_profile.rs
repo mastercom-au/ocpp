@@ -11,7 +11,7 @@ use strum_macros::Display;
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/ClearChargingProfile.json")]
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the ClearChargingProfile.req PDU sent by the Central System to the Charge Point.
 ///
@@ -31,7 +31,7 @@ pub struct ClearChargingProfileRequest {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/ClearChargingProfileResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the ClearChargingProfile.conf PDU sent by the Charge Point to the Central System in response to a ClearChargingProfile.req PDU.
 pub struct ClearChargingProfileResponse {

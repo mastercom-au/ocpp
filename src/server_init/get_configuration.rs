@@ -16,7 +16,7 @@ use serde_with::skip_serializing_none;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/GetConfiguration.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the GetConfiguration.req PDU sent by the Central System to the Charge Point.
 pub struct GetConfigurationRequest {
@@ -26,7 +26,7 @@ pub struct GetConfigurationRequest {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/GetConfigurationResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the GetConfiguration.conf PDU sent by Charge Point the to the Central System in response to a GetConfiguration.req.
 pub struct GetConfigurationResponse {
@@ -37,7 +37,7 @@ pub struct GetConfigurationResponse {
 }
 
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Contains information about a specific configuration key. It is returned in GetConfiguration.conf.
 pub struct KeyValue {

@@ -26,7 +26,7 @@ use serde_with::skip_serializing_none;
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/GetCompositeSchedule.json")]
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the GetCompositeSchedule.req PDU sent by the Central System to the Charge Point.
 pub struct GetCompositeScheduleRequest {
@@ -55,7 +55,7 @@ chargingSchedule struct
 
 #[skip_serializing_none]
 #[json_validate("../json_schemas/GetCompositeScheduleResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the GetCompositeSchedule.conf PDU sent by the Charge Point to the Central System in response to a GetCompositeSchedule.req PDU.
 pub struct GetCompositeScheduleResponse {

@@ -40,7 +40,7 @@ use strum_macros::Display;
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/StatusNotification.json")]
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the StatusNotification.req PDU sent by the Charge Point to the Central System.
 pub struct StatusNotificationRequest {
@@ -134,7 +134,7 @@ pub enum StatusNotificationStatus {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/StatusNotificationResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the StatusNotification.conf PDU sent by the Central System to the Charge Point in response to an StatusNotification.req PDU.
 pub struct StatusNotificationResponse {}

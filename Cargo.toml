@@ -8,6 +8,7 @@ authors = [ "Mastercom <software@mastercom.com.au>", "Cameron Duff <cameron.duff
 [dependencies]
 tracing = "^0.1"
 serde_with = "^1"
+serde_json = "^1.0"
 serde_tuple= "^0.5"
 thiserror = "1.0.30"
 lazy_static = "1.4.0"
@@ -17,6 +18,3 @@ chrono = { version = "^0.4", features = [ "serde" ] }
 jsonschema = { version = "0.15.0", default-features = false }
 
 ocpp_json_validate = { version = "^1.0", path = "./ocpp_json_validate" }
-
-[dev-dependencies]
-serde_json = "^1.0"

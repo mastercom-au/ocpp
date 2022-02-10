@@ -27,7 +27,7 @@ use strum_macros::Display;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/Reset.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the Reset.req PDU sent by the Central System to the Charge Point.
 pub struct ResetRequest {
@@ -49,7 +49,7 @@ pub enum ResetType {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/ResetResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the Reset.conf PDU sent by the Charge Point to the Central System in response to a Reset.req PDU.
 pub struct ResetResponse {

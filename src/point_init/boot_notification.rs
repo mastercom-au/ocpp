@@ -44,7 +44,7 @@ use strum_macros::Display;
 // -------------------------- REQUEST --------------------------
 #[json_validate("../json_schemas/BootNotification.json")]
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the BootNotification.req PDU sent by the Charge Point to the Central System.
 pub struct BootNotificationRequest {
@@ -71,7 +71,7 @@ pub struct BootNotificationRequest {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/BootNotificationResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the BootNotification.conf PDU sent by the Central System to the Charge Point in response to a BootNotification.req PDU.
 pub struct BootNotificationResponse {

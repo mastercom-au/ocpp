@@ -59,7 +59,7 @@ chargingProfile struct
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/RemoteStartTransaction.json")]
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definitions of the RemoteStartTransaction.req PDU sent to Charge Point by Central System.
 pub struct RemoteStartTransactionRequest {
@@ -73,7 +73,7 @@ pub struct RemoteStartTransactionRequest {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/RemoteStartTransactionResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definitions of the RemoteStartTransaction.conf PDU sent from Charge Point to Central System.
 pub struct RemoteStartTransactionResponse {

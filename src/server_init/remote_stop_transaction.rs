@@ -22,7 +22,7 @@ use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/RemoteStopTransaction.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definitions of the RemoteStopTransaction.req PDU sent to Charge Point by Central System.
 pub struct RemoteStopTransactionRequest {
@@ -32,7 +32,7 @@ pub struct RemoteStopTransactionRequest {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/RemoteStopTransactionResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definitions of the RemoteStopTransaction.conf PDU sent from Charge Point to Central System.
 pub struct RemoteStopTransactionResponse {

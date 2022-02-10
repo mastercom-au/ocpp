@@ -24,7 +24,7 @@ use strum_macros::Display;
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/DataTransfer.json")]
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the DataTransfer.req PDU sent either by the Central System to the Charge Point or vice versa.
 pub struct DataTransferRequest {
@@ -38,7 +38,7 @@ pub struct DataTransferRequest {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/DataTransferResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the DataTransfer.conf PDU sent by the Charge Point to the Central System or vice versa in response to a DataTransfer.req PDU.
 pub struct DataTransferResponse {

@@ -26,7 +26,7 @@ use strum_macros::Display;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/ChangeAvailability.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the ChangeAvailability.req PDU sent by the Central System to the Charge Point
 pub struct ChangeAvailabilityRequest {
@@ -47,7 +47,7 @@ pub enum ChangeAvailabilityType {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/ChangeAvailabilityResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the ChangeAvailability.conf PDU return by Charge Point to Central System.
 pub struct ChangeAvailabilityResponse {

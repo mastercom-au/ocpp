@@ -15,14 +15,14 @@ use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST --------------------------
 #[json_validate("../json_schemas/GetLocalListVersion.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the GetLocalListVersion.req PDU sent by the Central System to the Charge Point
 pub struct GetLocalListVersionRequest {}
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/GetLocalListVersionResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the GetLocalListVersion.conf PDU sent by the Charge Point to Central System in response to a GetLocalListVersion.req PDU.
 pub struct GetLocalListVersionResponse {

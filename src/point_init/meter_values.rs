@@ -50,7 +50,7 @@ meterValue Vec<obj>
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/MeterValues.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the MeterValues.req PDU sent by the Charge Point to the Central System.
 pub struct MeterValuesRequest {
@@ -64,7 +64,7 @@ pub struct MeterValuesRequest {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/MeterValuesResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the MeterValues.conf PDU sent by the Central System to the Charge Point in response to a MeterValues.req PDU.
 pub struct MeterValuesResponse {}

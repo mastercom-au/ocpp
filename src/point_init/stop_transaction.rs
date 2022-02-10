@@ -67,7 +67,7 @@ transactionData vec<obj>
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/StopTransaction.json")]
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the StopTransaction.req PDU sent by the Charge Point to the Central System.
 pub struct StopTransactionRequest {
@@ -116,7 +116,7 @@ pub enum StopReason {
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/StopTransactionResponse.json")]
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the StopTransaction.conf PDU sent by the Central System to the Charge Point in response to a StopTransaction.req PDU.
 pub struct StopTransactionResponse {

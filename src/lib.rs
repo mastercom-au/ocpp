@@ -5,6 +5,9 @@
 //!
 #![warn(missing_docs)]
 
+#[macro_use]
+extern crate lazy_static;
+
 pub mod common;
 pub mod point_init;
 pub mod server_init;
@@ -68,7 +71,7 @@ pub use server_init::*;
 /// # return Ok(());
 /// # }
 /// ```
-#[derive(Serialize, Deserialize, Debug, PartialEq, Display, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum OCPPMessage {
     /// OCPP Call or Request, sent from Client to Server
@@ -79,9 +82,14 @@ pub enum OCPPMessage {
     CallError(OCPPCallError),
 }
 
+impl PartialEq for OCPPMessage {
+    fn eq(&self, other: &Self) -> bool {
+        matches!(self, other)
+    }
+}
+
 /// OCPP Call or Request, sent from Client to Server
-#[derive(Serialize_tuple, Deserialize_tuple, Debug, Display, Clone)]
-#[serde(tag = "action", content = "payload")]
+#[derive(Serialize_tuple, Deserialize_tuple, Debug, Clone)]
 pub struct OCPPCall {
     /// Message type ID, should always be 2
     message_type_id: u8,
@@ -94,7 +102,7 @@ pub struct OCPPCall {
 }
 
 /// OCPP Call Result or Response, sent from Server to Client
-#[derive(Serialize_tuple, Deserialize_tuple, Debug, Display, Clone)]
+#[derive(Serialize_tuple, Deserialize_tuple, Debug, Clone)]
 pub struct OCPPCallResult {
     /// Message type ID, should always be 3
     message_type_id: u8,
@@ -105,7 +113,7 @@ pub struct OCPPCallResult {
 }
 
 /// OCPP Call Error, sent from Server to Client
-#[derive(Serialize_tuple, Deserialize_tuple, Debug, Display, Clone)]
+#[derive(Serialize_tuple, Deserialize_tuple, Debug, Clone)]
 pub struct OCPPCallError {
     /// Message type ID, should always be 4
     message_type_id: u8,
@@ -120,7 +128,7 @@ pub struct OCPPCallError {
 }
 
 /// OCPP Call Types
-#[derive(Serialize, Deserialize, Debug, PartialEq, Display, Clone)]
+#[derive(Serialize, Deserialize, Debug, Display, Clone)]
 pub enum OCPPCallPayload {
     Authorize(AuthorizeRequest),
     BootNotification(BootNotificationRequest),
@@ -130,7 +138,7 @@ pub enum OCPPCallPayload {
     ClearChargingProfile(ClearChargingProfileRequest),
     DataTransfer(DataTransferRequest),
     DiagnosticsStatusNotification(DiagnosticsStatusNotificationRequest),
-    FirmwareStatusNotitication(FirmwareStatusNotiticationRequest),
+    FirmwareStatusNotification(FirmwareStatusNotificationRequest),
     GetCompositeSchedule(GetCompositeScheduleRequest),
     GetConfiguration(GetConfigurationRequest),
     GetDiagnostics(GetDiagnosticsRequest),
@@ -138,7 +146,7 @@ pub enum OCPPCallPayload {
     Heartbeat(HeartbeatRequest),
     MeterValues(MeterValuesRequest),
     RemoteStartTransaction(RemoteStartTransactionRequest),
-    RemoteStopTransacation(RemoteStopTransacationRequest),
+    RemoteStopTransaction(RemoteStopTransactionRequest),
     Reset(ResetRequest),
     SendLocalList(SendLocalListRequest),
     SetChargingProfile(SetChargingProfileRequest),
@@ -150,8 +158,14 @@ pub enum OCPPCallPayload {
     UpdateFirmware(UpdateFirmwareRequest),
 }
 
+impl PartialEq for OCPPCallPayload {
+    fn eq(&self, other: &Self) -> bool {
+        matches!(self, other)
+    }
+}
+
 /// OCPP Call Result Types
-#[derive(Serialize, Deserialize, Debug, PartialEq, Display, Clone)]
+#[derive(Serialize, Deserialize, Debug, Display, Clone)]
 pub enum OCPPCallResultPayload {
     Authorize(AuthorizeResponse),
     BootNotification(BootNotificationResponse),
@@ -161,7 +175,7 @@ pub enum OCPPCallResultPayload {
     ClearChargingProfile(ClearChargingProfileResponse),
     DataTransfer(DataTransferResponse),
     DiagnosticsStatusNotification(DiagnosticsStatusNotificationResponse),
-    FirmwareStatusNotitication(FirmwareStatusNotiticationResponse),
+    FirmwareStatusNotification(FirmwareStatusNotificationResponse),
     GetCompositeSchedule(GetCompositeScheduleResponse),
     GetConfiguration(GetConfigurationResponse),
     GetDiagnostics(GetDiagnosticsResponse),
@@ -169,7 +183,7 @@ pub enum OCPPCallResultPayload {
     Heartbeat(HeartbeatResponse),
     MeterValues(MeterValuesResponse),
     RemoteStartTransaction(RemoteStartTransactionResponse),
-    RemoteStopTransacation(RemoteStopTransacationResponse),
+    RemoteStopTransaction(RemoteStopTransactionResponse),
     Reset(ResetResponse),
     SendLocalList(SendLocalListResponse),
     SetChargingProfile(SetChargingProfileResponse),
@@ -179,4 +193,10 @@ pub enum OCPPCallResultPayload {
     TriggerMessage(TriggerMessageResponse),
     UnlockConnector(UnlockConnectorResponse),
     UpdateFirmware(UpdateFirmwareResponse),
+}
+
+impl PartialEq for OCPPCallResultPayload {
+    fn eq(&self, other: &Self) -> bool {
+        matches!(self, other)
+    }
 }

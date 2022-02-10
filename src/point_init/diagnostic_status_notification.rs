@@ -15,10 +15,10 @@ use strum_macros::Display;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/DiagnosticsStatusNotification.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the DiagnosticsStatusNotification.req PDU sent by the Charge Point to the Central System
-pub struct DiagnosticStatusNotificationRequest {
+pub struct DiagnosticsStatusNotificationRequest {
     /// Required. This contains the status of the diagnostics upload.
     pub status: DiagnosticsStatus,
 }
@@ -38,7 +38,7 @@ pub enum DiagnosticsStatus {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/DiagnosticsStatusNotificationResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the DataTransfer.conf PDU sent by the Charge Point to the Central System or vice versa in response to a DataTransfer.req PDU.
-pub struct DiagnosticStatusNotificationResponse {}
+pub struct DiagnosticsStatusNotificationResponse {}

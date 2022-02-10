@@ -16,7 +16,7 @@ use strum_macros::Display;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/FirmwareStatusNotification.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the FirmwareStatusNotifitacion.req PDU sent by the Charge Point to the Central System
 pub struct FirmwareStatusNotificationRequest {
@@ -45,7 +45,7 @@ pub enum FirmwareNotificationStatus {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/FirmwareStatusNotificationResponse.json")]
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the FirmwareStatusNotification.conf PDU sent by the Central System to the Charge Point in response to a FirmwareStatusNotification.req PDU.
 pub struct FirmwareStatusNotificationResponse {}
