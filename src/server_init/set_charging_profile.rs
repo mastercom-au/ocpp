@@ -82,7 +82,7 @@ pub struct SetChargingProfileRequest {
     /// Required. The connector to which the charging profile applies. If connectorId = 0, the message contains an overall limit for the Charge Point.
     pub connector_id: u32,
     /// Required. The charging profile to be set at the Charge Point.
-    pub cs_charging_profile: ChargingProfile,
+    pub cs_charging_profiles: ChargingProfile,
 }
 
 // -------------------------- RESPONSE --------------------------
