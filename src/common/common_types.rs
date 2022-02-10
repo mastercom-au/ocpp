@@ -4,49 +4,7 @@ use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
 
-/// Enum for matching Charge point initiated message types
-#[allow(missing_docs)]
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
-pub enum PointInitMessages {
-    Authorize,
-    BootNotification,
-    DiagnosticsStatusNotification,
-    FirmwareStatusNotification,
-    Heartbeat,
-    MeterValues,
-    StartTransaction,
-    StatusNotification,
-    StopTransaction,
-}
 
-/// Enum for matching server initiated message types
-#[allow(missing_docs)]
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
-pub enum ServerInitMessages {
-    ChangeAvailability,
-    ChangeConfiguration,
-    ClearCache,
-    ClearChargingProfile,
-    GetCompositeSchedule,
-    GetConfiguration,
-    GetDiagnostics,
-    GetLocalListVersion,
-    RemoteStartTransaction,
-    RemoteStopTransaction,
-    Reset,
-    SendLocalList,
-    SetChargingProfile,
-    TriggerMessage,
-    UnlockConnector,
-    UpdateFirmware,
-}
-
-/// Deserializable object to enable easier handling of incoming packets
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct JsonCall(pub u32, pub String, pub String, pub serde_json::value::Value);
-/// Deserializable object to enable easier handling of incoming packets
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct JsonCallResult(pub u32, pub String, pub serde_json::value::Value);
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 ///Unit of power consumption in which a charging schedule is defined
