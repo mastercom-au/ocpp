@@ -54,17 +54,29 @@ fn test_boot_notification_request_charge_point_model_string_length_limit() {
 #[test]
 fn test_deserialize_json_call() -> Result<(), Box<dyn std::error::Error>> {
     let json = "[2,\"63:2\",\"StatusNotification\",{\"connectorId\":0,\"errorCode\":\"NoError\",\"status\":\"Available\",\"timestamp\":\"2022-01-24T04:30:50.621Z\"}]";
-    let value: crate::common_types::JsonCall = serde_json::from_str(json)?;
+    let value: crate::OCPPMessage = serde_json::from_str(json)?;
 
-    assert_eq!(value.0, 2);
+    assert!(matches!(value, crate::OCPPMessage::Call(..)));
+
+    if let crate::OCPPMessage::Call(call) = value {
+        assert!(matches!(call.payload, crate::OCPPCallPayload::StatusNotification(..)));
+    }
+
     Ok(())
 }
 
 #[test]
-fn test_fail_deserialize_json_call() -> Result<(), Box<dyn std::error::Error>> {
-    let json = "[2,\"63:2\",{\"connectorId\":0,\"errorCode\":\"NoError\",\"status\":\"Available\",\"timestamp\":\"2022-01-24T04:30:50.621Z\"}]";
-    let value: crate::common_types::JsonCallResult = serde_json::from_str(json)?;
+fn test_deserialize_json_call_result() -> Result<(), Box<dyn std::error::Error>> {
+    let json = "[3,\"63:2\",{}]";
+    let value: crate::OCPPMessage = serde_json::from_str(json)?;
 
-    assert_eq!(value.0, 2);
+    assert!(matches!(value, crate::OCPPMessage::CallResultUnknown(..)));
+
+    if let crate::OCPPMessage::CallResultUnknown(unknown) = value {
+        let result = crate::OCPPCallResult::from_unknown(crate::OCPPCallAction::StatusNotification, unknown)?;
+
+        assert!(matches!(result.payload, crate::OCPPCallResultPayload::StatusNotification(..)));
+    }
+
     Ok(())
 }

@@ -174,23 +174,32 @@ pub enum SampledMeasurand {
 }
 
 /// Phase as used in SampledValue. Phase specifies how a measured value is to be interpreted. Please note that not all values of Phase are applicable to all Measurands.
-#[allow(missing_docs)]
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 pub enum SampledPhase {
+    /// Measured on L1
     L1,
+    /// Measured on L2
     L2,
+    /// Measured on L3
     L3,
+    /// Measured on Neutral
     N,
+    /// Measured on L1 with respect to Neutral conductor
     #[serde(rename = "L1-N")]
     L1N,
+    /// Measured on L2 with respect to Neutral conductor
     #[serde(rename = "L2-N")]
     L2N,
+    /// Measured on L3 with respect to Neutral conductor
     #[serde(rename = "L3-N")]
     L3N,
+    /// Measured between L1 and L2
     #[serde(rename = "L1-L2")]
     L1L2,
+    /// Measured between L2 and L3
     #[serde(rename = "L2-L3")]
     L2L3,
+    /// Measured between L3 and L1
     #[serde(rename = "L3-L1")]
     L3L1,
 }

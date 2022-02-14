@@ -61,10 +61,10 @@ chargingSchedule struct
 pub struct GetCompositeScheduleResponse {
     /// Required. Status of the request. The Charge Point will indicate if it was able to process the request
     pub status: SimpleStatus,
-    /// Required. Status of the request. The Charge Point will indicate if it was able to process the request
+    /// Optional. The charging schedule contained in this notitication applies to a Connector
     pub connector_id: Option<u32>,
     /// Optional. Time. Periods contained in the charging profile are relative to this point in time. If status is "Rejected", this field may be absent.
-    pub schedule_start: DateTime<Utc>,
+    pub schedule_start: Option<DateTime<Utc>>,
     /// Optional. Planned Composite Charging Schedule, the energy consumption over time. Always relative to ScheduleStart. If status is "Rejected", this field may be absent.
     pub charging_schedule: Option<ChargingSchedule>,
 }
