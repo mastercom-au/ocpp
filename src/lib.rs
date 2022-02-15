@@ -116,6 +116,8 @@ use std::default::Default;
 use strum_macros::Display;
 use serde::{de, Deserialize, Serialize, Deserializer, Serializer};
 
+use ocpp_json_validate::JsonValidate;
+
 pub use common::*;
 pub use point_init::*;
 pub use server_init::*;
@@ -455,6 +457,39 @@ pub enum OCPPCallPayload {
     UpdateFirmware(UpdateFirmwareRequest),
 }
 
+impl ocpp_json_validate::JsonValidate for OCPPCallPayload {
+    fn validate(&self) -> Result<(), ocpp_json_validate::JsonValidateError> {
+        match self {
+            OCPPCallPayload::Authorize(req) => req.validate(),
+            OCPPCallPayload::BootNotification(req) => req.validate(),
+            OCPPCallPayload::ChangeAvailability(req) => req.validate(),
+            OCPPCallPayload::ChangeConfiguration(req) => req.validate(),
+            OCPPCallPayload::ClearCache(req) => req.validate(),
+            OCPPCallPayload::ClearChargingProfile(req) => req.validate(),
+            OCPPCallPayload::DataTransfer(req) => req.validate(),
+            OCPPCallPayload::DiagnosticsStatusNotification(req) => req.validate(),
+            OCPPCallPayload::FirmwareStatusNotification(req) => req.validate(),
+            OCPPCallPayload::GetCompositeSchedule(req) => req.validate(),
+            OCPPCallPayload::GetConfiguration(req) => req.validate(),
+            OCPPCallPayload::GetDiagnostics(req) => req.validate(),
+            OCPPCallPayload::GetLocalListVersion(req) => req.validate(),
+            OCPPCallPayload::Heartbeat(req) => req.validate(),
+            OCPPCallPayload::MeterValues(req) => req.validate(),
+            OCPPCallPayload::RemoteStartTransaction(req) => req.validate(),
+            OCPPCallPayload::RemoteStopTransaction(req) => req.validate(),
+            OCPPCallPayload::Reset(req) => req.validate(),
+            OCPPCallPayload::SendLocalList(req) => req.validate(),
+            OCPPCallPayload::SetChargingProfile(req) => req.validate(),
+            OCPPCallPayload::StartTransaction(req) => req.validate(),
+            OCPPCallPayload::StatusNotification(req) => req.validate(),
+            OCPPCallPayload::StopTransaction(req) => req.validate(),
+            OCPPCallPayload::TriggerMessage(req) => req.validate(),
+            OCPPCallPayload::UnlockConnector(req) => req.validate(),
+            OCPPCallPayload::UpdateFirmware(req) => req.validate(),
+        }
+    }
+}
+
 /// OCPP Call Result Types
 #[non_exhaustive]
 #[allow(missing_docs)]
@@ -487,6 +522,39 @@ pub enum OCPPCallResultPayload {
     TriggerMessage(TriggerMessageResponse),
     UnlockConnector(UnlockConnectorResponse),
     UpdateFirmware(UpdateFirmwareResponse),
+}
+
+impl ocpp_json_validate::JsonValidate for OCPPCallResultPayload {
+    fn validate(&self) -> Result<(), ocpp_json_validate::JsonValidateError> {
+        match self {
+            OCPPCallResultPayload::Authorize(res) => res.validate(),
+            OCPPCallResultPayload::BootNotification(res) => res.validate(),
+            OCPPCallResultPayload::ChangeAvailability(res) => res.validate(),
+            OCPPCallResultPayload::ChangeConfiguration(res) => res.validate(),
+            OCPPCallResultPayload::ClearCache(res) => res.validate(),
+            OCPPCallResultPayload::ClearChargingProfile(res) => res.validate(),
+            OCPPCallResultPayload::DataTransfer(res) => res.validate(),
+            OCPPCallResultPayload::DiagnosticsStatusNotification(res) => res.validate(),
+            OCPPCallResultPayload::FirmwareStatusNotification(res) => res.validate(),
+            OCPPCallResultPayload::GetCompositeSchedule(res) => res.validate(),
+            OCPPCallResultPayload::GetConfiguration(res) => res.validate(),
+            OCPPCallResultPayload::GetDiagnostics(res) => res.validate(),
+            OCPPCallResultPayload::GetLocalListVersion(res) => res.validate(),
+            OCPPCallResultPayload::Heartbeat(res) => res.validate(),
+            OCPPCallResultPayload::MeterValues(res) => res.validate(),
+            OCPPCallResultPayload::RemoteStartTransaction(res) => res.validate(),
+            OCPPCallResultPayload::RemoteStopTransaction(res) => res.validate(),
+            OCPPCallResultPayload::Reset(res) => res.validate(),
+            OCPPCallResultPayload::SendLocalList(res) => res.validate(),
+            OCPPCallResultPayload::SetChargingProfile(res) => res.validate(),
+            OCPPCallResultPayload::StartTransaction(res) => res.validate(),
+            OCPPCallResultPayload::StatusNotification(res) => res.validate(),
+            OCPPCallResultPayload::StopTransaction(res) => res.validate(),
+            OCPPCallResultPayload::TriggerMessage(res) => res.validate(),
+            OCPPCallResultPayload::UnlockConnector(res) => res.validate(),
+            OCPPCallResultPayload::UpdateFirmware(res) => res.validate(),
+        }
+    }
 }
 
 /// OCPP Call Types
@@ -732,6 +800,12 @@ impl OCPPCallResultBuilder {
             ..
         } = call;
 
+        // Validate incoming payload
+        if let Err(e) = payload.validate() {
+            tracing::warn!("OCPP Request Invalid: {:?}", e);
+            return Err(OCPPCallError::from_call(&unique_id, OCPPCallErrorCode::ProtocolError));
+        }
+
         let payload = match payload {
             OCPPCallPayload::Authorize(req) => (self.authorize)(req).map(|r| OCPPCallResultPayload::Authorize(r)).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
             OCPPCallPayload::BootNotification(req) => (self.boot_notification)(req).map(|r| OCPPCallResultPayload::BootNotification(r)).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
@@ -760,6 +834,12 @@ impl OCPPCallResultBuilder {
             OCPPCallPayload::UnlockConnector(req) => (self.unlock_connector)(req).map(|r| OCPPCallResultPayload::UnlockConnector(r)).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
             OCPPCallPayload::UpdateFirmware(req) => (self.update_firmware)(req).map(|r| OCPPCallResultPayload::UpdateFirmware(r)).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
         };
+
+        // Validate outgoing payload
+        if let Err(e) = payload.validate() {
+            tracing::error!("OCPP Response Invalid: {:?}", e);
+            return Err(OCPPCallError::from_call(&unique_id, OCPPCallErrorCode::InternalError));
+        }
 
         return Ok(OCPPCallResult {
             unique_id,
