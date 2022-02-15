@@ -13,9 +13,9 @@
 //!
 //! // Example of storage for known/open calls
 //! let mut known_calls = std::collections::HashMap::<String, OCPPCallAction>::new();
-//! 
+//!
 //! // Build a reusable response builder
-//! // Method 1. Define a method 
+//! // Method 1. Define a method
 //! fn handle_authorize(req: AuthorizeRequest) -> Result<AuthorizeResponse, OCPPCallErrorCode>
 //! {
 //!     let status = if req.id_tag == "valid_tag" {
@@ -523,7 +523,7 @@ pub enum OCPPCallAction {
 /// to move the `unique_id` field.
 ///
 /// The builder may be used any number of times without being consumed.
-/// 
+///
 /// # Example
 /// ```
 /// # fn ocpp_message_example() -> Result<(), serde_json::Error> {
