@@ -73,7 +73,7 @@ fn test_deserialize_json_call_result() -> Result<(), Box<dyn std::error::Error>>
     assert!(matches!(value, crate::OCPPMessage::CallResultUnknown(..)));
 
     if let crate::OCPPMessage::CallResultUnknown(unknown) = value {
-        let result = crate::OCPPCallResult::from_unknown(crate::OCPPCallAction::StatusNotification, unknown)?;
+        let result = crate::OCPPCallResult::from_unknown(&crate::OCPPCallAction::StatusNotification, unknown)?;
 
         assert!(matches!(result.payload, crate::OCPPCallResultPayload::StatusNotification(..)));
     }

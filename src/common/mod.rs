@@ -1,7 +1,7 @@
 //! A collection of common data structures.
 
-pub mod request;
 pub mod common_types;
 pub mod data_transfer;
 
-pub use request::*;
+pub use common_types::*;
+pub use data_transfer::*;

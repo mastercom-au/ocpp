@@ -13,8 +13,6 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use crate::Request;
-
 // -------------------------- REQUEST ---------------------------
 use ocpp_json_validate::json_validate;
 #[json_validate("../json_schemas/Heartbeat.json")]
@@ -31,10 +29,4 @@ pub struct HeartbeatRequest {}
 pub struct HeartbeatResponse {
     /// Required. This contains the current time of the Central System.
     pub current_time: DateTime<Utc>,
-}
-
-impl Request<DateTime<Utc>, HeartbeatResponse> for HeartbeatRequest {
-    fn build_response(&self, current_time: DateTime<Utc>) -> HeartbeatResponse {
-        HeartbeatResponse { current_time }
-    }
 }
