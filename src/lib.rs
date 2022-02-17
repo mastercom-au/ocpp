@@ -651,32 +651,32 @@ pub enum OCPPCallAction {
 /// # }
 /// ```
 pub struct OCPPCallResultBuilder {
-    authorize: Box<dyn FnMut(AuthorizeRequest) -> Result<AuthorizeResponse, OCPPCallErrorCode>>,
-    boot_notification: Box<dyn FnMut(BootNotificationRequest) -> Result<BootNotificationResponse, OCPPCallErrorCode>>,
-    change_availability: Box<dyn FnMut(ChangeAvailabilityRequest) -> Result<ChangeAvailabilityResponse, OCPPCallErrorCode>>,
-    change_configuration: Box<dyn FnMut(ChangeConfigurationRequest) -> Result<ChangeConfigurationResponse, OCPPCallErrorCode>>,
-    clear_cache: Box<dyn FnMut(ClearCacheRequest) -> Result<ClearCacheResponse, OCPPCallErrorCode>>,
-    clear_charging_profile: Box<dyn FnMut(ClearChargingProfileRequest) -> Result<ClearChargingProfileResponse, OCPPCallErrorCode>>,
-    data_transfer: Box<dyn FnMut(DataTransferRequest) -> Result<DataTransferResponse, OCPPCallErrorCode>>,
-    diagnostics_status_notification: Box<dyn FnMut(DiagnosticsStatusNotificationRequest) -> Result<DiagnosticsStatusNotificationResponse, OCPPCallErrorCode>>,
-    firmware_status_notification: Box<dyn FnMut(FirmwareStatusNotificationRequest) -> Result<FirmwareStatusNotificationResponse, OCPPCallErrorCode>>,
-    get_composite_schedule: Box<dyn FnMut(GetCompositeScheduleRequest) -> Result<GetCompositeScheduleResponse, OCPPCallErrorCode>>,
-    get_configuration: Box<dyn FnMut(GetConfigurationRequest) -> Result<GetConfigurationResponse, OCPPCallErrorCode>>,
-    get_diagnostics: Box<dyn FnMut(GetDiagnosticsRequest) -> Result<GetDiagnosticsResponse, OCPPCallErrorCode>>,
-    get_local_list_version: Box<dyn FnMut(GetLocalListVersionRequest) -> Result<GetLocalListVersionResponse, OCPPCallErrorCode>>,
-    heartbeat: Box<dyn FnMut(HeartbeatRequest) -> Result<HeartbeatResponse, OCPPCallErrorCode>>,
-    meter_values: Box<dyn FnMut(MeterValuesRequest) -> Result<MeterValuesResponse, OCPPCallErrorCode>>,
-    remote_start_transaction: Box<dyn FnMut(RemoteStartTransactionRequest) -> Result<RemoteStartTransactionResponse, OCPPCallErrorCode>>,
-    remote_stop_transaction: Box<dyn FnMut(RemoteStopTransactionRequest) -> Result<RemoteStopTransactionResponse, OCPPCallErrorCode>>,
-    reset: Box<dyn FnMut(ResetRequest) -> Result<ResetResponse, OCPPCallErrorCode>>,
-    send_local_list: Box<dyn FnMut(SendLocalListRequest) -> Result<SendLocalListResponse, OCPPCallErrorCode>>,
-    set_charging_profile: Box<dyn FnMut(SetChargingProfileRequest) -> Result<SetChargingProfileResponse, OCPPCallErrorCode>>,
-    start_transaction: Box<dyn FnMut(StartTransactionRequest) -> Result<StartTransactionResponse, OCPPCallErrorCode>>,
-    status_notification: Box<dyn FnMut(StatusNotificationRequest) -> Result<StatusNotificationResponse, OCPPCallErrorCode>>,
-    stop_transaction: Box<dyn FnMut(StopTransactionRequest) -> Result<StopTransactionResponse, OCPPCallErrorCode>>,
-    trigger_message: Box<dyn FnMut(TriggerMessageRequest) -> Result<TriggerMessageResponse, OCPPCallErrorCode>>,
-    unlock_connector: Box<dyn FnMut(UnlockConnectorRequest) -> Result<UnlockConnectorResponse, OCPPCallErrorCode>>,
-    update_firmware: Box<dyn FnMut(UpdateFirmwareRequest) -> Result<UpdateFirmwareResponse, OCPPCallErrorCode>>,
+    authorize: Box<dyn FnMut(AuthorizeRequest) -> Result<AuthorizeResponse, OCPPCallErrorCode> + Send>,
+    boot_notification: Box<dyn FnMut(BootNotificationRequest) -> Result<BootNotificationResponse, OCPPCallErrorCode> + Send>,
+    change_availability: Box<dyn FnMut(ChangeAvailabilityRequest) -> Result<ChangeAvailabilityResponse, OCPPCallErrorCode> + Send>,
+    change_configuration: Box<dyn FnMut(ChangeConfigurationRequest) -> Result<ChangeConfigurationResponse, OCPPCallErrorCode> + Send>,
+    clear_cache: Box<dyn FnMut(ClearCacheRequest) -> Result<ClearCacheResponse, OCPPCallErrorCode> + Send>,
+    clear_charging_profile: Box<dyn FnMut(ClearChargingProfileRequest) -> Result<ClearChargingProfileResponse, OCPPCallErrorCode> + Send>,
+    data_transfer: Box<dyn FnMut(DataTransferRequest) -> Result<DataTransferResponse, OCPPCallErrorCode> + Send>,
+    diagnostics_status_notification: Box<dyn FnMut(DiagnosticsStatusNotificationRequest) -> Result<DiagnosticsStatusNotificationResponse, OCPPCallErrorCode> + Send>,
+    firmware_status_notification: Box<dyn FnMut(FirmwareStatusNotificationRequest) -> Result<FirmwareStatusNotificationResponse, OCPPCallErrorCode> + Send>,
+    get_composite_schedule: Box<dyn FnMut(GetCompositeScheduleRequest) -> Result<GetCompositeScheduleResponse, OCPPCallErrorCode> + Send>,
+    get_configuration: Box<dyn FnMut(GetConfigurationRequest) -> Result<GetConfigurationResponse, OCPPCallErrorCode> + Send>,
+    get_diagnostics: Box<dyn FnMut(GetDiagnosticsRequest) -> Result<GetDiagnosticsResponse, OCPPCallErrorCode> + Send>,
+    get_local_list_version: Box<dyn FnMut(GetLocalListVersionRequest) -> Result<GetLocalListVersionResponse, OCPPCallErrorCode> + Send>,
+    heartbeat: Box<dyn FnMut(HeartbeatRequest) -> Result<HeartbeatResponse, OCPPCallErrorCode> + Send>,
+    meter_values: Box<dyn FnMut(MeterValuesRequest) -> Result<MeterValuesResponse, OCPPCallErrorCode> + Send>,
+    remote_start_transaction: Box<dyn FnMut(RemoteStartTransactionRequest) -> Result<RemoteStartTransactionResponse, OCPPCallErrorCode> + Send>,
+    remote_stop_transaction: Box<dyn FnMut(RemoteStopTransactionRequest) -> Result<RemoteStopTransactionResponse, OCPPCallErrorCode> + Send>,
+    reset: Box<dyn FnMut(ResetRequest) -> Result<ResetResponse, OCPPCallErrorCode> + Send>,
+    send_local_list: Box<dyn FnMut(SendLocalListRequest) -> Result<SendLocalListResponse, OCPPCallErrorCode> + Send>,
+    set_charging_profile: Box<dyn FnMut(SetChargingProfileRequest) -> Result<SetChargingProfileResponse, OCPPCallErrorCode> + Send>,
+    start_transaction: Box<dyn FnMut(StartTransactionRequest) -> Result<StartTransactionResponse, OCPPCallErrorCode> + Send>,
+    status_notification: Box<dyn FnMut(StatusNotificationRequest) -> Result<StatusNotificationResponse, OCPPCallErrorCode> + Send>,
+    stop_transaction: Box<dyn FnMut(StopTransactionRequest) -> Result<StopTransactionResponse, OCPPCallErrorCode> + Send>,
+    trigger_message: Box<dyn FnMut(TriggerMessageRequest) -> Result<TriggerMessageResponse, OCPPCallErrorCode> + Send>,
+    unlock_connector: Box<dyn FnMut(UnlockConnectorRequest) -> Result<UnlockConnectorResponse, OCPPCallErrorCode> + Send>,
+    update_firmware: Box<dyn FnMut(UpdateFirmwareRequest) -> Result<UpdateFirmwareResponse, OCPPCallErrorCode> + Send>,
 }
 
 impl Default for OCPPCallResultBuilder {
@@ -715,82 +715,82 @@ impl Default for OCPPCallResultBuilder {
 impl OCPPCallResultBuilder {
     /// Set handler for Authorize requests, will return an [AuthorizeResponse]
     /// upon success.
-    pub fn for_authorize(mut self, f: Box<dyn FnMut(AuthorizeRequest) -> Result<AuthorizeResponse, OCPPCallErrorCode>>) -> Self { self.authorize = f; self }
+    pub fn for_authorize(mut self, f: Box<dyn FnMut(AuthorizeRequest) -> Result<AuthorizeResponse, OCPPCallErrorCode> + Send>) -> Self { self.authorize = f; self }
     /// Set handler for BootNotification requests, will return an [BootNotificationResponse]
     /// upon success.
-    pub fn for_boot_notification(mut self, f: Box<dyn FnMut(BootNotificationRequest) -> Result<BootNotificationResponse, OCPPCallErrorCode>>) -> Self { self.boot_notification = f; self }
+    pub fn for_boot_notification(mut self, f: Box<dyn FnMut(BootNotificationRequest) -> Result<BootNotificationResponse, OCPPCallErrorCode> + Send>) -> Self { self.boot_notification = f; self }
     /// Set handler for ChangeAvailability requests, will return an [ChangeAvailabilityResponse]
     /// upon success.
-    pub fn for_change_availability(mut self, f: Box<dyn FnMut(ChangeAvailabilityRequest) -> Result<ChangeAvailabilityResponse, OCPPCallErrorCode>>) -> Self { self.change_availability = f; self }
+    pub fn for_change_availability(mut self, f: Box<dyn FnMut(ChangeAvailabilityRequest) -> Result<ChangeAvailabilityResponse, OCPPCallErrorCode> + Send>) -> Self { self.change_availability = f; self }
     /// Set handler for ChangeConfiguration requests, will return an [ChangeConfigurationResponse]
     /// upon success.
-    pub fn for_change_configuration(mut self, f: Box<dyn FnMut(ChangeConfigurationRequest) -> Result<ChangeConfigurationResponse, OCPPCallErrorCode>>) -> Self { self.change_configuration = f; self }
+    pub fn for_change_configuration(mut self, f: Box<dyn FnMut(ChangeConfigurationRequest) -> Result<ChangeConfigurationResponse, OCPPCallErrorCode> + Send>) -> Self { self.change_configuration = f; self }
     /// Set handler for ClearCache requests, will return an [ClearCacheResponse]
     /// upon success.
-    pub fn for_clear_cache(mut self, f: Box<dyn FnMut(ClearCacheRequest) -> Result<ClearCacheResponse, OCPPCallErrorCode>>) -> Self { self.clear_cache = f; self }
+    pub fn for_clear_cache(mut self, f: Box<dyn FnMut(ClearCacheRequest) -> Result<ClearCacheResponse, OCPPCallErrorCode> + Send>) -> Self { self.clear_cache = f; self }
     /// Set handler for ClearChargingProfile requests, will return an [ClearChargingProfileResponse]
     /// upon success.
-    pub fn for_clear_charging_profile(mut self, f: Box<dyn FnMut(ClearChargingProfileRequest) -> Result<ClearChargingProfileResponse, OCPPCallErrorCode>>) -> Self { self.clear_charging_profile = f; self }
+    pub fn for_clear_charging_profile(mut self, f: Box<dyn FnMut(ClearChargingProfileRequest) -> Result<ClearChargingProfileResponse, OCPPCallErrorCode> + Send>) -> Self { self.clear_charging_profile = f; self }
     /// Set handler for DataTransfer requests, will return an [DataTransferResponse]
     /// upon success.
-    pub fn for_data_transfer(mut self, f: Box<dyn FnMut(DataTransferRequest) -> Result<DataTransferResponse, OCPPCallErrorCode>>) -> Self { self.data_transfer = f; self }
+    pub fn for_data_transfer(mut self, f: Box<dyn FnMut(DataTransferRequest) -> Result<DataTransferResponse, OCPPCallErrorCode> + Send>) -> Self { self.data_transfer = f; self }
     /// Set handler for DiagnosticsStatusNotification requests, will return an [DiagnosticsStatusNotificationResponse]
     /// upon success.
-    pub fn for_diagnostics_status_notification(mut self, f: Box<dyn FnMut(DiagnosticsStatusNotificationRequest) -> Result<DiagnosticsStatusNotificationResponse, OCPPCallErrorCode>>) -> Self { self.diagnostics_status_notification = f; self }
+    pub fn for_diagnostics_status_notification(mut self, f: Box<dyn FnMut(DiagnosticsStatusNotificationRequest) -> Result<DiagnosticsStatusNotificationResponse, OCPPCallErrorCode> + Send>) -> Self { self.diagnostics_status_notification = f; self }
     /// Set handler for FirmwareStatusNotification requests, will return an [FirmwareStatusNotificationResponse]
     /// upon success.
-    pub fn for_firmware_status_notification(mut self, f: Box<dyn FnMut(FirmwareStatusNotificationRequest) -> Result<FirmwareStatusNotificationResponse, OCPPCallErrorCode>>) -> Self { self.firmware_status_notification = f; self }
+    pub fn for_firmware_status_notification(mut self, f: Box<dyn FnMut(FirmwareStatusNotificationRequest) -> Result<FirmwareStatusNotificationResponse, OCPPCallErrorCode> + Send>) -> Self { self.firmware_status_notification = f; self }
     /// Set handler for GetCompositeSchedule requests, will return an [GetCompositeScheduleResponse]
     /// upon success.
-    pub fn for_get_composite_schedule(mut self, f: Box<dyn FnMut(GetCompositeScheduleRequest) -> Result<GetCompositeScheduleResponse, OCPPCallErrorCode>>) -> Self { self.get_composite_schedule = f; self }
+    pub fn for_get_composite_schedule(mut self, f: Box<dyn FnMut(GetCompositeScheduleRequest) -> Result<GetCompositeScheduleResponse, OCPPCallErrorCode> + Send>) -> Self { self.get_composite_schedule = f; self }
     /// Set handler for GetConfiguration requests, will return an [GetConfigurationResponse]
     /// upon success.
-    pub fn for_get_configuration(mut self, f: Box<dyn FnMut(GetConfigurationRequest) -> Result<GetConfigurationResponse, OCPPCallErrorCode>>) -> Self { self.get_configuration = f; self }
+    pub fn for_get_configuration(mut self, f: Box<dyn FnMut(GetConfigurationRequest) -> Result<GetConfigurationResponse, OCPPCallErrorCode> + Send>) -> Self { self.get_configuration = f; self }
     /// Set handler for GetDiagnostics requests, will return an [GetDiagnosticsResponse]
     /// upon success.
-    pub fn for_get_diagnostics(mut self, f: Box<dyn FnMut(GetDiagnosticsRequest) -> Result<GetDiagnosticsResponse, OCPPCallErrorCode>>) -> Self { self.get_diagnostics = f; self }
+    pub fn for_get_diagnostics(mut self, f: Box<dyn FnMut(GetDiagnosticsRequest) -> Result<GetDiagnosticsResponse, OCPPCallErrorCode> + Send>) -> Self { self.get_diagnostics = f; self }
     /// Set handler for GetLocalListVersion requests, will return an [GetLocalListVersionResponse]
     /// upon success.
-    pub fn for_get_local_list_version(mut self, f: Box<dyn FnMut(GetLocalListVersionRequest) -> Result<GetLocalListVersionResponse, OCPPCallErrorCode>>) -> Self { self.get_local_list_version = f; self }
+    pub fn for_get_local_list_version(mut self, f: Box<dyn FnMut(GetLocalListVersionRequest) -> Result<GetLocalListVersionResponse, OCPPCallErrorCode> + Send>) -> Self { self.get_local_list_version = f; self }
     /// Set handler for Heartbeat requests, will return an [HeartbeatResponse]
     /// upon success.
-    pub fn for_heartbeat(mut self, f: Box<dyn FnMut(HeartbeatRequest) -> Result<HeartbeatResponse, OCPPCallErrorCode>>) -> Self { self.heartbeat = f; self }
+    pub fn for_heartbeat(mut self, f: Box<dyn FnMut(HeartbeatRequest) -> Result<HeartbeatResponse, OCPPCallErrorCode> + Send>) -> Self { self.heartbeat = f; self }
     /// Set handler for MeterValues requests, will return an [MeterValuesResponse]
     /// upon success.
-    pub fn for_meter_values(mut self, f: Box<dyn FnMut(MeterValuesRequest) -> Result<MeterValuesResponse, OCPPCallErrorCode>>) -> Self { self.meter_values = f; self }
+    pub fn for_meter_values(mut self, f: Box<dyn FnMut(MeterValuesRequest) -> Result<MeterValuesResponse, OCPPCallErrorCode> + Send>) -> Self { self.meter_values = f; self }
     /// Set handler for RemoteStartTransaction requests, will return an [RemoteStartTransactionResponse]
     /// upon success.
-    pub fn for_remote_start_transaction(mut self, f: Box<dyn FnMut(RemoteStartTransactionRequest) -> Result<RemoteStartTransactionResponse, OCPPCallErrorCode>>) -> Self { self.remote_start_transaction = f; self }
+    pub fn for_remote_start_transaction(mut self, f: Box<dyn FnMut(RemoteStartTransactionRequest) -> Result<RemoteStartTransactionResponse, OCPPCallErrorCode> + Send>) -> Self { self.remote_start_transaction = f; self }
     /// Set handler for RemoteStopTransaction requests, will return an [RemoteStopTransactionResponse]
     /// upon success.
-    pub fn for_remote_stop_transaction(mut self, f: Box<dyn FnMut(RemoteStopTransactionRequest) -> Result<RemoteStopTransactionResponse, OCPPCallErrorCode>>) -> Self { self.remote_stop_transaction = f; self }
+    pub fn for_remote_stop_transaction(mut self, f: Box<dyn FnMut(RemoteStopTransactionRequest) -> Result<RemoteStopTransactionResponse, OCPPCallErrorCode> + Send>) -> Self { self.remote_stop_transaction = f; self }
     /// Set handler for Reset requests, will return an [ResetResponse]
     /// upon success.
-    pub fn for_reset(mut self, f: Box<dyn FnMut(ResetRequest) -> Result<ResetResponse, OCPPCallErrorCode>>) -> Self { self.reset = f; self }
+    pub fn for_reset(mut self, f: Box<dyn FnMut(ResetRequest) -> Result<ResetResponse, OCPPCallErrorCode> + Send>) -> Self { self.reset = f; self }
     /// Set handler for SendLocalList requests, will return an [SendLocalListResponse]
     /// upon success.
-    pub fn for_send_local_list(mut self, f: Box<dyn FnMut(SendLocalListRequest) -> Result<SendLocalListResponse, OCPPCallErrorCode>>) -> Self { self.send_local_list = f; self }
+    pub fn for_send_local_list(mut self, f: Box<dyn FnMut(SendLocalListRequest) -> Result<SendLocalListResponse, OCPPCallErrorCode> + Send>) -> Self { self.send_local_list = f; self }
     /// Set handler for SetChargingProfile requests, will return an [SetChargingProfileResponse]
     /// upon success.
-    pub fn for_set_charging_profile(mut self, f: Box<dyn FnMut(SetChargingProfileRequest) -> Result<SetChargingProfileResponse, OCPPCallErrorCode>>) -> Self { self.set_charging_profile = f; self }
+    pub fn for_set_charging_profile(mut self, f: Box<dyn FnMut(SetChargingProfileRequest) -> Result<SetChargingProfileResponse, OCPPCallErrorCode> + Send>) -> Self { self.set_charging_profile = f; self }
     /// Set handler for StartTransaction requests, will return an [StartTransactionResponse]
     /// upon success.
-    pub fn for_start_transaction(mut self, f: Box<dyn FnMut(StartTransactionRequest) -> Result<StartTransactionResponse, OCPPCallErrorCode>>) -> Self { self.start_transaction = f; self }
+    pub fn for_start_transaction(mut self, f: Box<dyn FnMut(StartTransactionRequest) -> Result<StartTransactionResponse, OCPPCallErrorCode> + Send>) -> Self { self.start_transaction = f; self }
     /// Set handler for StatusNotification requests, will return an [StatusNotificationResponse]
     /// upon success.
-    pub fn for_status_notification(mut self, f: Box<dyn FnMut(StatusNotificationRequest) -> Result<StatusNotificationResponse, OCPPCallErrorCode>>) -> Self { self.status_notification = f; self }
+    pub fn for_status_notification(mut self, f: Box<dyn FnMut(StatusNotificationRequest) -> Result<StatusNotificationResponse, OCPPCallErrorCode> + Send>) -> Self { self.status_notification = f; self }
     /// Set handler for StopTransaction requests, will return an [StopTransactionResponse]
     /// upon success.
-    pub fn for_stop_transaction(mut self, f: Box<dyn FnMut(StopTransactionRequest) -> Result<StopTransactionResponse, OCPPCallErrorCode>>) -> Self { self.stop_transaction = f; self }
+    pub fn for_stop_transaction(mut self, f: Box<dyn FnMut(StopTransactionRequest) -> Result<StopTransactionResponse, OCPPCallErrorCode> + Send>) -> Self { self.stop_transaction = f; self }
     /// Set handler for TriggerMessage requests, will return an [TriggerMessageResponse]
     /// upon success.
-    pub fn for_trigger_message(mut self, f: Box<dyn FnMut(TriggerMessageRequest) -> Result<TriggerMessageResponse, OCPPCallErrorCode>>) -> Self { self.trigger_message = f; self }
+    pub fn for_trigger_message(mut self, f: Box<dyn FnMut(TriggerMessageRequest) -> Result<TriggerMessageResponse, OCPPCallErrorCode> + Send>) -> Self { self.trigger_message = f; self }
     /// Set handler for UnlockConnector requests, will return an [UnlockConnectorResponse]
     /// upon success.
-    pub fn for_unlock_connector(mut self, f: Box<dyn FnMut(UnlockConnectorRequest) -> Result<UnlockConnectorResponse, OCPPCallErrorCode>>) -> Self { self.unlock_connector = f; self }
+    pub fn for_unlock_connector(mut self, f: Box<dyn FnMut(UnlockConnectorRequest) -> Result<UnlockConnectorResponse, OCPPCallErrorCode> + Send>) -> Self { self.unlock_connector = f; self }
     /// Set handler for UpdateFirmware requests, will return an [UpdateFirmwareResponse]
     /// upon success.
-    pub fn for_update_firmware(mut self, f: Box<dyn FnMut(UpdateFirmwareRequest) -> Result<UpdateFirmwareResponse, OCPPCallErrorCode>>) -> Self { self.update_firmware = f; self }
+    pub fn for_update_firmware(mut self, f: Box<dyn FnMut(UpdateFirmwareRequest) -> Result<UpdateFirmwareResponse, OCPPCallErrorCode> + Send>) -> Self { self.update_firmware = f; self }
 
     /// Build [OCPPCallResult] from [OCPPCall]
     pub fn build(&mut self, call: OCPPCall) -> Result<OCPPCallResult, OCPPCallError> {
