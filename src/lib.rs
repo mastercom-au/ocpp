@@ -232,6 +232,46 @@ impl<'de> Deserialize<'de> for OCPPCall {
     }
 }
 
+impl From<(String, OCPPCallPayload)> for OCPPCall {
+    fn from(from: (String, OCPPCallPayload)) -> OCPPCall {
+        let (unique_id, payload) = from;
+        let action = String::from(match payload {
+            OCPPCallPayload::Authorize(_) => "Authorize",
+            OCPPCallPayload::BootNotification(_) => "BootNotification",
+            OCPPCallPayload::ChangeAvailability(_) => "ChangeAvailability",
+            OCPPCallPayload::ChangeConfiguration(_) => "ChangeConfiguration",
+            OCPPCallPayload::ClearCache(_) => "ClearCache",
+            OCPPCallPayload::ClearChargingProfile(_) => "ClearChargingProfile",
+            OCPPCallPayload::DataTransfer(_) => "DataTransfer",
+            OCPPCallPayload::DiagnosticsStatusNotification(_) => "DiagnosticsStatusNotification",
+            OCPPCallPayload::FirmwareStatusNotification(_) => "FirmwareStatusNotification",
+            OCPPCallPayload::GetCompositeSchedule(_) => "GetCompositeSchedule",
+            OCPPCallPayload::GetConfiguration(_) => "GetConfiguration",
+            OCPPCallPayload::GetDiagnostics(_) => "GetDiagnostics",
+            OCPPCallPayload::GetLocalListVersion(_) => "GetLocalListVersion",
+            OCPPCallPayload::Heartbeat(_) => "Heartbeat",
+            OCPPCallPayload::MeterValues(_) => "MeterValues",
+            OCPPCallPayload::RemoteStartTransaction(_) => "RemoteStartTransaction",
+            OCPPCallPayload::RemoteStopTransaction(_) => "RemoteStopTransaction",
+            OCPPCallPayload::Reset(_) => "Reset",
+            OCPPCallPayload::SendLocalList(_) => "SendLocalList",
+            OCPPCallPayload::SetChargingProfile(_) => "SetChargingProfile",
+            OCPPCallPayload::StartTransaction(_) => "StartTransaction",
+            OCPPCallPayload::StatusNotification(_) => "StatusNotification",
+            OCPPCallPayload::StopTransaction(_) => "StopTransaction",
+            OCPPCallPayload::TriggerMessage(_) => "TriggerMessage",
+            OCPPCallPayload::UnlockConnector(_) => "UnlockConnector",
+            OCPPCallPayload::UpdateFirmware(_) => "UpdateFirmware",
+        });
+
+        OCPPCall {
+            unique_id,
+            action,
+            payload,
+        }
+    }
+}
+
 /// OCPP Call Result or Response, sent from Server to Client
 /// For deserialization see [OCPPCallResultUnknown] and [OCPPCallResult::from_unknown]
 #[derive(Debug, Clone)]
