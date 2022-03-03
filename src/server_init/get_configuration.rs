@@ -21,7 +21,7 @@ use serde_with::skip_serializing_none;
 /// Field definition of the GetConfiguration.req PDU sent by the Central System to the Charge Point.
 pub struct GetConfigurationRequest {
     /// Optional. List of keys for which the configuration value is requested. Keys are separated by ','
-    pub key: Option<Vec<String>>,
+    pub key: Option<String>,
 }
 
 // -------------------------- RESPONSE --------------------------
