@@ -4,8 +4,6 @@ use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
 
-
-
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 ///Unit of power consumption in which a charging schedule is defined
 pub enum ChargingRateUnit {

@@ -16,6 +16,7 @@ use serde_with::skip_serializing_none;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/GetConfiguration.json")]
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the GetConfiguration.req PDU sent by the Central System to the Charge Point.
