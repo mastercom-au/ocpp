@@ -80,3 +80,18 @@ fn test_deserialize_json_call_result() -> Result<(), Box<dyn std::error::Error>>
 
     Ok(())
 }
+
+#[test]
+fn test_serialize_get_configuration_call() -> Result<(), Box<dyn std::error::Error>> {
+    let req = crate::GetConfigurationRequest { key: None };
+    req.validate()?;
+
+    let message = crate::OCPPMessage::Call((String::from("64:1"), crate::OCPPCallPayload::GetConfiguration(req)).into());
+    let json = serde_json::to_string(&message)?;
+
+    let expected= "[2,\"64:1\",\"GetConfiguration\",{}]";
+
+    assert_eq!(json, expected);
+
+    Ok(())
+}

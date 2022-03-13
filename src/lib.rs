@@ -456,6 +456,7 @@ pub enum OCPPCallErrorCode {
 #[non_exhaustive]
 #[allow(missing_docs)]
 #[derive(Serialize, Deserialize, Debug, Display, Clone)]
+#[serde(untagged)]
 pub enum OCPPCallPayload {
     Authorize(AuthorizeRequest),
     BootNotification(BootNotificationRequest),
