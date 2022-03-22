@@ -107,18 +107,14 @@ pub mod server_init;
 #[cfg(test)]
 pub mod test;
 
-
-
+use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
 use strum_macros::Display;
-use serde::{de, Deserialize, Serialize, Deserializer, Serializer};
 
 use ocpp_json_validate::JsonValidate;
 
 pub use common::*;
 pub use point_init::*;
 pub use server_init::*;
-
-
 
 /// Overarching OCPP Message use to encapsulate calls, call results and call errors
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -149,7 +145,8 @@ pub struct OCPPCall {
 
 impl Serialize for OCPPCall {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where S: Serializer
+    where
+        S: Serializer,
     {
         (2, &self.unique_id, &self.action, &self.payload).serialize(serializer)
     }
@@ -157,7 +154,8 @@ impl Serialize for OCPPCall {
 
 impl<'de> Deserialize<'de> for OCPPCall {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer<'de>
+    where
+        D: Deserializer<'de>,
     {
         let (message_type_id, unique_id, action, payload_raw): (u8, String, String, serde_json::Value) = Deserialize::deserialize(deserializer)?;
 
@@ -193,42 +191,41 @@ impl<'de> Deserialize<'de> for OCPPCall {
             "UnlockConnector" => OCPPCallPayload::UnlockConnector(UnlockConnectorRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
             "UpdateFirmware" => OCPPCallPayload::UpdateFirmware(UpdateFirmwareRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
             _ => {
-                return Err(de::Error::unknown_variant(&action, &[
-                    "Authorize",
-                    "BootNotification",
-                    "ChangeAvailability",
-                    "ChangeConfiguration",
-                    "ClearCache",
-                    "ClearChargingProfile",
-                    "DataTransfer",
-                    "DiagnosticsStatusNotification",
-                    "FirmwareStatusNotification",
-                    "GetCompositeSchedule",
-                    "GetConfiguration",
-                    "GetDiagnostics",
-                    "GetLocalListVersion",
-                    "Heartbeat",
-                    "MeterValues",
-                    "RemoteStartTransaction",
-                    "RemoteStopTransaction",
-                    "Reset",
-                    "SendLocalList",
-                    "SetChargingProfile",
-                    "StartTransaction",
-                    "StatusNotification",
-                    "StopTransaction",
-                    "TriggerMessage",
-                    "UnlockConnector",
-                    "UpdateFirmware",
-                ]));
+                return Err(de::Error::unknown_variant(
+                    &action,
+                    &[
+                        "Authorize",
+                        "BootNotification",
+                        "ChangeAvailability",
+                        "ChangeConfiguration",
+                        "ClearCache",
+                        "ClearChargingProfile",
+                        "DataTransfer",
+                        "DiagnosticsStatusNotification",
+                        "FirmwareStatusNotification",
+                        "GetCompositeSchedule",
+                        "GetConfiguration",
+                        "GetDiagnostics",
+                        "GetLocalListVersion",
+                        "Heartbeat",
+                        "MeterValues",
+                        "RemoteStartTransaction",
+                        "RemoteStopTransaction",
+                        "Reset",
+                        "SendLocalList",
+                        "SetChargingProfile",
+                        "StartTransaction",
+                        "StatusNotification",
+                        "StopTransaction",
+                        "TriggerMessage",
+                        "UnlockConnector",
+                        "UpdateFirmware",
+                    ],
+                ));
             }
         };
 
-        Ok(OCPPCall {
-            unique_id,
-            action,
-            payload,
-        })
+        Ok(OCPPCall { unique_id, action, payload })
     }
 }
 
@@ -264,11 +261,7 @@ impl From<(String, OCPPCallPayload)> for OCPPCall {
             OCPPCallPayload::UpdateFirmware(_) => "UpdateFirmware",
         });
 
-        OCPPCall {
-            unique_id,
-            action,
-            payload,
-        }
+        OCPPCall { unique_id, action, payload }
     }
 }
 
@@ -284,7 +277,8 @@ pub struct OCPPCallResult {
 
 impl Serialize for OCPPCallResult {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where S: Serializer
+    where
+        S: Serializer,
     {
         (3, &self.unique_id, &self.payload).serialize(serializer)
     }
@@ -303,7 +297,8 @@ pub struct OCPPCallResultUnknown {
 
 impl<'de> Deserialize<'de> for OCPPCallResultUnknown {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer<'de>
+    where
+        D: Deserializer<'de>,
     {
         let (message_type_id, unique_id, payload): (u8, String, serde_json::Value) = Deserialize::deserialize(deserializer)?;
 
@@ -311,15 +306,11 @@ impl<'de> Deserialize<'de> for OCPPCallResultUnknown {
             return Err(de::Error::invalid_value(de::Unexpected::Unsigned(message_type_id.into()), &"Message Type ID for Call Result should be '3'"));
         }
 
-        Ok(OCPPCallResultUnknown {
-            unique_id,
-            payload,
-        })
+        Ok(OCPPCallResultUnknown { unique_id, payload })
     }
 }
 
-impl OCPPCallResult
-{
+impl OCPPCallResult {
     /// Convert OCPP Call result of an unspecified type into a specific and
     /// valid call result. Fails in case the provided call result is not a
     /// valid instance of the specified call type
@@ -342,12 +333,8 @@ impl OCPPCallResult
     /// # Ok(())
     /// # }
     /// ```
-    pub fn from_unknown(action: &OCPPCallAction, unknown: OCPPCallResultUnknown) -> Result<Self, serde_json::Error>
-    {
-        let OCPPCallResultUnknown {
-            unique_id,
-            payload
-        } = unknown;
+    pub fn from_unknown(action: &OCPPCallAction, unknown: OCPPCallResultUnknown) -> Result<Self, serde_json::Error> {
+        let OCPPCallResultUnknown { unique_id, payload } = unknown;
 
         let payload = match action {
             OCPPCallAction::Authorize => OCPPCallResultPayload::Authorize(AuthorizeResponse::deserialize(payload)?),
@@ -378,10 +365,7 @@ impl OCPPCallResult
             OCPPCallAction::UpdateFirmware => OCPPCallResultPayload::UpdateFirmware(UpdateFirmwareResponse::deserialize(payload)?),
         };
 
-        Ok(OCPPCallResult {
-            unique_id,
-            payload,
-        })
+        Ok(OCPPCallResult { unique_id, payload })
     }
 }
 
@@ -400,7 +384,8 @@ pub struct OCPPCallError {
 
 impl Serialize for OCPPCallError {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where S: Serializer
+    where
+        S: Serializer,
     {
         (4, &self.unique_id, &self.error_code, &self.error_description, &self.error_details).serialize(serializer)
     }
@@ -408,7 +393,8 @@ impl Serialize for OCPPCallError {
 
 impl<'de> Deserialize<'de> for OCPPCallError {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer<'de>
+    where
+        D: Deserializer<'de>,
     {
         let (message_type_id, unique_id, error_code, error_description, error_details): (u8, String, OCPPCallErrorCode, String, serde_json::Value) = Deserialize::deserialize(deserializer)?;
 
@@ -684,65 +670,61 @@ pub enum OCPPCallAction {
 /// ```
 pub trait OCPPCallResultBuilder {
     /// Handle AuthorizeRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn authorize(&mut self, _req: AuthorizeRequest) -> Result<AuthorizeResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn authorize(&mut self, _req: AuthorizeRequest) -> Result<AuthorizeResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle BootNotificationRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn boot_notification(&mut self, _req: BootNotificationRequest) -> Result<BootNotificationResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn boot_notification(&mut self, _req: BootNotificationRequest) -> Result<BootNotificationResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle ChangeAvailabilityRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn change_availability(&mut self, _req: ChangeAvailabilityRequest) -> Result<ChangeAvailabilityResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn change_availability(&mut self, _req: ChangeAvailabilityRequest) -> Result<ChangeAvailabilityResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle ChangeConfigurationRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn change_configuration(&mut self, _req: ChangeConfigurationRequest) -> Result<ChangeConfigurationResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn change_configuration(&mut self, _req: ChangeConfigurationRequest) -> Result<ChangeConfigurationResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle ClearCacheRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn clear_cache(&mut self, _req: ClearCacheRequest) -> Result<ClearCacheResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn clear_cache(&mut self, _req: ClearCacheRequest) -> Result<ClearCacheResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle ClearChargingProfileRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn clear_charging_profile(&mut self, _req: ClearChargingProfileRequest) -> Result<ClearChargingProfileResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn clear_charging_profile(&mut self, _req: ClearChargingProfileRequest) -> Result<ClearChargingProfileResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle DataTransferRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn data_transfer(&mut self, _req: DataTransferRequest) -> Result<DataTransferResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn data_transfer(&mut self, _req: DataTransferRequest) -> Result<DataTransferResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle DiagnosticsStatusNotificationRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn diagnostics_status_notification(&mut self, _req: DiagnosticsStatusNotificationRequest) -> Result<DiagnosticsStatusNotificationResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn diagnostics_status_notification(&mut self, _req: DiagnosticsStatusNotificationRequest) -> Result<DiagnosticsStatusNotificationResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle FirmwareStatusNotificationRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn firmware_status_notification(&mut self, _req: FirmwareStatusNotificationRequest) -> Result<FirmwareStatusNotificationResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn firmware_status_notification(&mut self, _req: FirmwareStatusNotificationRequest) -> Result<FirmwareStatusNotificationResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle GetCompositeScheduleRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn get_composite_schedule(&mut self, _req: GetCompositeScheduleRequest) -> Result<GetCompositeScheduleResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn get_composite_schedule(&mut self, _req: GetCompositeScheduleRequest) -> Result<GetCompositeScheduleResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle GetConfigurationRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn get_configuration(&mut self, _req: GetConfigurationRequest) -> Result<GetConfigurationResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn get_configuration(&mut self, _req: GetConfigurationRequest) -> Result<GetConfigurationResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle GetDiagnosticsRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn get_diagnostics(&mut self, _req: GetDiagnosticsRequest) -> Result<GetDiagnosticsResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn get_diagnostics(&mut self, _req: GetDiagnosticsRequest) -> Result<GetDiagnosticsResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle GetLocalListVersionRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn get_local_list_version(&mut self, _req: GetLocalListVersionRequest) -> Result<GetLocalListVersionResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn get_local_list_version(&mut self, _req: GetLocalListVersionRequest) -> Result<GetLocalListVersionResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle HeartbeatRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn heartbeat(&mut self, _req: HeartbeatRequest) -> Result<HeartbeatResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn heartbeat(&mut self, _req: HeartbeatRequest) -> Result<HeartbeatResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle MeterValuesRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn meter_values(&mut self, _req: MeterValuesRequest) -> Result<MeterValuesResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn meter_values(&mut self, _req: MeterValuesRequest) -> Result<MeterValuesResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle RemoteStartTransactionRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn remote_start_transaction(&mut self, _req: RemoteStartTransactionRequest) -> Result<RemoteStartTransactionResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn remote_start_transaction(&mut self, _req: RemoteStartTransactionRequest) -> Result<RemoteStartTransactionResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle RemoteStopTransactionRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn remote_stop_transaction(&mut self, _req: RemoteStopTransactionRequest) -> Result<RemoteStopTransactionResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn remote_stop_transaction(&mut self, _req: RemoteStopTransactionRequest) -> Result<RemoteStopTransactionResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle ResetRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn reset(&mut self, _req: ResetRequest) -> Result<ResetResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn reset(&mut self, _req: ResetRequest) -> Result<ResetResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle SendLocalListRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn send_local_list(&mut self, _req: SendLocalListRequest) -> Result<SendLocalListResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn send_local_list(&mut self, _req: SendLocalListRequest) -> Result<SendLocalListResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle SetChargingProfileRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn set_charging_profile(&mut self, _req: SetChargingProfileRequest) -> Result<SetChargingProfileResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn set_charging_profile(&mut self, _req: SetChargingProfileRequest) -> Result<SetChargingProfileResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle StartTransactionRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn start_transaction(&mut self, _req: StartTransactionRequest) -> Result<StartTransactionResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn start_transaction(&mut self, _req: StartTransactionRequest) -> Result<StartTransactionResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle StatusNotificationRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn status_notification(&mut self, _req: StatusNotificationRequest) -> Result<StatusNotificationResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn status_notification(&mut self, _req: StatusNotificationRequest) -> Result<StatusNotificationResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle StopTransactionRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn stop_transaction(&mut self, _req: StopTransactionRequest) -> Result<StopTransactionResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn stop_transaction(&mut self, _req: StopTransactionRequest) -> Result<StopTransactionResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle TriggerMessageRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn trigger_message(&mut self, _req: TriggerMessageRequest) -> Result<TriggerMessageResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn trigger_message(&mut self, _req: TriggerMessageRequest) -> Result<TriggerMessageResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle UnlockConnectorRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn unlock_connector(&mut self, _req: UnlockConnectorRequest) -> Result<UnlockConnectorResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn unlock_connector(&mut self, _req: UnlockConnectorRequest) -> Result<UnlockConnectorResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle UpdateFirmwareRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn update_firmware(&mut self, _req: UpdateFirmwareRequest) -> Result<UpdateFirmwareResponse, OCPPCallErrorCode> {Err(OCPPCallErrorCode::NotImplemented)}
+    fn update_firmware(&mut self, _req: UpdateFirmwareRequest) -> Result<UpdateFirmwareResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
 
     /// Build [OCPPCallResult] from [OCPPCall]
     fn build_response(&mut self, call: OCPPCall) -> Result<OCPPCallResult, OCPPCallError> {
-        let OCPPCall {
-            unique_id,
-            payload,
-            ..
-        } = call;
+        let OCPPCall { unique_id, payload, .. } = call;
 
         // Validate incoming payload
         if let Err(e) = payload.validate() {
@@ -785,9 +767,6 @@ pub trait OCPPCallResultBuilder {
             return Err(OCPPCallError::from_call(&unique_id, OCPPCallErrorCode::InternalError));
         }
 
-        Ok(OCPPCallResult {
-            unique_id,
-            payload,
-        })
+        Ok(OCPPCallResult { unique_id, payload })
     }
 }
