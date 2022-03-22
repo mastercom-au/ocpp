@@ -28,7 +28,7 @@
 //! request to the Central System, and the Central System will check the authorization status of the idTag when processing this StartTransaction request.
 //!
 
-pub use crate::common_types::{ChargingProfile, SimpleStatus};
+pub use crate::{ChargingProfile, SimpleStatus};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
