@@ -102,20 +102,32 @@ pub enum ChargingRateUnit {
     W,
 }
 
-// pub fn new_uid() -> String { format!("{}-{}", Utc::now().timestamp(), thread_rng().gen_range(0..9999)) }
+impl ChargingSchedule {
+    /// Builder constructor to generate a default new charging schedule
+    pub fn new(charging_rate_unit: ChargingRateUnit, charging_schedule_period: Vec<ChargingSchedulePeriod>) -> ChargingSchedule {
+        ChargingSchedule {
+            duration: None,
+            start_schedule: None,
+            charging_rate_unit,
+            charging_schedule_period,
+            min_charging_rate: None,
+        }
+    }
+}
 
-// impl ChargingProfile {
-//     pub fn new() -> ChargingProfile {
-//         ChargingProfile {
-//             charging_profile_id: (),
-//             transaction_id: (),
-//             stack_level: (),
-//             charging_profile_purpose: (),
-//             charging_profile_kind: (),
-//             recurrency_kind: (),
-//             valid_from: (),
-//             valid_to: (),
-//             charging_schedule: (),
-//         }
-//     }
-// }
+impl ChargingProfile {
+    /// Builder constructor to generate a default new charging profile
+    pub fn new(charging_profile_id: u32, stack_level: u32, charging_schedule: ChargingSchedule, charging_profile_purpose: ChargingProfilePurpose, charging_profile_kind: ChargingProfileKind) -> ChargingProfile {
+        ChargingProfile {
+            charging_profile_id,
+            transaction_id: None,
+            stack_level,
+            charging_profile_purpose,
+            charging_profile_kind,
+            recurrency_kind: None,
+            valid_from: None,
+            valid_to: None,
+            charging_schedule,
+        }
+    }
+}
