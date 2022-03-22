@@ -101,3 +101,21 @@ pub enum ChargingRateUnit {
     ///Total power in Watts
     W,
 }
+
+// pub fn new_uid() -> String { format!("{}-{}", Utc::now().timestamp(), thread_rng().gen_range(0..9999)) }
+
+// impl ChargingProfile {
+//     pub fn new() -> ChargingProfile {
+//         ChargingProfile {
+//             charging_profile_id: (),
+//             transaction_id: (),
+//             stack_level: (),
+//             charging_profile_purpose: (),
+//             charging_profile_kind: (),
+//             recurrency_kind: (),
+//             valid_from: (),
+//             valid_to: (),
+//             charging_schedule: (),
+//         }
+//     }
+// }
