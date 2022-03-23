@@ -120,25 +120,25 @@ impl ChargingSchedule {
         self
     }
 
-    /// Set Duration
+    /// Set Schedule Start Time
     pub fn start_schedule(mut self, start_schedule: DateTime<Utc>) -> Self {
         self.start_schedule = Some(start_schedule);
         self
     }
 
-    /// Set Duration
+    /// Set Charging Rate Unit
     pub fn charging_rate_unit(mut self, charging_rate_unit: ChargingRateUnit) -> Self {
         self.charging_rate_unit = charging_rate_unit;
         self
     }
 
-    /// Set Duration
+    /// Set Charging Schedule Period
     pub fn charging_schedule_period(mut self, charging_schedule_period: Vec<ChargingSchedulePeriod>) -> Self {
         self.charging_schedule_period = charging_schedule_period;
         self
     }
 
-    /// Set Duration
+    /// Set Minimum Charging Rate
     pub fn min_charging_rate(mut self, min_charging_rate: f32) -> Self {
         self.min_charging_rate = Some(min_charging_rate);
         self
