@@ -104,8 +104,8 @@ pub enum ChargingRateUnit {
 
 impl ChargingSchedule {
     /// Builder constructor to generate a default new charging schedule
-    pub fn new(charging_rate_unit: ChargingRateUnit, charging_schedule_period: Vec<ChargingSchedulePeriod>) -> ChargingSchedule {
-        ChargingSchedule {
+    pub fn new(charging_rate_unit: ChargingRateUnit, charging_schedule_period: Vec<ChargingSchedulePeriod>) -> Self {
+        Self {
             duration: None,
             start_schedule: None,
             charging_rate_unit,
@@ -113,21 +113,108 @@ impl ChargingSchedule {
             min_charging_rate: None,
         }
     }
+
+    /// Set Duration
+    pub fn duration(mut self, duration: u32) -> Self {
+        self.duration = Some(duration);
+        self
+    }
+
+    /// Set Duration
+    pub fn start_schedule(mut self, start_schedule: DateTime<Utc>) -> Self {
+        self.start_schedule = Some(start_schedule);
+        self
+    }
+
+    /// Set Duration
+    pub fn charging_rate_unit(mut self, charging_rate_unit: ChargingRateUnit) -> Self {
+        self.charging_rate_unit = charging_rate_unit;
+        self
+    }
+
+    /// Set Duration
+    pub fn charging_schedule_period(mut self, charging_schedule_period: Vec<ChargingSchedulePeriod>) -> Self {
+        self.charging_schedule_period = charging_schedule_period;
+        self
+    }
+
+    /// Set Duration
+    pub fn min_charging_rate(mut self, min_charging_rate: f32) -> Self {
+        self.min_charging_rate = Some(min_charging_rate);
+        self
+    }
 }
 
 impl ChargingProfile {
     /// Builder constructor to generate a default new charging profile
-    pub fn new(charging_profile_id: u32, stack_level: u32, charging_schedule: ChargingSchedule, charging_profile_purpose: ChargingProfilePurpose, charging_profile_kind: ChargingProfileKind) -> ChargingProfile {
-        ChargingProfile {
+    pub fn new(charging_profile_id: u32, charging_schedule: ChargingSchedule) -> Self {
+        Self {
             charging_profile_id,
             transaction_id: None,
-            stack_level,
-            charging_profile_purpose,
-            charging_profile_kind,
+            // Default
+            stack_level: 10,
+            // Default
+            charging_profile_purpose: ChargingProfilePurpose::TxProfile,
+            // Default
+            charging_profile_kind: ChargingProfileKind::Relative,
             recurrency_kind: None,
             valid_from: None,
             valid_to: None,
             charging_schedule,
         }
+    }
+
+    /// Set Charging Profile Id
+    pub fn charging_profile_id(mut self, charging_profile_id: u32) -> Self {
+        self.charging_profile_id = charging_profile_id;
+        self
+    }
+
+    /// Set Transaction Id
+    pub fn transaction_id(mut self, transaction_id: u32) -> Self {
+        self.transaction_id = Some(transaction_id);
+        self
+    }
+
+    /// Set Stack Level
+    pub fn stack_level(mut self, stack_level: u32) -> Self {
+        self.stack_level = stack_level;
+        self
+    }
+
+    /// Set Charging Profile Purpose
+    pub fn charging_profile_purpose(mut self, charging_profile_purpose: ChargingProfilePurpose) -> Self {
+        self.charging_profile_purpose = charging_profile_purpose;
+        self
+    }
+
+    /// Set Charging Profile Kind
+    pub fn charging_profile_kind(mut self, charging_profile_kind: ChargingProfileKind) -> Self {
+        self.charging_profile_kind = charging_profile_kind;
+        self
+    }
+
+    /// Set Recurrency Kind
+    pub fn recurrency_kind(mut self, recurrency_kind: RecurrencyKind) -> Self {
+        self.recurrency_kind = Some(recurrency_kind);
+        self
+    }
+
+    /// Set Valid-From
+    pub fn valid_from(mut self, valid_from: DateTime<Utc>) -> Self {
+        self.valid_from = Some(valid_from);
+        self
+    }
+
+    /// Set Valid-To
+    pub fn valid_to(mut self, valid_to: DateTime<Utc>) -> Self {
+        self.valid_to = Some(valid_to);
+        self
+    }
+
+    /// Set Charging Schedule
+    pub fn charging_schedule(mut self, charging_schedule: ChargingSchedule) -> Self {
+        self.charging_schedule = charging_schedule;
+        self
     }
 }

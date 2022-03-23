@@ -89,7 +89,7 @@ fn test_serialize_get_configuration_call() -> Result<(), Box<dyn std::error::Err
     let message = crate::OCPPMessage::Call((String::from("64:1"), crate::OCPPCallPayload::GetConfiguration(req)).into());
     let json = serde_json::to_string(&message)?;
 
-    let expected= "[2,\"64:1\",\"GetConfiguration\",{}]";
+    let expected = "[2,\"64:1\",\"GetConfiguration\",{}]";
 
     assert_eq!(json, expected);
 
