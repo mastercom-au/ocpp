@@ -102,119 +102,163 @@ pub enum ChargingRateUnit {
     W,
 }
 
-impl ChargingSchedule {
-    /// Builder constructor to generate a default new charging schedule
-    pub fn new(charging_rate_unit: ChargingRateUnit, charging_schedule_period: Vec<ChargingSchedulePeriod>) -> Self {
-        Self {
-            duration: None,
-            start_schedule: None,
-            charging_rate_unit,
-            charging_schedule_period,
-            min_charging_rate: None,
-        }
-    }
-
-    /// Set Duration
-    pub fn duration(mut self, duration: u32) -> Self {
-        self.duration = Some(duration);
-        self
-    }
-
-    /// Set Schedule Start Time
-    pub fn start_schedule(mut self, start_schedule: DateTime<Utc>) -> Self {
-        self.start_schedule = Some(start_schedule);
-        self
-    }
-
-    /// Set Charging Rate Unit
-    pub fn charging_rate_unit(mut self, charging_rate_unit: ChargingRateUnit) -> Self {
-        self.charging_rate_unit = charging_rate_unit;
-        self
-    }
-
-    /// Set Charging Schedule Period
-    pub fn charging_schedule_period(mut self, charging_schedule_period: Vec<ChargingSchedulePeriod>) -> Self {
-        self.charging_schedule_period = charging_schedule_period;
-        self
-    }
-
-    /// Set Minimum Charging Rate
-    pub fn min_charging_rate(mut self, min_charging_rate: f32) -> Self {
-        self.min_charging_rate = Some(min_charging_rate);
-        self
-    }
+#[derive(Debug, Clone)]
+struct ChargingProfileBuilder {
+    /// Required. Unique identifier for this profile.
+    pub charging_profile_id: u32,
+    /// Optional. Only valid if ChargingProfilePurpose is set to TxProfile, the transactionId MAY be used to match the profile to a specific transaction.
+    pub transaction_id: Option<u32>,
+    /// Required. Value determining level in hierarchy stack of profiles. Higher values have precedence over lower values. Lowest level is 0.
+    pub stack_level: u32,
+    /// Required. Defines the purpose of the schedule transferred by this message.
+    pub charging_profile_purpose: ChargingProfilePurpose,
+    /// Required. Indicates the kind of schedule.
+    pub charging_profile_kind: ChargingProfileKind,
+    /// Optional. Indicates the start point of a recurrence
+    pub recurrency_kind: Option<RecurrencyKind>,
+    /// Optional. Point in time at which the profile starts to be valid. If absent, the profile is valid as soon as it is received by the Charge Point.
+    pub valid_from: Option<DateTime<Utc>>,
+    /// Optional. Point in time at which the profile stops to be valid. If absent, the profile is valid until it is replaced by another profile.
+    pub valid_to: Option<DateTime<Utc>>,
+    /// Required. Contains limits for the available power or current over time
+    pub charging_schedule: ChargingSchedule,
 }
 
-impl ChargingProfile {
-    /// Builder constructor to generate a default new charging profile
-    pub fn new(charging_profile_id: u32, charging_schedule: ChargingSchedule) -> Self {
-        Self {
-            charging_profile_id,
+#[derive(Debug, Default)]
+pub struct exists;
+#[derive(Debug, Default)]
+pub struct not_exists;
+
+impl ChargingProfileBuilder<test1, test2, test3, test4> {
+    fn default(self, charging_schedule: ChargingSchedule) -> Self{
+        ChargingProfileBuilder { 
+            charging_profile_id: 0,
             transaction_id: None,
-            // Default
             stack_level: 10,
-            // Default
             charging_profile_purpose: ChargingProfilePurpose::TxProfile,
-            // Default
             charging_profile_kind: ChargingProfileKind::Relative,
             recurrency_kind: None,
             valid_from: None,
             valid_to: None,
             charging_schedule,
-        }
-    }
-
-    /// Set Charging Profile Id
-    pub fn charging_profile_id(mut self, charging_profile_id: u32) -> Self {
-        self.charging_profile_id = charging_profile_id;
-        self
-    }
-
-    /// Set Transaction Id
-    pub fn transaction_id(mut self, transaction_id: u32) -> Self {
-        self.transaction_id = Some(transaction_id);
-        self
-    }
-
-    /// Set Stack Level
-    pub fn stack_level(mut self, stack_level: u32) -> Self {
-        self.stack_level = stack_level;
-        self
-    }
-
-    /// Set Charging Profile Purpose
-    pub fn charging_profile_purpose(mut self, charging_profile_purpose: ChargingProfilePurpose) -> Self {
-        self.charging_profile_purpose = charging_profile_purpose;
-        self
-    }
-
-    /// Set Charging Profile Kind
-    pub fn charging_profile_kind(mut self, charging_profile_kind: ChargingProfileKind) -> Self {
-        self.charging_profile_kind = charging_profile_kind;
-        self
-    }
-
-    /// Set Recurrency Kind
-    pub fn recurrency_kind(mut self, recurrency_kind: RecurrencyKind) -> Self {
-        self.recurrency_kind = Some(recurrency_kind);
-        self
-    }
-
-    /// Set Valid-From
-    pub fn valid_from(mut self, valid_from: DateTime<Utc>) -> Self {
-        self.valid_from = Some(valid_from);
-        self
-    }
-
-    /// Set Valid-To
-    pub fn valid_to(mut self, valid_to: DateTime<Utc>) -> Self {
-        self.valid_to = Some(valid_to);
-        self
-    }
-
-    /// Set Charging Schedule
-    pub fn charging_schedule(mut self, charging_schedule: ChargingSchedule) -> Self {
-        self.charging_schedule = charging_schedule;
-        self
     }
 }
+
+// impl ChargingSchedule {
+//     /// Builder constructor to generate a default new charging schedule
+//     pub fn new(charging_rate_unit: ChargingRateUnit, charging_schedule_period: Vec<ChargingSchedulePeriod>) -> Self {
+//         Self {
+//             duration: None,
+//             start_schedule: None,
+//             charging_rate_unit,
+//             charging_schedule_period,
+//             min_charging_rate: None,
+//         }
+//     }
+
+//     /// Set Duration
+//     pub fn duration(mut self, duration: u32) -> Self {
+//         self.duration = Some(duration);
+//         self
+//     }
+
+//     /// Set Schedule Start Time
+//     pub fn start_schedule(mut self, start_schedule: DateTime<Utc>) -> Self {
+//         self.start_schedule = Some(start_schedule);
+//         self
+//     }
+
+//     /// Set Charging Rate Unit
+//     pub fn charging_rate_unit(mut self, charging_rate_unit: ChargingRateUnit) -> Self {
+//         self.charging_rate_unit = charging_rate_unit;
+//         self
+//     }
+
+//     /// Set Charging Schedule Period
+//     pub fn charging_schedule_period(mut self, charging_schedule_period: Vec<ChargingSchedulePeriod>) -> Self {
+//         self.charging_schedule_period = charging_schedule_period;
+//         self
+//     }
+
+//     /// Set Minimum Charging Rate
+//     pub fn min_charging_rate(mut self, min_charging_rate: f32) -> Self {
+//         self.min_charging_rate = Some(min_charging_rate);
+//         self
+//     }
+// }
+
+
+
+// impl ChargingProfile {
+//     /// Builder constructor to generate a default new charging profile
+//     pub fn new(charging_profile_id: u32, charging_schedule: ChargingSchedule) -> Self {
+//         Self {
+//             charging_profile_id,
+//             transaction_id: None,
+//             // Default
+//             stack_level: 10,
+//             // Default
+//             charging_profile_purpose: ChargingProfilePurpose::TxProfile,
+//             // Default
+//             charging_profile_kind: ChargingProfileKind::Relative,
+//             recurrency_kind: None,
+//             valid_from: None,
+//             valid_to: None,
+//             charging_schedule,
+//         }
+//     }
+
+//     /// Set Charging Profile Id
+//     pub fn charging_profile_id(mut self, charging_profile_id: u32) -> Self {
+//         self.charging_profile_id = charging_profile_id;
+//         self
+//     }
+
+//     /// Set Transaction Id
+//     pub fn transaction_id(mut self, transaction_id: u32) -> Self {
+//         self.transaction_id = Some(transaction_id);
+//         self
+//     }
+
+//     /// Set Stack Level
+//     pub fn stack_level(mut self, stack_level: u32) -> Self {
+//         self.stack_level = stack_level;
+//         self
+//     }
+
+//     /// Set Charging Profile Purpose
+//     pub fn charging_profile_purpose(mut self, charging_profile_purpose: ChargingProfilePurpose) -> Self {
+//         self.charging_profile_purpose = charging_profile_purpose;
+//         self
+//     }
+
+//     /// Set Charging Profile Kind
+//     pub fn charging_profile_kind(mut self, charging_profile_kind: ChargingProfileKind) -> Self {
+//         self.charging_profile_kind = charging_profile_kind;
+//         self
+//     }
+
+//     /// Set Recurrency Kind
+//     pub fn recurrency_kind(mut self, recurrency_kind: RecurrencyKind) -> Self {
+//         self.recurrency_kind = Some(recurrency_kind);
+//         self
+//     }
+
+//     /// Set Valid-From
+//     pub fn valid_from(mut self, valid_from: DateTime<Utc>) -> Self {
+//         self.valid_from = Some(valid_from);
+//         self
+//     }
+
+//     /// Set Valid-To
+//     pub fn valid_to(mut self, valid_to: DateTime<Utc>) -> Self {
+//         self.valid_to = Some(valid_to);
+//         self
+//     }
+
+//     /// Set Charging Schedule
+//     pub fn charging_schedule(mut self, charging_schedule: ChargingSchedule) -> Self {
+//         self.charging_schedule = charging_schedule;
+//         self
+//     }
+// }
