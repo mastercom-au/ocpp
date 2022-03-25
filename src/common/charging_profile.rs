@@ -126,16 +126,20 @@ pub struct ChargingProfileBuilder<IdState, LevelState, ScheduleState> {
 }
 
 /// Typestate value for Id
+#[derive(Debug)]
 pub struct Id(u32);
 /// Typestate value for missing Id
 pub struct NoId;
 
 /// Typestate value for Level
+#[derive(Debug)]
 pub struct Level(u32);
 /// Typestate value for missing Level
 pub struct NoLevel;
 
 /// Typestate value for Charging Schedule
+#[derive(Debug)]
+
 pub struct Schedule(ChargingSchedule);
 /// Typestate value for missing Charging Schedule
 pub struct NoSchedule;
@@ -162,9 +166,9 @@ impl ChargingProfileBuilder<NoId, NoLevel, NoSchedule> {
     }
 }
 
-impl<L, S> ChargingProfileBuilder<NoId, L, S> {
+impl<LevelState, ScheduleState> ChargingProfileBuilder<NoId, LevelState, ScheduleState> {
     /// Add Id field and update typestate to specify it has been added
-    pub fn id(self, charging_profile_id: u32) -> ChargingProfileBuilder<Id, L, S> {
+    pub fn id(self, charging_profile_id: u32) -> ChargingProfileBuilder<Id, LevelState, ScheduleState> {
         let Self {
             transaction_id,
             stack_level,
@@ -190,9 +194,9 @@ impl<L, S> ChargingProfileBuilder<NoId, L, S> {
     }
 }
 
-impl<I, S> ChargingProfileBuilder<I, NoLevel, S> {
+impl<IdState, ScheduleState> ChargingProfileBuilder<IdState, NoLevel, ScheduleState> {
     /// Add level field and update typestate to specify it has been added
-    pub fn level(self, stack_level: u32) -> ChargingProfileBuilder<I, Level, S> {
+    pub fn level(self, stack_level: u32) -> ChargingProfileBuilder<IdState, Level, ScheduleState> {
         let Self {
             charging_profile_id,
             transaction_id,
@@ -218,9 +222,9 @@ impl<I, S> ChargingProfileBuilder<I, NoLevel, S> {
     }
 }
 
-impl<I, L> ChargingProfileBuilder<I, L, NoSchedule> {
+impl<IdState, LevelState> ChargingProfileBuilder<IdState, LevelState, NoSchedule> {
     /// Add schedule field and update typestate to specify it has been added
-    pub fn schedule(self, charging_schedule: ChargingSchedule) -> ChargingProfileBuilder<I, L, Schedule> {
+    pub fn schedule(self, charging_schedule: ChargingSchedule) -> ChargingProfileBuilder<IdState, LevelState, Schedule> {
         let Self {
             charging_profile_id,
             transaction_id,
@@ -246,7 +250,7 @@ impl<I, L> ChargingProfileBuilder<I, L, NoSchedule> {
     }
 }
 
-impl<I, L, S> ChargingProfileBuilder<I, L, S> {
+impl<IdState, LevelState, ScheduleState> ChargingProfileBuilder<IdState, LevelState, ScheduleState> {
     /// transaction_id field
     pub fn transaction_id(mut self, transaction_id: u32) -> Self {
         self.transaction_id = Some(transaction_id);
@@ -285,6 +289,7 @@ impl<I, L, S> ChargingProfileBuilder<I, L, S> {
 }
 
 impl ChargingProfileBuilder<Id, Level, Schedule> {
+    /// Build ChargingProfile from existing builder struct
     pub fn build(self) -> ChargingProfile {
         let Id(charging_profile_id) = self.charging_profile_id;
         let Level(stack_level) = self.stack_level;
