@@ -103,7 +103,8 @@ pub enum ChargingRateUnit {
 }
 
 #[derive(Debug, Clone)]
-struct ChargingProfileBuilder<IdState, LevelState, ScheduleState> {
+/// Charging Profile Builder containing placeholder values to build into a charging profile
+pub struct ChargingProfileBuilder<IdState, LevelState, ScheduleState> {
     /// Required. Unique identifier for this profile.
     pub charging_profile_id: IdState,
     /// Optional. Only valid if ChargingProfilePurpose is set to TxProfile, the transactionId MAY be used to match the profile to a specific transaction.
@@ -124,21 +125,29 @@ struct ChargingProfileBuilder<IdState, LevelState, ScheduleState> {
     pub charging_schedule: ScheduleState,
 }
 
-struct Id(u32);
-struct NoId;
+/// Typestate value for Id
+pub struct Id(u32);
+/// Typestate value for missing Id
+pub struct NoId;
 
-struct Level(u32);
-struct NoLevel;
+/// Typestate value for Level
+pub struct Level(u32);
+/// Typestate value for missing Level
+pub struct NoLevel;
 
-struct Schedule(ChargingSchedule);
-struct NoSchedule;
+/// Typestate value for Charging Schedule
+pub struct Schedule(ChargingSchedule);
+/// Typestate value for missing Charging Schedule
+pub struct NoSchedule;
 
 impl ChargingProfile {
-    fn builder() -> ChargingProfileBuilder<NoId, NoLevel, NoSchedule> { ChargingProfileBuilder::new() }
+    /// Create a new charging profile builder
+    pub fn builder() -> ChargingProfileBuilder<NoId, NoLevel, NoSchedule> { ChargingProfileBuilder::new() }
 }
 
 impl ChargingProfileBuilder<NoId, NoLevel, NoSchedule> {
-    fn new() -> Self {
+    /// Create new charging profile builder and return with initialized typestates
+    pub fn new() -> Self {
         ChargingProfileBuilder {
             charging_profile_id: NoId,
             transaction_id: None,
@@ -154,7 +163,8 @@ impl ChargingProfileBuilder<NoId, NoLevel, NoSchedule> {
 }
 
 impl<L, S> ChargingProfileBuilder<NoId, L, S> {
-    fn id(mut self, charging_profile_id: u32) -> ChargingProfileBuilder<Id, L, S> {
+    /// Add Id field and update typestate to specify it has been added
+    pub fn id(self, charging_profile_id: u32) -> ChargingProfileBuilder<Id, L, S> {
         let Self {
             transaction_id,
             stack_level,
@@ -181,7 +191,8 @@ impl<L, S> ChargingProfileBuilder<NoId, L, S> {
 }
 
 impl<I, S> ChargingProfileBuilder<I, NoLevel, S> {
-    fn level(mut self, stack_level: u32) -> ChargingProfileBuilder<I, Level, S> {
+    /// Add level field and update typestate to specify it has been added
+    pub fn level(self, stack_level: u32) -> ChargingProfileBuilder<I, Level, S> {
         let Self {
             charging_profile_id,
             transaction_id,
@@ -208,7 +219,8 @@ impl<I, S> ChargingProfileBuilder<I, NoLevel, S> {
 }
 
 impl<I, L> ChargingProfileBuilder<I, L, NoSchedule> {
-    fn schedule(mut self, charging_schedule: ChargingSchedule) -> ChargingProfileBuilder<I, L, Schedule> {
+    /// Add schedule field and update typestate to specify it has been added
+    pub fn schedule(self, charging_schedule: ChargingSchedule) -> ChargingProfileBuilder<I, L, Schedule> {
         let Self {
             charging_profile_id,
             transaction_id,
@@ -235,33 +247,59 @@ impl<I, L> ChargingProfileBuilder<I, L, NoSchedule> {
 }
 
 impl<I, L, S> ChargingProfileBuilder<I, L, S> {
+    /// transaction_id field
     pub fn transaction_id(mut self, transaction_id: u32) -> Self {
         self.transaction_id = Some(transaction_id);
         self
     }
 
+    /// Add charging_profile_purpose field
     pub fn charging_profile_purpose(mut self, charging_profile_purpose: ChargingProfilePurpose) -> Self {
         self.charging_profile_purpose = charging_profile_purpose;
         self
     }
 
+    /// Add charging_profile_kind field
     pub fn charging_profile_kind(mut self, charging_profile_kind: ChargingProfileKind) -> Self {
         self.charging_profile_kind = charging_profile_kind;
         self
     }
 
+    /// Add recurrency_kind field
     pub fn recurrency_kind(mut self, recurrency_kind: RecurrencyKind) -> Self {
         self.recurrency_kind = Some(recurrency_kind);
         self
     }
 
+    /// Add valid_from field
     pub fn valid_from(mut self, valid_from: DateTime<Utc>) -> Self {
         self.valid_from = Some(valid_from);
         self
     }
 
+    /// Add valid_to field
     pub fn valid_to(mut self, valid_to: DateTime<Utc>) -> Self {
         self.valid_to = Some(valid_to);
         self
+    }
+}
+
+impl ChargingProfileBuilder<Id, Level, Schedule> {
+    pub fn build(self) -> ChargingProfile {
+        let Id(charging_profile_id) = self.charging_profile_id;
+        let Level(stack_level) = self.stack_level;
+        let Schedule(charging_schedule) = self.charging_schedule;
+
+        ChargingProfile {
+            charging_profile_id,
+            transaction_id: self.transaction_id,
+            stack_level,
+            charging_profile_purpose: self.charging_profile_purpose,
+            charging_profile_kind: self.charging_profile_kind,
+            recurrency_kind: self.recurrency_kind,
+            valid_from: self.valid_from,
+            valid_to: self.valid_to,
+            charging_schedule,
+        }
     }
 }
