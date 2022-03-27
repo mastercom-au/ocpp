@@ -104,13 +104,13 @@ pub enum ChargingRateUnit {
 
 #[derive(Debug, Clone)]
 /// Charging Profile Builder containing placeholder values to build into a charging profile
-pub struct ChargingProfileBuilder<IdState, LevelState, ScheduleState> {
+pub struct ChargingProfileBuilder<I, L, S> {
     /// Required. Unique identifier for this profile.
-    pub charging_profile_id: IdState,
+    pub charging_profile_id: I,
     /// Optional. Only valid if ChargingProfilePurpose is set to TxProfile, the transactionId MAY be used to match the profile to a specific transaction.
     pub transaction_id: Option<u32>,
     /// Required. Value determining level in hierarchy stack of profiles. Higher values have precedence over lower values. Lowest level is 0.
-    pub stack_level: LevelState,
+    pub stack_level: L,
     /// Required. Defines the purpose of the schedule transferred by this message.
     pub charging_profile_purpose: ChargingProfilePurpose,
     /// Required. Indicates the kind of schedule.
@@ -122,24 +122,20 @@ pub struct ChargingProfileBuilder<IdState, LevelState, ScheduleState> {
     /// Optional. Point in time at which the profile stops to be valid. If absent, the profile is valid until it is replaced by another profile.
     pub valid_to: Option<DateTime<Utc>>,
     /// Required. Contains limits for the available power or current over time
-    pub charging_schedule: ScheduleState,
+    pub charging_schedule: S,
 }
 
 /// Typestate value for Id
-#[derive(Debug)]
 pub struct Id(u32);
 /// Typestate value for missing Id
 pub struct NoId;
 
 /// Typestate value for Level
-#[derive(Debug)]
 pub struct Level(u32);
 /// Typestate value for missing Level
 pub struct NoLevel;
 
 /// Typestate value for Charging Schedule
-#[derive(Debug)]
-
 pub struct Schedule(ChargingSchedule);
 /// Typestate value for missing Charging Schedule
 pub struct NoSchedule;
@@ -166,9 +162,9 @@ impl ChargingProfileBuilder<NoId, NoLevel, NoSchedule> {
     }
 }
 
-impl<LevelState, ScheduleState> ChargingProfileBuilder<NoId, LevelState, ScheduleState> {
+impl<I, L, S> ChargingProfileBuilder<I, L, S> {
     /// Add Id field and update typestate to specify it has been added
-    pub fn id(self, charging_profile_id: u32) -> ChargingProfileBuilder<Id, LevelState, ScheduleState> {
+    pub fn id(self, charging_profile_id: u32) -> ChargingProfileBuilder<Id, L, S> {
         let Self {
             transaction_id,
             stack_level,
@@ -192,11 +188,9 @@ impl<LevelState, ScheduleState> ChargingProfileBuilder<NoId, LevelState, Schedul
             charging_schedule,
         }
     }
-}
 
-impl<IdState, ScheduleState> ChargingProfileBuilder<IdState, NoLevel, ScheduleState> {
-    /// Add level field and update typestate to specify it has been added
-    pub fn level(self, stack_level: u32) -> ChargingProfileBuilder<IdState, Level, ScheduleState> {
+    /// Add Level field and update typestate to specify it has been added
+    pub fn level(self, stack_level: u32) -> ChargingProfileBuilder<I, Level, S> {
         let Self {
             charging_profile_id,
             transaction_id,
@@ -220,11 +214,9 @@ impl<IdState, ScheduleState> ChargingProfileBuilder<IdState, NoLevel, ScheduleSt
             charging_schedule,
         }
     }
-}
 
-impl<IdState, LevelState> ChargingProfileBuilder<IdState, LevelState, NoSchedule> {
-    /// Add schedule field and update typestate to specify it has been added
-    pub fn schedule(self, charging_schedule: ChargingSchedule) -> ChargingProfileBuilder<IdState, LevelState, Schedule> {
+    /// Add Schedule field and update typestate to specify it has been added
+    pub fn schedule(self, charging_schedule: ChargingSchedule) -> ChargingProfileBuilder<I, L, Schedule> {
         let Self {
             charging_profile_id,
             transaction_id,
@@ -248,9 +240,7 @@ impl<IdState, LevelState> ChargingProfileBuilder<IdState, LevelState, NoSchedule
             charging_schedule: Schedule(charging_schedule),
         }
     }
-}
 
-impl<IdState, LevelState, ScheduleState> ChargingProfileBuilder<IdState, LevelState, ScheduleState> {
     /// transaction_id field
     pub fn transaction_id(mut self, transaction_id: u32) -> Self {
         self.transaction_id = Some(transaction_id);
