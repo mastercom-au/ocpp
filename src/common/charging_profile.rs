@@ -147,12 +147,18 @@ impl ChargingProfile {
 
 impl ChargingProfileBuilder<NoId, NoLevel, NoSchedule> {
     /// Create new charging profile builder and return with initialized typestates
+    /// Note, both profile purpose and kind are initialized for transactional purposes
+    /// The builder will return a compile error if build is called when the Profile Id, Stack Level and Charging Schedule have not been set.
+    ///
+    /// A builder can be recycled to generate multiple variants of the same charging profile.
     pub fn new() -> Self {
         ChargingProfileBuilder {
             charging_profile_id: NoId,
             transaction_id: None,
             stack_level: NoLevel,
+            /// Default profile purpose
             charging_profile_purpose: ChargingProfilePurpose::TxProfile,
+            /// Default profile kind
             charging_profile_kind: ChargingProfileKind::Relative,
             recurrency_kind: None,
             valid_from: None,
@@ -163,7 +169,7 @@ impl ChargingProfileBuilder<NoId, NoLevel, NoSchedule> {
 }
 
 impl<I, L, S> ChargingProfileBuilder<I, L, S> {
-    /// Add Id field and update typestate to specify it has been added
+    /// Add Id field and update typestate to verify it has been added
     pub fn id(self, charging_profile_id: u32) -> ChargingProfileBuilder<Id, L, S> {
         let Self {
             transaction_id,
@@ -189,7 +195,7 @@ impl<I, L, S> ChargingProfileBuilder<I, L, S> {
         }
     }
 
-    /// Add Level field and update typestate to specify it has been added
+    /// Add Level field and update typestate to verify it has been added
     pub fn level(self, stack_level: u32) -> ChargingProfileBuilder<I, Level, S> {
         let Self {
             charging_profile_id,
@@ -215,7 +221,7 @@ impl<I, L, S> ChargingProfileBuilder<I, L, S> {
         }
     }
 
-    /// Add Schedule field and update typestate to specify it has been added
+    /// Add Schedule field and update typestate to verify it has been added
     pub fn schedule(self, charging_schedule: ChargingSchedule) -> ChargingProfileBuilder<I, L, Schedule> {
         let Self {
             charging_profile_id,
@@ -280,6 +286,7 @@ impl<I, L, S> ChargingProfileBuilder<I, L, S> {
 
 impl ChargingProfileBuilder<Id, Level, Schedule> {
     /// Build ChargingProfile from existing builder struct
+    /// This function CANNOT be called unless the profile ID, Stack Level and Schedule have been called
     pub fn build(self) -> ChargingProfile {
         let Id(charging_profile_id) = self.charging_profile_id;
         let Level(stack_level) = self.stack_level;
