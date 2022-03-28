@@ -5,7 +5,7 @@
 //!     ChargingProfileId:      u32
 //!     StackLevel:             Option<u32>
 //!     ChargingProfilePurpose  Enum
-//!    ChargingProfileKind     Enum
+//!     ChargingProfileKind     Enum
 //!     RecurrencyKind          Option<Enum>
 //!     ValidFrom               Option<DateTime<Utc>>
 //!     ValidTo                 Option<DateTime<Utc>>
