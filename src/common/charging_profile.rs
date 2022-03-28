@@ -1,23 +1,23 @@
 //! Definition and builder for the Charge Profile structure, used to set charging behaviour and scheduling
 //!
 //! ```
-//! ChargePointProfile
-//!     ChargingProfileId:      u32
-//!     StackLevel:             Option<u32>
-//!     ChargingProfilePurpose  Enum
-//!     ChargingProfileKind     Enum
-//!     RecurrencyKind          Option<Enum>
-//!     ValidFrom               Option<DateTime<Utc>>
-//!     ValidTo                 Option<DateTime<Utc>>
-//!     ChargingSchedule        Obj
-//!         Duration                Option<u32>
-//!         StartSchedule           Option<DateTime<Utc>>
-//!         ChargingRateUnit        Enum
-//!         MinChargingRate         Option<f32>
-//!         ChargingSchedulePeriod  Vec<Obj>
-//!             StartPeriod             u32    
-//!             Limit                   f32
-//!             NumberPhases            Option<u32>
+//! //ChargePointProfile
+//! //    ChargingProfileId:      u32
+//! //    StackLevel:             Option<u32>
+//! //    ChargingProfilePurpose  Enum
+//! //   ChargingProfileKind     Enum
+//! //    RecurrencyKind          Option<Enum>
+//! //    ValidFrom               Option<DateTime<Utc>>
+//! //    ValidTo                 Option<DateTime<Utc>>
+//! //    ChargingSchedule        Obj
+//! //        Duration                Option<u32>
+//! //        StartSchedule           Option<DateTime<Utc>>
+//! //        ChargingRateUnit        Enum
+//! //        MinChargingRate         Option<f32>
+//! //        ChargingSchedulePeriod  Vec<Obj>
+//! //            StartPeriod             u32    
+//! //            Limit                   f32
+//! //            NumberPhases            Option<u32>
 //! ```
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -243,6 +243,22 @@ impl<I, L> ChargingProfileBuilder<I, L> {
             valid_to,
             charging_schedule,
         }
+    }
+
+    pub fn add_period(mut self, start_period: u32, limit: f32) {
+        self.charging_schedule.charging_schedule_period.push(ChargingSchedulePeriod {
+            start_period,
+            limit,
+            number_phases: None,
+        })
+    }
+
+    pub fn add_period_with_phases(mut self, start_period: u32, limit: f32, number_phases: u32) {
+        self.charging_schedule.charging_schedule_period.push(ChargingSchedulePeriod {
+            start_period,
+            limit,
+            number_phases: Some(number_phases),
+        })
     }
 
     /// Add transaction_id field

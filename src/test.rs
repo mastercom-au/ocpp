@@ -100,19 +100,9 @@ fn test_serialize_get_configuration_call() -> Result<(), Box<dyn std::error::Err
 fn test_charge_point_builder() -> Result<(), Box<dyn std::error::Error>> {
     use crate::{ChargingProfile, ChargingRateUnit, ChargingSchedule};
 
-    let builder = ChargingProfile::builder();
-    let mut charging_schedule_period: Vec<ChargingSchedulePeriod> = Vec::new();
+    let builder = ChargingProfile::builder(ChargingRateUnit::W);
 
-    charging_schedule_period.push(ChargingSchedulePeriod { start_period: 5, limit: 0.5, number_phases: None });
-    let charging_schedule = ChargingSchedule {
-        duration: None,
-        start_schedule: None,
-        charging_rate_unit: ChargingRateUnit::A,
-        charging_schedule_period,
-        min_charging_rate: None,
-    };
-
-    let builder = builder.schedule(charging_schedule).id(999).level(5);
+    let builder = builder.id(999).level(5);
     let profile = builder.build();
 
     assert_eq!(profile.charging_profile_id, 999);
