@@ -1,4 +1,24 @@
 //! Definition and builder for the Charge Profile structure, used to set charging behaviour and scheduling
+//!
+//! ```
+//! ChargePointProfile
+//!     ChargingProfileId:      u32
+//!     StackLevel:             Option<u32>
+//!     ChargingProfilePurpose  Enum
+//!     ChargingProfileKind     Enum
+//!     RecurrencyKind          Option<Enum>
+//!     ValidFrom               Option<DateTime<Utc>>
+//!     ValidTo                 Option<DateTime<Utc>>
+//!     ChargingSchedule        Obj
+//!         Duration                Option<u32>
+//!         StartSchedule           Option<DateTime<Utc>>
+//!         ChargingRateUnit        Enum
+//!         MinChargingRate         f32
+//!         ChargingSchedulePeriod  Vec<Obj>
+//!             StartPeriod             u32    
+//!             Limit                   f32
+//!             NumberPhases            Option<u32>
+//! ```
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
@@ -102,6 +122,21 @@ pub enum ChargingRateUnit {
     W,
 }
 
+/// Typestate value for Id
+pub struct Id(u32);
+/// Typestate value for missing Id
+pub struct NoId;
+
+/// Typestate value for Level
+pub struct Level(u32);
+/// Typestate value for missing Level
+pub struct NoLevel;
+
+/// Typestate value for Charging Schedule
+pub struct Schedule(ChargingSchedule);
+/// Typestate value for missing Charging Schedule
+pub struct NoSchedule;
+
 #[derive(Debug, Clone)]
 /// Charging Profile Builder containing placeholder values to build into a charging profile
 pub struct ChargingProfileBuilder<I, L, S> {
@@ -124,21 +159,6 @@ pub struct ChargingProfileBuilder<I, L, S> {
     /// Required. Contains limits for the available power or current over time
     pub charging_schedule: S,
 }
-
-/// Typestate value for Id
-pub struct Id(u32);
-/// Typestate value for missing Id
-pub struct NoId;
-
-/// Typestate value for Level
-pub struct Level(u32);
-/// Typestate value for missing Level
-pub struct NoLevel;
-
-/// Typestate value for Charging Schedule
-pub struct Schedule(ChargingSchedule);
-/// Typestate value for missing Charging Schedule
-pub struct NoSchedule;
 
 impl ChargingProfile {
     /// Create a new charging profile builder

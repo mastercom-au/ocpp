@@ -115,5 +115,7 @@ fn test_charge_point_builder() -> Result<(), Box<dyn std::error::Error>> {
     let builder = builder.schedule(charging_schedule).id(999).level(5);
     let profile = builder.build();
 
-    assert_eq!(profile.charging_profile_id == 5).into()
+    assert_eq!(profile.charging_profile_id, 999);
+
+    return Ok(());
 }
