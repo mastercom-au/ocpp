@@ -1,23 +1,23 @@
 //! Definition and builder for the Charge Profile structure, used to set charging behaviour and scheduling
 //!
-//! ```
-//! //ChargePointProfile
-//! //    ChargingProfileId:      u32
-//! //    StackLevel:             Option<u32>
-//! //    ChargingProfilePurpose  Enum
-//! //   ChargingProfileKind     Enum
-//! //    RecurrencyKind          Option<Enum>
-//! //    ValidFrom               Option<DateTime<Utc>>
-//! //    ValidTo                 Option<DateTime<Utc>>
-//! //    ChargingSchedule        Obj
-//! //        Duration                Option<u32>
-//! //        StartSchedule           Option<DateTime<Utc>>
-//! //        ChargingRateUnit        Enum
-//! //        MinChargingRate         Option<f32>
-//! //        ChargingSchedulePeriod  Vec<Obj>
-//! //            StartPeriod             u32    
-//! //            Limit                   f32
-//! //            NumberPhases            Option<u32>
+//! ```no_run
+//! ChargePointProfile
+//!     ChargingProfileId:      u32
+//!     StackLevel:             Option<u32>
+//!     ChargingProfilePurpose  Enum
+//!    ChargingProfileKind     Enum
+//!     RecurrencyKind          Option<Enum>
+//!     ValidFrom               Option<DateTime<Utc>>
+//!     ValidTo                 Option<DateTime<Utc>>
+//!     ChargingSchedule        Obj
+//!         Duration                Option<u32>
+//!         StartSchedule           Option<DateTime<Utc>>
+//!         ChargingRateUnit        Enum
+//!         MinChargingRate         Option<f32>
+//!         ChargingSchedulePeriod  Vec<Obj>
+//!             StartPeriod             u32    
+//!             Limit                   f32
+//!             NumberPhases            Option<u32>
 //! ```
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
