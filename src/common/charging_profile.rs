@@ -1,6 +1,6 @@
 //! Definition and builder for the Charge Profile structure, used to set charging behaviour and scheduling
 //!
-//! ```no_run
+//! ```text
 //! ChargePointProfile
 //!     ChargingProfileId:      u32
 //!     StackLevel:             Option<u32>
@@ -26,7 +26,7 @@ use strum_macros::Display;
 
 /// A ChargingProfile consists of a ChargingSchedule, describing the amount of power or current that can be delivered per time interval.
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingProfile {
     /// Required. Unique identifier for this profile.
@@ -51,7 +51,7 @@ pub struct ChargingProfile {
 
 /// Charging schedule structure defines a list of charging periods, as used in: [GetCompositeSchedule.conf](crate::server_init::get_composite_schedule) and [ChargingProfile]).
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingSchedule {
     /// Optional. Duration of the charging schedule in seconds. If the duration is left empty, the last period will continue indefinitely or until end of the transaction in case startSchedule is absent.
@@ -69,7 +69,7 @@ pub struct ChargingSchedule {
 
 /// Charging schedule period structure defines a time period in a charging schedule, as used in: [ChargingSchedule].
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingSchedulePeriod {
     /// Required. Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.
