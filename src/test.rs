@@ -100,9 +100,8 @@ fn test_serialize_get_configuration_call() -> Result<(), Box<dyn std::error::Err
 fn test_charge_point_builder() -> Result<(), Box<dyn std::error::Error>> {
     use crate::{ChargingProfile, ChargingRateUnit, ChargingSchedule};
 
-    let builder = ChargingProfile::builder(ChargingRateUnit::W);
+    let builder = ChargingProfile::builder(ChargingRateUnit::W).id(999).level(5);
 
-    let builder = builder.id(999).level(5);
     let profile = builder.build();
 
     assert_eq!(profile.charging_profile_id, 999);
