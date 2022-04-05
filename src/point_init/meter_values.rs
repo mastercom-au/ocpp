@@ -1,5 +1,19 @@
 //! A set of sampled data from the charge point denoting a series of measurements over a period of time.
 //!
+//! # Structure
+//! connectorId u32
+//! transactonId u32
+//! meterValue Vec<obj>
+//!     timestamp dateTime<utc>
+//!     sampledValue Vec<obj>
+//!         value Str
+//!         context enum String
+//!         format enum String
+//!         measurand enum String
+//!         phase enum String
+//!         location enum String
+//!         unit enum String
+//!
 //! # Behaviour
 //! It is up to the Charge Point to decide when it will send meter values. This can be configured using the ChangeConfiguration.req message to data
 //! acquisition intervals and specify data to be acquired & reported.The Charge Point SHALL send a MeterValues.req PDU for offloading meter values.
@@ -32,21 +46,6 @@
 pub use crate::MeterValue;
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
-
-/* Structure
-connectorId u32
-transactonId u32
-meterValue Vec<obj>
-    timestamp dateTime<utc>
-    sampledValue Vec<obj>
-        value String
-        context enum String
-        format enum String
-        measurand enum String
-        phase enum String
-        location enum String
-        unit enum String
-*/
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/MeterValues.json")]
