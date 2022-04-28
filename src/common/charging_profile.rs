@@ -1,4 +1,24 @@
 //! Definition and builder for the Charge Profile structure, used to set charging behaviour and scheduling
+//!
+//! ```text
+//! ChargePointProfile
+//!     ChargingProfileId:      u32
+//!     StackLevel:             Option<u32>
+//!     ChargingProfilePurpose  Enum
+//!     ChargingProfileKind     Enum
+//!     RecurrencyKind          Option<Enum>
+//!     ValidFrom               Option<DateTime<Utc>>
+//!     ValidTo                 Option<DateTime<Utc>>
+//!     ChargingSchedule        Obj
+//!         Duration                Option<u32>
+//!         StartSchedule           Option<DateTime<Utc>>
+//!         ChargingRateUnit        Enum
+//!         MinChargingRate         Option<f32>
+//!         ChargingSchedulePeriod  Vec<Obj>
+//!             StartPeriod             u32    
+//!             Limit                   f32
+//!             NumberPhases            Option<u32>
+//! ```
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
@@ -6,7 +26,7 @@ use strum_macros::Display;
 
 /// A ChargingProfile consists of a ChargingSchedule, describing the amount of power or current that can be delivered per time interval.
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingProfile {
     /// Required. Unique identifier for this profile.
@@ -31,7 +51,7 @@ pub struct ChargingProfile {
 
 /// Charging schedule structure defines a list of charging periods, as used in: [GetCompositeSchedule.conf](crate::server_init::get_composite_schedule) and [ChargingProfile]).
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingSchedule {
     /// Optional. Duration of the charging schedule in seconds. If the duration is left empty, the last period will continue indefinitely or until end of the transaction in case startSchedule is absent.
@@ -49,7 +69,7 @@ pub struct ChargingSchedule {
 
 /// Charging schedule period structure defines a time period in a charging schedule, as used in: [ChargingSchedule].
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct ChargingSchedulePeriod {
     /// Required. Start of the period, in seconds from the start of schedule. The value of StartPeriod also defines the stop time of the previous period.
@@ -102,9 +122,19 @@ pub enum ChargingRateUnit {
     W,
 }
 
+/// Typestate value for Id
+pub struct Id(u32);
+/// Typestate value for missing Id
+pub struct NoId;
+
+/// Typestate value for Level
+pub struct Level(u32);
+/// Typestate value for missing Level
+pub struct NoLevel;
+
 #[derive(Debug, Clone)]
 /// Charging Profile Builder containing placeholder values to build into a charging profile
-pub struct ChargingProfileBuilder<I, L, S> {
+pub struct ChargingProfileBuilder<I, L> {
     /// Required. Unique identifier for this profile.
     pub charging_profile_id: I,
     /// Optional. Only valid if ChargingProfilePurpose is set to TxProfile, the transactionId MAY be used to match the profile to a specific transaction.
@@ -122,36 +152,29 @@ pub struct ChargingProfileBuilder<I, L, S> {
     /// Optional. Point in time at which the profile stops to be valid. If absent, the profile is valid until it is replaced by another profile.
     pub valid_to: Option<DateTime<Utc>>,
     /// Required. Contains limits for the available power or current over time
-    pub charging_schedule: S,
+    pub charging_schedule: ChargingSchedule,
 }
-
-/// Typestate value for Id
-pub struct Id(u32);
-/// Typestate value for missing Id
-pub struct NoId;
-
-/// Typestate value for Level
-pub struct Level(u32);
-/// Typestate value for missing Level
-pub struct NoLevel;
-
-/// Typestate value for Charging Schedule
-pub struct Schedule(ChargingSchedule);
-/// Typestate value for missing Charging Schedule
-pub struct NoSchedule;
 
 impl ChargingProfile {
     /// Create a new charging profile builder
-    pub fn builder() -> ChargingProfileBuilder<NoId, NoLevel, NoSchedule> { ChargingProfileBuilder::new() }
+    pub fn builder(charging_rate_unit: ChargingRateUnit) -> ChargingProfileBuilder<NoId, NoLevel> { ChargingProfileBuilder::new(charging_rate_unit) }
 }
 
-impl ChargingProfileBuilder<NoId, NoLevel, NoSchedule> {
+impl ChargingProfileBuilder<NoId, NoLevel> {
     /// Create new charging profile builder and return with initialized typestates
     /// Note, both profile purpose and kind are initialized for transactional purposes
     /// The builder will return a compile error if build is called when the Profile Id, Stack Level and Charging Schedule have not been set.
     ///
     /// A builder can be recycled to generate multiple variants of the same charging profile.
-    pub fn new() -> Self {
+    pub fn new(charging_rate_unit: ChargingRateUnit) -> Self {
+        let charging_schedule_period: Vec<ChargingSchedulePeriod> = Vec::new();
+        let charging_schedule: ChargingSchedule = ChargingSchedule {
+            duration: None,
+            start_schedule: None,
+            charging_rate_unit,
+            charging_schedule_period,
+            min_charging_rate: None,
+        };
         ChargingProfileBuilder {
             charging_profile_id: NoId,
             transaction_id: None,
@@ -163,14 +186,15 @@ impl ChargingProfileBuilder<NoId, NoLevel, NoSchedule> {
             recurrency_kind: None,
             valid_from: None,
             valid_to: None,
-            charging_schedule: NoSchedule,
+            /// Charging schedule with empty period vec
+            charging_schedule,
         }
     }
 }
 
-impl<I, L, S> ChargingProfileBuilder<I, L, S> {
+impl<I, L> ChargingProfileBuilder<I, L> {
     /// Add Id field and update typestate to verify it has been added
-    pub fn id(self, charging_profile_id: u32) -> ChargingProfileBuilder<Id, L, S> {
+    pub fn id(self, charging_profile_id: u32) -> ChargingProfileBuilder<Id, L> {
         let Self {
             transaction_id,
             stack_level,
@@ -196,7 +220,7 @@ impl<I, L, S> ChargingProfileBuilder<I, L, S> {
     }
 
     /// Add Level field and update typestate to verify it has been added
-    pub fn level(self, stack_level: u32) -> ChargingProfileBuilder<I, Level, S> {
+    pub fn level(self, stack_level: u32) -> ChargingProfileBuilder<I, Level> {
         let Self {
             charging_profile_id,
             transaction_id,
@@ -221,30 +245,46 @@ impl<I, L, S> ChargingProfileBuilder<I, L, S> {
         }
     }
 
-    /// Add Schedule field and update typestate to verify it has been added
-    pub fn schedule(self, charging_schedule: ChargingSchedule) -> ChargingProfileBuilder<I, L, Schedule> {
-        let Self {
-            charging_profile_id,
-            transaction_id,
-            stack_level,
-            charging_profile_purpose,
-            charging_profile_kind,
-            recurrency_kind,
-            valid_from,
-            valid_to,
-            ..
-        } = self;
-        ChargingProfileBuilder {
-            charging_profile_id,
-            transaction_id,
-            stack_level,
-            charging_profile_purpose,
-            charging_profile_kind,
-            recurrency_kind,
-            valid_from,
-            valid_to,
-            charging_schedule: Schedule(charging_schedule),
-        }
+    /// Add period to periods vector without any phases
+    pub fn add_period(mut self, start_period: u32, limit: f32) {
+        self.charging_schedule.charging_schedule_period.push(ChargingSchedulePeriod {
+            start_period,
+            limit,
+            number_phases: None,
+        })
+    }
+
+    /// add period to schedule periods and include phase
+    pub fn add_period_with_phases(mut self, start_period: u32, limit: f32, number_phases: u32) {
+        self.charging_schedule.charging_schedule_period.push(ChargingSchedulePeriod {
+            start_period,
+            limit,
+            number_phases: Some(number_phases),
+        })
+    }
+
+    /// Add transaction_id field
+    pub fn schedule_duration(mut self, duration: u32) -> Self {
+        self.charging_schedule.duration = Some(duration);
+        self
+    }
+
+    /// Add start_schedule field
+    pub fn schedule_start(mut self, start_schedule: DateTime<Utc>) -> Self {
+        self.charging_schedule.start_schedule = Some(start_schedule);
+        self
+    }
+
+    /// Add charging_rate_unit field
+    pub fn schedule_charging_rate_unit(mut self, charging_rate_unit: ChargingRateUnit) -> Self {
+        self.charging_schedule.charging_rate_unit = charging_rate_unit;
+        self
+    }
+
+    /// Add min_charging_rate field
+    pub fn schedule_min_charging_rate(mut self, min_charging_rate: f32) -> Self {
+        self.charging_schedule.min_charging_rate = Some(min_charging_rate);
+        self
     }
 
     /// transaction_id field
@@ -284,13 +324,12 @@ impl<I, L, S> ChargingProfileBuilder<I, L, S> {
     }
 }
 
-impl ChargingProfileBuilder<Id, Level, Schedule> {
+impl ChargingProfileBuilder<Id, Level> {
     /// Build ChargingProfile from existing builder struct
     /// This function CANNOT be called unless the profile ID, Stack Level and Schedule have been called
     pub fn build(self) -> ChargingProfile {
         let Id(charging_profile_id) = self.charging_profile_id;
         let Level(stack_level) = self.stack_level;
-        let Schedule(charging_schedule) = self.charging_schedule;
 
         ChargingProfile {
             charging_profile_id,
@@ -301,7 +340,7 @@ impl ChargingProfileBuilder<Id, Level, Schedule> {
             recurrency_kind: self.recurrency_kind,
             valid_from: self.valid_from,
             valid_to: self.valid_to,
-            charging_schedule,
+            charging_schedule: self.charging_schedule,
         }
     }
 }

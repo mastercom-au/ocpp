@@ -1,4 +1,4 @@
-use crate::point_init::boot_notification::*;
+use crate::{point_init::boot_notification::*, ChargingSchedulePeriod};
 //use crate::server_init::*;
 use chrono::Utc;
 use ocpp_json_validate::JsonValidate;
@@ -94,4 +94,33 @@ fn test_serialize_get_configuration_call() -> Result<(), Box<dyn std::error::Err
     assert_eq!(json, expected);
 
     Ok(())
+}
+
+#[test]
+fn test_charge_point_builder() -> Result<(), Box<dyn std::error::Error>> {
+    use crate::charging_profile::*;
+    let builder = ChargingProfile::builder(ChargingRateUnit::W).id(999).level(5);
+    let profile = builder.build();
+
+    let example_profile = ChargingProfile {
+        charging_profile_id: 999,
+        transaction_id: None,
+        stack_level: 5,
+        charging_profile_kind: ChargingProfileKind::Relative,
+        charging_profile_purpose: ChargingProfilePurpose::TxProfile,
+        recurrency_kind: None,
+        valid_to: None,
+        valid_from: None,
+        charging_schedule: ChargingSchedule {
+            duration: None,
+            start_schedule: None,
+            charging_rate_unit: ChargingRateUnit::W,
+            min_charging_rate: None,
+            charging_schedule_period: Vec::new(),
+        },
+    };
+
+    assert_eq!(profile, example_profile);
+
+    return Ok(());
 }
