@@ -482,7 +482,7 @@ pub enum OCPPCallPayload {
 
 impl OCPPCallPayload {
     /// Get an OCPPResult from the type of its original call.
-    pub fn get_result_from_call(&self, result: OCPPCallResultUnknown) -> Result<OCPPCallResult, Box<serde_json::error::Error>> {
+    pub fn get_result_from_call(&self, result: OCPPCallResultUnknown) -> Result<OCPPCallResult, serde_json::error::Error> {
         use OCPPCallPayload::*;
 
         let output = match self {
