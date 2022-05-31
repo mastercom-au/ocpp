@@ -84,7 +84,7 @@ pub struct StopTransactionRequest {
     /// Optional. This contains the reason why the transaction was stopped. MAY only be omitted when the Reason is "Local".
     pub reason: Option<StopReason>,
     /// Optional. This contains transaction usage details relevant for billing purposes.
-    pub transaction_data: Option<MeterValue>,
+    pub transaction_data: Option<Vec<MeterValue>>,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
