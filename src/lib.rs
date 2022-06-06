@@ -111,6 +111,7 @@ use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
 use strum_macros::Display;
 
 use ocpp_json_validate::JsonValidate;
+use thiserror::Error;
 
 pub use common::*;
 pub use point_init::*;
@@ -424,7 +425,7 @@ impl OCPPCallError {
 
 /// OCPP Call Error Code
 #[allow(missing_docs)]
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, Error)]
 pub enum OCPPCallErrorCode {
     NotImplemented,
     NotSupported,
@@ -436,6 +437,10 @@ pub enum OCPPCallErrorCode {
     OccurenceConstraintViolation,
     TypeConstraintViolation,
     GenericError,
+}
+
+impl std::fmt::Display for OCPPCallErrorCode {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result { write!(f, "{:?}", self) }
 }
 
 /// OCPP Call Types
