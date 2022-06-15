@@ -54,5 +54,5 @@ pub enum ResetType {
 /// Field definition of the Reset.conf PDU sent by the Charge Point to the Central System in response to a Reset.req PDU.
 pub struct ResetResponse {
     /// Required. This indicates whether the Charge Point is able to perform the reset.
-    status: SimpleStatus,
+    pub status: SimpleStatus,
 }
