@@ -3,7 +3,6 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::{Display, EnumIter};
-use strum::IntoEnumIterator;
 
 /// Collection of one or more sampled values (as seen in [MeterValues.req](crate::point_init::meter_values) and [StopTransaction.req](crate::point_init::stop_transaction)), all sampled at the same time.
 #[skip_serializing_none]
