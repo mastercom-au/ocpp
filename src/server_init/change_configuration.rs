@@ -55,3 +55,4 @@ pub enum ChangeConfigurationStatus {
     /// Configuration key is not supported.
     NotSupported,
 }
+
