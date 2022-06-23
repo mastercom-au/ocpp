@@ -38,6 +38,7 @@ pub struct DataTransferRequest {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/DataTransferResponse.json")]
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the DataTransfer.conf PDU sent by the Charge Point to the Central System or vice versa in response to a DataTransfer.req PDU.

@@ -53,8 +53,8 @@ chargingSchedule struct
     minChargingRate float
 */
 
-#[skip_serializing_none]
 #[json_validate("../json_schemas/GetCompositeScheduleResponse.json")]
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the GetCompositeSchedule.conf PDU sent by the Charge Point to the Central System in response to a GetCompositeSchedule.req PDU.

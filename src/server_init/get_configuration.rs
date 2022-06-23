@@ -27,6 +27,7 @@ pub struct GetConfigurationRequest {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/GetConfigurationResponse.json")]
+#[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 /// Field definition of the GetConfiguration.conf PDU sent by Charge Point the to the Central System in response to a GetConfiguration.req.
