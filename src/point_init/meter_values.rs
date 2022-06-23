@@ -46,6 +46,7 @@
 pub use crate::MeterValue;
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
+use serde_with::skip_serializing_none;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/MeterValues.json")]
