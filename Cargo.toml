@@ -1,20 +1,24 @@
 [package]
-name = "ocpp"
-version = "0.2.1"
-edition = "2021"
+authors    = ["Mastercom <software@mastercom.com.au>", "Cameron Duff <cameron.duff@mastercom.com.au>", "Lewis Hyman <lewis.hyman@mastercom.com.au>"]
+edition    = "2021"
+name       = "ocpp"
 repository = "https://bitbucket.org/mastercomms/ocpp"
-authors = [ "Mastercom <software@mastercom.com.au>", "Cameron Duff <cameron.duff@mastercom.com.au>", "Lewis Hyman <lewis.hyman@mastercom.com.au>" ]
+version    = "0.2.1"
 
 [dependencies]
-tracing = "^0.1"
-serde_with = "^1.0"
-serde_json = "^1.0"
-lazy_static = "^1.4"
-strum = "^0.24.0"
-strum_macros = "^0.24"
-serde = { version = "^1.0", features = [ "derive" ] }
-chrono = { version = "^0.4", features = [ "serde" ] }
-jsonschema = { version = "^0.15", default-features = false }
-thiserror = "^1"
+# Crates with features
+chrono     = {version = "^0.4", features = ["serde"]}
+jsonschema = {version = "^0.15", default-features = false}
+serde      = {version = "^1.0", features = ["derive"]}
 
-ocpp_json_validate = { version = "^1.0", path = "./ocpp_json_validate" }
+# Crates without features
+lazy_static  = "^1.4"
+serde_json   = "^1.0"
+serde_with   = "^1.0"
+strum        = "^0.24.0"
+strum_macros = "^0.24"
+thiserror    = "^1"
+tracing      = "^0.1"
+
+# Internal crates
+ocpp_json_validate = {version = "^1.0", path = "./ocpp_json_validate"}
