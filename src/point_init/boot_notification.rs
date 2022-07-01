@@ -1,3 +1,6 @@
+// TODO:
+// Issues: Unsupported datatypes i.e. chrono's Utc
+
 //! Initialization message detailing general information about the charge point (e.g version, vendor etc.).
 //!
 //!  # Behaviour
@@ -36,43 +39,77 @@
 //! While in pending state, the following Central System initiated messages are not allowed:
 //! RemoteStartTransaction.req and RemoteStopTransaction.req
 use chrono::{DateTime, Utc};
+use derive_builder::Builder;
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
+use validator::{Validate, ValidationErrors};
+
+#[cfg(test)]
+use test_strategy::Arbitrary;
 
 // -------------------------- REQUEST --------------------------
-#[json_validate("../json_schemas/BootNotification.json")]
+
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[json_validate("../json_schemas/BootNotification.json")]
+#[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder)]
+#[builder(build_fn(name = "pre_build"))]
 #[serde(rename_all = "camelCase")]
+// Strip Optional wrapping when in production to allow setters to directly set values
+#[cfg_attr(not(test), builder(setter(strip_option)))]
+// Testing only
+#[cfg_attr(test, derive(Arbitrary))]
+
 /// Field definition of the BootNotification.req PDU sent by the Charge Point to the Central System.
 pub struct BootNotificationRequest {
     /// Optional. This contains a value that identifies the serial number of the Charge Box inside the Charge Point.
     /// Deprecated, will be removed in future versio
+    #[validate(length(max = 20))]
     pub charge_point_vendor: String,
     /// Required. This contains a value that identifies the model of the ChargePoint.
+    #[validate(length(max = 20))]
     pub charge_point_model: String,
     /// Optional. This contains a value that identifies the serial number of the Charge Point.
+    #[validate(length(max = 25))]
+    #[builder(default)]
     pub charge_point_serial_number: Option<String>,
     /// Identifies the serial number of the Charge Box inside the Charge Point. Deprecated, will be removed in future version.
+    #[validate(length(max = 25))]
+    #[builder(default)]
     pub charge_box_serial_number: Option<String>,
     /// Identifies the firmware version on the charge .
+    #[validate(length(max = 50))]
+    #[builder(default)]
     pub firmware_version: Option<String>,
     /// Identifies the ICCID of the modem's SIM card.
+    #[validate(length(max = 20))]
+    #[builder(default)]
     pub iccid: Option<String>,
     /// Identifies the IMSI of the modem's SIM card.
+    #[validate(length(max = 20))]
+    #[builder(default)]
     pub imsi: Option<String>,
     /// Identifies the type of the main electrical meter of the charge point.
+    #[validate(length(max = 25))]
+    #[builder(default)]
     pub meter_type: Option<String>,
     /// Identifies the serial numbver of the main electrical meter of the charge point.
+    #[validate(length(max = 25))]
+    #[builder(default)]
     pub meter_serial_number: Option<String>,
 }
 
 // -------------------------- RESPONSE --------------------------
+#[skip_serializing_none]
 #[json_validate("../json_schemas/BootNotificationResponse.json")]
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(test, derive(Arbitrary))]
+#[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder)]
+#[builder(build_fn(name = "pre_build"))]
 #[serde(rename_all = "camelCase")]
+// Strip Optional wrapping when in production to allow setters to directly set values
+#[cfg_attr(not(test), builder(setter(strip_option)))]
+// Testing only
 /// Field definition of the BootNotification.conf PDU sent by the Central System to the Charge Point in response to a BootNotification.req PDU.
 pub struct BootNotificationResponse {
     /// Identifies whether the charge point has been registered with the central server.
@@ -84,6 +121,8 @@ pub struct BootNotificationResponse {
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
+#[cfg_attr(test, derive(Arbitrary))]
+
 ///Struct Definition
 pub enum BootNotificationStatus {
     /// Chargepoint accepted by central system
@@ -92,4 +131,58 @@ pub enum BootNotificationStatus {
     Pending,
     /// Charge point not accepted, i.e. chargepointID is not known
     Rejected,
+}
+
+impl BootNotificationRequestBuilder {
+    pub fn build(&self) -> Result<BootNotificationRequest, ValidationErrors> {
+        let req = self.pre_build().unwrap();
+        match req.validate() {
+            Ok(_) => Ok(req),
+            Err(e) => return Err(e),
+        }
+    }
+}
+
+impl BootNotificationResponseBuilder {
+    pub fn build(&self) -> Result<BootNotificationResponse, ValidationErrors> {
+        let req = self.pre_build().unwrap();
+        match req.validate() {
+            Ok(_) => Ok(req),
+            Err(e) => return Err(e),
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use ocpp_json_validate::JsonValidate;
+    use test_strategy::proptest;
+
+    #[proptest]
+    fn test_request_builder(proptest_struct: super::BootNotificationRequest) {
+        use super::BootNotificationRequestBuilder;
+        let v = proptest_struct.clone();
+        let built_struct = BootNotificationRequestBuilder::default()
+            .charge_point_vendor(v.charge_point_vendor)
+            .charge_point_model(v.charge_point_model.clone())
+            .charge_point_serial_number(v.charge_point_serial_number)
+            .charge_box_serial_number(v.charge_box_serial_number)
+            .firmware_version(v.firmware_version)
+            .iccid(v.iccid)
+            .imsi(v.imsi)
+            .meter_type(v.meter_type)
+            .meter_serial_number(v.meter_serial_number)
+            .build();
+
+        assert_eq!(built_struct.is_ok(), proptest_struct.validate().is_ok());
+    }
+
+    #[proptest]
+    fn test_response_builder(proptest_struct: super::BootNotificationResponse) {
+        use super::BootNotificationResponseBuilder;
+        let v = proptest_struct.clone();
+        let built_struct = BootNotificationResponseBuilder::default().status(v.status).current_time(v.current_time).interval(v.interval).build();
+
+        assert_eq!(built_struct.is_ok(), proptest_struct.validate().is_ok());
+    }
 }
