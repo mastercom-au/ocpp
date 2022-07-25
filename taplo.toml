@@ -1,0 +1,22 @@
+[formatting]
+# general
+align_comments      = true
+allowed_blank_lines = 2     # The maximum amount of consecutive blank lines allowed.
+column_width        = 140   # Target maximum column width after which arrays are expanded into new lines.
+crlf                = false # Use CRLF line endings.	
+indent_string       = " "   # Indentation to use, should be tabs or spaces but technically could be anything.
+indent_tables       = false # Indent subtables if they come in order.	
+reorder_keys        = true  # Alphabetically reorder keys that are not separated by blank lines.
+trailing_newline    = true  # Add trailing newline to the source.	
+
+# entries
+align_entries   = true  # Align entries vertically. Entries that have table headers, comments, or blank lines between them are not aligned.	
+compact_entries = false # Omit whitespace around =.	
+indent_entries  = false # Indent entries under tables.	
+
+# arrays
+array_auto_collapse   = true # Automatically collapse arrays if they fit in one line.	
+array_auto_expand     = true # Automatically expand arrays to multiple lines	
+array_trailing_comma  = true # Put trailing commas for multiline arrays.	
+compact_arrays        = true # Omit whitespace padding inside single-line arrays.	
+compact_inline_tables = true # Omit whitespace padding inside inline tables.

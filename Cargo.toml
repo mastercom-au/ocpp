@@ -1,9 +1,13 @@
 [package]
-authors    = ["Mastercom <software@mastercom.com.au>", "Cameron Duff <cameron.duff@mastercom.com.au>", "Lewis Hyman <lewis.hyman@mastercom.com.au>"]
-edition    = "2021"
-name       = "ocpp"
+authors = [
+ "Mastercom <software@mastercom.com.au>",
+ "Cameron Duff <cameron.duff@mastercom.com.au>",
+ "Lewis Hyman <lewis.hyman@mastercom.com.au>",
+]
+edition = "2021"
+name = "ocpp"
 repository = "https://bitbucket.org/mastercomms/ocpp"
-version    = "0.2.1"
+version = "0.2.1"
 
 [dependencies]
 # Crates with features
