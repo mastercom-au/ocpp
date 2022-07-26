@@ -33,7 +33,7 @@ pub fn json_validate(attr: TokenStream, item: TokenStream) -> TokenStream {
 
         impl ocpp_json_validate::JsonValidate for #struct_name {
 
-            fn validate(&self) -> Result<(), ocpp_json_validate::JsonValidateError> {
+            fn schema_validate(&self) -> Result<(), ocpp_json_validate::JsonValidateError> {
                 use tracing::{warn, trace};
 
                 if let Err(val) = #validator_name.validate(&serde_json::json!(self)).map_err(|errors| ocpp_json_validate::JsonValidateError::ValidationError(Vec::from_iter(errors.map(|e| e.to_string())))){

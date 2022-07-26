@@ -101,6 +101,7 @@
 extern crate lazy_static;
 
 pub mod common;
+pub mod error;
 pub mod point_init;
 pub mod server_init;
 
@@ -516,34 +517,34 @@ impl OCPPCallPayload {
 }
 
 impl ocpp_json_validate::JsonValidate for OCPPCallPayload {
-    fn validate(&self) -> Result<(), ocpp_json_validate::JsonValidateError> {
+    fn schema_validate(&self) -> Result<(), ocpp_json_validate::JsonValidateError> {
         match self {
-            OCPPCallPayload::Authorize(req) => req.validate(),
-            OCPPCallPayload::BootNotification(req) => req.validate(),
-            OCPPCallPayload::ChangeAvailability(req) => req.validate(),
-            OCPPCallPayload::ChangeConfiguration(req) => req.validate(),
-            OCPPCallPayload::ClearCache(req) => req.validate(),
-            OCPPCallPayload::ClearChargingProfile(req) => req.validate(),
-            OCPPCallPayload::DataTransfer(req) => req.validate(),
-            OCPPCallPayload::DiagnosticsStatusNotification(req) => req.validate(),
-            OCPPCallPayload::FirmwareStatusNotification(req) => req.validate(),
-            OCPPCallPayload::GetCompositeSchedule(req) => req.validate(),
-            OCPPCallPayload::GetConfiguration(req) => req.validate(),
-            OCPPCallPayload::GetDiagnostics(req) => req.validate(),
-            OCPPCallPayload::GetLocalListVersion(req) => req.validate(),
-            OCPPCallPayload::Heartbeat(req) => req.validate(),
-            OCPPCallPayload::MeterValues(req) => req.validate(),
-            OCPPCallPayload::RemoteStartTransaction(req) => req.validate(),
-            OCPPCallPayload::RemoteStopTransaction(req) => req.validate(),
-            OCPPCallPayload::Reset(req) => req.validate(),
-            OCPPCallPayload::SendLocalList(req) => req.validate(),
-            OCPPCallPayload::SetChargingProfile(req) => req.validate(),
-            OCPPCallPayload::StartTransaction(req) => req.validate(),
-            OCPPCallPayload::StatusNotification(req) => req.validate(),
-            OCPPCallPayload::StopTransaction(req) => req.validate(),
-            OCPPCallPayload::TriggerMessage(req) => req.validate(),
-            OCPPCallPayload::UnlockConnector(req) => req.validate(),
-            OCPPCallPayload::UpdateFirmware(req) => req.validate(),
+            OCPPCallPayload::Authorize(req) => req.schema_validate(),
+            OCPPCallPayload::BootNotification(req) => req.schema_validate(),
+            OCPPCallPayload::ChangeAvailability(req) => req.schema_validate(),
+            OCPPCallPayload::ChangeConfiguration(req) => req.schema_validate(),
+            OCPPCallPayload::ClearCache(req) => req.schema_validate(),
+            OCPPCallPayload::ClearChargingProfile(req) => req.schema_validate(),
+            OCPPCallPayload::DataTransfer(req) => req.schema_validate(),
+            OCPPCallPayload::DiagnosticsStatusNotification(req) => req.schema_validate(),
+            OCPPCallPayload::FirmwareStatusNotification(req) => req.schema_validate(),
+            OCPPCallPayload::GetCompositeSchedule(req) => req.schema_validate(),
+            OCPPCallPayload::GetConfiguration(req) => req.schema_validate(),
+            OCPPCallPayload::GetDiagnostics(req) => req.schema_validate(),
+            OCPPCallPayload::GetLocalListVersion(req) => req.schema_validate(),
+            OCPPCallPayload::Heartbeat(req) => req.schema_validate(),
+            OCPPCallPayload::MeterValues(req) => req.schema_validate(),
+            OCPPCallPayload::RemoteStartTransaction(req) => req.schema_validate(),
+            OCPPCallPayload::RemoteStopTransaction(req) => req.schema_validate(),
+            OCPPCallPayload::Reset(req) => req.schema_validate(),
+            OCPPCallPayload::SendLocalList(req) => req.schema_validate(),
+            OCPPCallPayload::SetChargingProfile(req) => req.schema_validate(),
+            OCPPCallPayload::StartTransaction(req) => req.schema_validate(),
+            OCPPCallPayload::StatusNotification(req) => req.schema_validate(),
+            OCPPCallPayload::StopTransaction(req) => req.schema_validate(),
+            OCPPCallPayload::TriggerMessage(req) => req.schema_validate(),
+            OCPPCallPayload::UnlockConnector(req) => req.schema_validate(),
+            OCPPCallPayload::UpdateFirmware(req) => req.schema_validate(),
         }
     }
 }
@@ -583,34 +584,34 @@ pub enum OCPPCallResultPayload {
 }
 
 impl ocpp_json_validate::JsonValidate for OCPPCallResultPayload {
-    fn validate(&self) -> Result<(), ocpp_json_validate::JsonValidateError> {
+    fn schema_validate(&self) -> Result<(), ocpp_json_validate::JsonValidateError> {
         match self {
-            OCPPCallResultPayload::Authorize(r) => r.validate(),
-            OCPPCallResultPayload::BootNotification(r) => r.validate(),
-            OCPPCallResultPayload::ChangeAvailability(r) => r.validate(),
-            OCPPCallResultPayload::ChangeConfiguration(r) => r.validate(),
-            OCPPCallResultPayload::ClearCache(r) => r.validate(),
-            OCPPCallResultPayload::ClearChargingProfile(r) => r.validate(),
-            OCPPCallResultPayload::DataTransfer(r) => r.validate(),
-            OCPPCallResultPayload::DiagnosticsStatusNotification(r) => r.validate(),
-            OCPPCallResultPayload::FirmwareStatusNotification(r) => r.validate(),
-            OCPPCallResultPayload::GetCompositeSchedule(r) => r.validate(),
-            OCPPCallResultPayload::GetConfiguration(r) => r.validate(),
-            OCPPCallResultPayload::GetDiagnostics(r) => r.validate(),
-            OCPPCallResultPayload::GetLocalListVersion(r) => r.validate(),
-            OCPPCallResultPayload::Heartbeat(r) => r.validate(),
-            OCPPCallResultPayload::MeterValues(r) => r.validate(),
-            OCPPCallResultPayload::RemoteStartTransaction(r) => r.validate(),
-            OCPPCallResultPayload::RemoteStopTransaction(r) => r.validate(),
-            OCPPCallResultPayload::Reset(r) => r.validate(),
-            OCPPCallResultPayload::SendLocalList(r) => r.validate(),
-            OCPPCallResultPayload::SetChargingProfile(r) => r.validate(),
-            OCPPCallResultPayload::StartTransaction(r) => r.validate(),
-            OCPPCallResultPayload::StatusNotification(r) => r.validate(),
-            OCPPCallResultPayload::StopTransaction(r) => r.validate(),
-            OCPPCallResultPayload::TriggerMessage(r) => r.validate(),
-            OCPPCallResultPayload::UnlockConnector(r) => r.validate(),
-            OCPPCallResultPayload::UpdateFirmware(r) => r.validate(),
+            OCPPCallResultPayload::Authorize(r) => r.schema_validate(),
+            OCPPCallResultPayload::BootNotification(r) => r.schema_validate(),
+            OCPPCallResultPayload::ChangeAvailability(r) => r.schema_validate(),
+            OCPPCallResultPayload::ChangeConfiguration(r) => r.schema_validate(),
+            OCPPCallResultPayload::ClearCache(r) => r.schema_validate(),
+            OCPPCallResultPayload::ClearChargingProfile(r) => r.schema_validate(),
+            OCPPCallResultPayload::DataTransfer(r) => r.schema_validate(),
+            OCPPCallResultPayload::DiagnosticsStatusNotification(r) => r.schema_validate(),
+            OCPPCallResultPayload::FirmwareStatusNotification(r) => r.schema_validate(),
+            OCPPCallResultPayload::GetCompositeSchedule(r) => r.schema_validate(),
+            OCPPCallResultPayload::GetConfiguration(r) => r.schema_validate(),
+            OCPPCallResultPayload::GetDiagnostics(r) => r.schema_validate(),
+            OCPPCallResultPayload::GetLocalListVersion(r) => r.schema_validate(),
+            OCPPCallResultPayload::Heartbeat(r) => r.schema_validate(),
+            OCPPCallResultPayload::MeterValues(r) => r.schema_validate(),
+            OCPPCallResultPayload::RemoteStartTransaction(r) => r.schema_validate(),
+            OCPPCallResultPayload::RemoteStopTransaction(r) => r.schema_validate(),
+            OCPPCallResultPayload::Reset(r) => r.schema_validate(),
+            OCPPCallResultPayload::SendLocalList(r) => r.schema_validate(),
+            OCPPCallResultPayload::SetChargingProfile(r) => r.schema_validate(),
+            OCPPCallResultPayload::StartTransaction(r) => r.schema_validate(),
+            OCPPCallResultPayload::StatusNotification(r) => r.schema_validate(),
+            OCPPCallResultPayload::StopTransaction(r) => r.schema_validate(),
+            OCPPCallResultPayload::TriggerMessage(r) => r.schema_validate(),
+            OCPPCallResultPayload::UnlockConnector(r) => r.schema_validate(),
+            OCPPCallResultPayload::UpdateFirmware(r) => r.schema_validate(),
         }
     }
 }
@@ -770,7 +771,7 @@ pub trait OCPPCallResultBuilder {
         let OCPPCall { unique_id, payload, .. } = call;
 
         // Validate incoming payload
-        if let Err(e) = payload.validate() {
+        if let Err(e) = payload.schema_validate() {
             tracing::warn!("OCPP Request Invalid: {:?}", e);
             return Err(OCPPCallError::from_call(&unique_id, OCPPCallErrorCode::ProtocolError));
         }
@@ -805,7 +806,7 @@ pub trait OCPPCallResultBuilder {
         };
 
         // Validate outgoing payload
-        if let Err(e) = payload.validate() {
+        if let Err(e) = payload.schema_validate() {
             tracing::error!("OCPP Response Invalid: {:?}", e);
             return Err(OCPPCallError::from_call(&unique_id, OCPPCallErrorCode::InternalError));
         }

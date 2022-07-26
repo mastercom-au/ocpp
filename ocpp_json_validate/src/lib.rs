@@ -17,7 +17,7 @@ impl fmt::Display for JsonValidateError {
 impl Error for JsonValidateError {}
 
 pub trait JsonValidate {
-    fn validate(&self) -> Result<(), JsonValidateError>;
+    fn schema_validate(&self) -> Result<(), JsonValidateError>;
 }
 
 pub use ocpp_json_validate_attribute::json_validate;
