@@ -11,7 +11,7 @@ fn test_boot_notification_response_validates() {
         interval: 10,
     };
 
-    assert!(bn_res.validate().is_ok());
+    assert!(bn_res.schema_validate().is_ok());
 }
 
 fn implements_display<T: std::fmt::Display>() {}
@@ -31,7 +31,7 @@ fn test_boot_notification_request_validates() {
         meter_type: None,
         meter_serial_number: None,
     };
-    assert!(bn_req.validate().is_ok());
+    assert!(bn_req.schema_validate().is_ok());
 }
 
 #[test]
@@ -48,7 +48,7 @@ fn test_boot_notification_request_charge_point_model_string_length_limit() {
         meter_serial_number: Some("test9".to_string()),
     };
 
-    assert!(bn_req.validate().is_err());
+    assert!(bn_req.schema_validate().is_err());
 }
 
 #[test]
@@ -84,7 +84,7 @@ fn test_deserialize_json_call_result() -> Result<(), Box<dyn std::error::Error>>
 #[test]
 fn test_serialize_get_configuration_call() -> Result<(), Box<dyn std::error::Error>> {
     let req = crate::GetConfigurationRequest { key: None };
-    req.validate()?;
+    req.schema_validate()?;
 
     let message = crate::OCPPMessage::Call((String::from("64:1"), crate::OCPPCallPayload::GetConfiguration(req)).into());
     let json = serde_json::to_string(&message)?;

@@ -153,12 +153,11 @@ impl BootNotificationRequestBuilder {
 #[cfg(test)]
 mod test {
     use super::*;
-    //use ocpp_json_validate::JsonValidate;
+    use ocpp_json_validate::JsonValidate;
     use test_strategy::proptest;
 
     #[proptest]
     fn test_request_builder(proptest_struct: super::BootNotificationRequest) {
-        use super::BootNotificationRequestBuilder;
         let v = proptest_struct.clone();
         let built_struct = BootNotificationRequestBuilder::default()
             .charge_point_vendor(v.charge_point_vendor)
@@ -171,13 +170,12 @@ mod test {
             .meter_type(v.meter_type)
             .meter_serial_number(v.meter_serial_number)
             .build();
-        assert_eq!(built_struct.is_ok(), proptest_struct.validate().is_ok());
+        assert_eq!(built_struct.is_ok(), proptest_struct.schema_validate().is_ok());
     }
 
     //TODO: Enable
     // #[proptest]
     // fn test_response_builder(proptest_struct: super::BootNotificationResponse) {
-    //     use super::BootNotificationResponseBuilder;
     //     let v = proptest_struct.clone();
     //     let built_struct = BootNotificationResponseBuilder::default().status(v.status).current_time(v.current_time).interval(v.interval).build();
 
