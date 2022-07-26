@@ -23,7 +23,7 @@ test-strategy  = "^0.2"
 thiserror      = "^1"
 tracing        = "^0.1"
 
-validator = {version = "0.15", features = ["derive"]}
+validator = {version = "0.16", features = ["derive"]}
 
 # Internal crates
 ocpp_json_validate = {version = "^1.0", path = "./ocpp_json_validate"}
