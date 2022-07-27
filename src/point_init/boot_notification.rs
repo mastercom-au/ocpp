@@ -42,12 +42,19 @@ use crate::error::OcppError;
 use chrono::{DateTime, Utc};
 use derive_builder::Builder;
 use ocpp_json_validate::json_validate;
+use proptest::{
+    arbitrary::Arbitrary,
+    strategy::{BoxedStrategy, Strategy},
+};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
 use validator::Validate;
 
-#[cfg(test)]
+use chrono::TimeZone;
+use proptest::arbitrary::any;
+
+//#[cfg(test)]
 use test_strategy::Arbitrary;
 
 // -------------------------- REQUEST --------------------------
@@ -105,9 +112,8 @@ pub struct BootNotificationRequest {
 #[skip_serializing_none]
 #[json_validate("../json_schemas/BootNotificationResponse.json")]
 //TODO: Implement for Chrono<Utc>
-//#[cfg_attr(test, derive(Arbitrary))]
 #[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder)]
-#[builder(build_fn(name = "pre_build"))]
+#[builder(build_fn(name = "pre_build", error = "OcppError"))]
 #[serde(rename_all = "camelCase")]
 // Strip Optional wrapping when in production to allow setters to directly set values
 #[cfg_attr(not(test), builder(setter(strip_option)))]
@@ -122,8 +128,20 @@ pub struct BootNotificationResponse {
     pub interval: u32,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
-#[cfg_attr(test, derive(Arbitrary))]
+impl Arbitrary for BootNotificationResponse {
+    type Parameters = ();
+    type Strategy = BoxedStrategy<Self>;
+    fn arbitrary_with(_args: Self::Parameters) -> Self::Strategy {
+        let interval = any::<u32>();
+        let status = any::<BootNotificationStatus>();
+        let current_time = any::<i64>().prop_map(|z| Utc.timestamp_nanos(z));
+        (interval, status, current_time).prop_map(|(interval, status, current_time)| Self { interval, status, current_time }).boxed()
+    }
+
+    fn arbitrary() -> Self::Strategy { Self::arbitrary_with(Default::default()) }
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone, Arbitrary)]
 
 ///Struct Definition
 pub enum BootNotificationStatus {
@@ -142,13 +160,15 @@ impl BootNotificationRequestBuilder {
     }
 }
 
+//fn arb_chrono() -> impl Strategy<Value = DateTime<Utc>> { any::<i64>().prop_map(|z| Utc.timestamp(z, 0)) }
+
 // TODO: Enable
-// impl BootNotificationResponseBuilder {
-//     pub fn build(&self) -> Result<BootNotificationResponse, OcppError> {
-//         let req = self.pre_build()?;
-//         return req.validate().map(|_| req).map_err(|e| e.into());
-//     }
-// }
+impl BootNotificationResponseBuilder {
+    pub fn build(&self) -> Result<BootNotificationResponse, OcppError> {
+        let req = self.pre_build()?;
+        return req.validate().map(|_| req).map_err(|e| e.into());
+    }
+}
 
 #[cfg(test)]
 mod test {
@@ -177,10 +197,11 @@ mod test {
     }
 
     // TODO: Enable
-    // #[proptest]
-    // fn compare_response_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationResponse) {
-    //     let v = proptest_struct.clone();
-    //     let built_struct = BootNotificationResponseBuilder::default().status(v.status).current_time(v.current_time).interval(v.interval).build();
-    //     assert_eq!(built_struct.is_ok(), proptest_struct.validate().is_ok());
-    // }
+    #[proptest]
+    fn compare_response_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationResponse) {
+        let v = proptest_struct.clone();
+        let built_struct = BootNotificationResponseBuilder::default().status(v.status).current_time(v.current_time).interval(v.interval).build();
+        println!("{:?}", built_struct);
+        //assert_eq!(built_struct.is_ok(), proptest_struct.validate().is_ok());
+    }
 }
