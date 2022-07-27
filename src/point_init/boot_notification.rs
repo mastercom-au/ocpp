@@ -1,6 +1,3 @@
-// TODO:
-// Issues: Unsupported datatypes i.e. chrono's Utc
-
 //! Initialization message detailing general information about the charge point (e.g version, vendor etc.).
 //!
 //!  # Behaviour
@@ -39,20 +36,13 @@
 //! While in pending state, the following Central System initiated messages are not allowed:
 //! RemoteStartTransaction.req and RemoteStopTransaction.req
 use crate::error::OcppError;
-use chrono::{DateTime, Utc};
 use derive_builder::Builder;
 use ocpp_json_validate::json_validate;
-use proptest::{
-    arbitrary::Arbitrary,
-    strategy::{BoxedStrategy, Strategy},
-};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
+use utc_time::UtcTime;
 use validator::Validate;
-
-use chrono::TimeZone;
-use proptest::arbitrary::any;
 
 //#[cfg(test)]
 use test_strategy::Arbitrary;
@@ -117,28 +107,16 @@ pub struct BootNotificationRequest {
 #[serde(rename_all = "camelCase")]
 // Strip Optional wrapping when in production to allow setters to directly set values
 #[cfg_attr(not(test), builder(setter(strip_option)))]
+#[cfg_attr(test, derive(Arbitrary))]
 // Testing only
 /// Field definition of the BootNotification.conf PDU sent by the Central System to the Charge Point in response to a BootNotification.req PDU.
 pub struct BootNotificationResponse {
     /// Identifies whether the charge point has been registered with the central server.
     pub status: BootNotificationStatus,
     /// Required. This contains the current time of the Central System.
-    pub current_time: DateTime<Utc>,
+    pub current_time: UtcTime,
     /// When status is accepted, contains the heartbeat inverval in seconds. If status is not accepted, contains a timeout value before the charge point can retry bootnotifacion.
     pub interval: u32,
-}
-
-impl Arbitrary for BootNotificationResponse {
-    type Parameters = ();
-    type Strategy = BoxedStrategy<Self>;
-    fn arbitrary_with(_args: Self::Parameters) -> Self::Strategy {
-        let interval = any::<u32>();
-        let status = any::<BootNotificationStatus>();
-        let current_time = any::<i64>().prop_map(|z| Utc.timestamp_nanos(z));
-        (interval, status, current_time).prop_map(|(interval, status, current_time)| Self { interval, status, current_time }).boxed()
-    }
-
-    fn arbitrary() -> Self::Strategy { Self::arbitrary_with(Default::default()) }
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone, Arbitrary)]
@@ -160,9 +138,6 @@ impl BootNotificationRequestBuilder {
     }
 }
 
-//fn arb_chrono() -> impl Strategy<Value = DateTime<Utc>> { any::<i64>().prop_map(|z| Utc.timestamp(z, 0)) }
-
-// TODO: Enable
 impl BootNotificationResponseBuilder {
     pub fn build(&self) -> Result<BootNotificationResponse, OcppError> {
         let req = self.pre_build()?;
@@ -191,6 +166,7 @@ mod test {
             .meter_type(v.meter_type)
             .meter_serial_number(v.meter_serial_number)
             .build();
+
         let builder_validated_ok = built_struct.is_ok();
         let schema_validated_ok = proptest_struct.schema_validate().is_ok();
         assert_eq!(builder_validated_ok, schema_validated_ok);
@@ -201,7 +177,38 @@ mod test {
     fn compare_response_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationResponse) {
         let v = proptest_struct.clone();
         let built_struct = BootNotificationResponseBuilder::default().status(v.status).current_time(v.current_time).interval(v.interval).build();
-        println!("{:?}", built_struct);
-        //assert_eq!(built_struct.is_ok(), proptest_struct.validate().is_ok());
+
+        let builder_validated_ok = built_struct.is_ok();
+        let schema_validated_ok = proptest_struct.schema_validate().is_ok();
+        assert_eq!(builder_validated_ok, schema_validated_ok);
+    }
+}
+
+mod utc_time {
+    use chrono::TimeZone;
+    use chrono::{DateTime, Utc};
+    use proptest::arbitrary::any;
+    use proptest::strategy::{BoxedStrategy, Strategy};
+    use serde::{Deserialize, Serialize};
+    #[derive(Debug, Clone, Serialize, Deserialize)]
+    #[serde(transparent)]
+    pub struct UtcTime(DateTime<Utc>);
+
+    impl std::ops::Deref for UtcTime {
+        type Target = DateTime<Utc>;
+        fn deref(&self) -> &Self::Target { &self.0 }
+    }
+
+    impl std::convert::From<DateTime<Utc>> for UtcTime {
+        fn from(t: DateTime<Utc>) -> Self { Self(t) }
+    }
+
+    impl proptest::arbitrary::Arbitrary for UtcTime {
+        type Parameters = ();
+        type Strategy = BoxedStrategy<Self>;
+
+        fn arbitrary_with(_args: Self::Parameters) -> Self::Strategy { any::<i64>().prop_map(|z| UtcTime(Utc.timestamp_nanos(z))).boxed() }
+
+        fn arbitrary() -> Self::Strategy { Self::arbitrary_with(Default::default()) }
     }
 }

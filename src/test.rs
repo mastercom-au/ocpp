@@ -6,7 +6,7 @@ use ocpp_json_validate::JsonValidate;
 #[test]
 fn test_boot_notification_response_validates() {
     let bn_res = BootNotificationResponse {
-        current_time: Utc::now(),
+        current_time: Utc::now().into(),
         status: BootNotificationStatus::Accepted,
         interval: 10,
     };
