@@ -47,17 +47,16 @@ use validator::Validate;
 use test_strategy::Arbitrary;
 
 // -------------------------- REQUEST --------------------------
-
 /// Field definition of the BootNotification.req PDU sent by the Charge Point to the Central System.
 #[skip_serializing_none]
-#[json_validate("../json_schemas/BootNotification.json")]
+#[json_validate("../json_schemas/BootNotification.json")] // Creates and defines validator function which checks struct against schema definition defined in path
 #[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder)]
-#[builder(build_fn(name = "pre_build", error = "OcppError"))]
-#[serde(rename_all = "camelCase")]
-// Strip Optional wrapping when in production to allow setters to directly set values
-#[cfg_attr(not(test), builder(setter(strip_option)))]
-// Testing only
-#[cfg_attr(test, derive(Arbitrary))]
+#[builder(build_fn(name = "pre_build", error = "OcppError"))] // Allows us to call pre_build inside our own builder which includes validation
+#[serde(rename_all = "camelCase")] // Serialize field names into CamelCase to fit OCPP naming
+#[skip_serializing_none] // Doesn't include None values in the output after serializing
+#[cfg_attr(not(test), builder(setter(strip_option)))] // Strip Optional wrapping in production to allow builders to be set without specifying 'Some(val)'
+#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
+
 pub struct BootNotificationRequest {
     /// Optional. This contains a value that identifies the serial number of the Charge Box inside the Charge Point.
     /// Deprecated, will be removed in future versio
@@ -96,23 +95,16 @@ pub struct BootNotificationRequest {
     pub meter_serial_number: Option<String>,
 }
 
-// impl BootNotificationRequestBuilder {
-//     pub fn build(&self) -> Result<BootNotificationRequest, OcppError> {
-//         let req = self.pre_build()?;
-//         return req.validate().map(|_| req).map_err(|e| e.into());
-//     }
-// }
 // -------------------------- RESPONSE --------------------------
 /// Field definition of the BootNotification.conf PDU sent by the Central System to the Charge Point in response to a BootNotification.req PDU.
-#[skip_serializing_none]
-#[json_validate("../json_schemas/BootNotificationResponse.json")]
+#[json_validate("../json_schemas/BootNotificationResponse.json")] // Creates and defines validator function which checks struct against schema definition defined in path
 #[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder)]
-#[builder(build_fn(name = "pre_build", error = "OcppError"))]
-#[serde(rename_all = "camelCase")]
-// Strip Optional wrapping when in production to allow setters to directly set values
-#[cfg_attr(not(test), builder(setter(strip_option)))]
-// Testing only
-#[cfg_attr(test, derive(Arbitrary))]
+#[builder(build_fn(name = "pre_build", error = "OcppError"))] // Allows us to call pre_build inside our own builder which includes validation
+#[serde(rename_all = "camelCase")] // Serialize field names into CamelCase to fit OCPP naming
+#[skip_serializing_none] // Doesn't include None values in the output after serializing
+#[cfg_attr(not(test), builder(setter(strip_option)))] // Strip Optional wrapping in production to allow builders to be set without specifying 'Some(val)'
+#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
+
 pub struct BootNotificationResponse {
     /// Identifies whether the charge point has been registered with the central server.
     pub status: BootNotificationStatus,
