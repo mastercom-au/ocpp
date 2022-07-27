@@ -44,11 +44,12 @@ use strum_macros::Display;
 use utc_time::UtcTime;
 use validator::Validate;
 
-//#[cfg(test)]
+#[cfg(test)]
 use test_strategy::Arbitrary;
 
 // -------------------------- REQUEST --------------------------
 
+/// Field definition of the BootNotification.req PDU sent by the Charge Point to the Central System.
 #[skip_serializing_none]
 #[json_validate("../json_schemas/BootNotification.json")]
 #[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder)]
@@ -58,8 +59,6 @@ use test_strategy::Arbitrary;
 #[cfg_attr(not(test), builder(setter(strip_option)))]
 // Testing only
 #[cfg_attr(test, derive(Arbitrary))]
-
-/// Field definition of the BootNotification.req PDU sent by the Charge Point to the Central System.
 pub struct BootNotificationRequest {
     /// Optional. This contains a value that identifies the serial number of the Charge Box inside the Charge Point.
     /// Deprecated, will be removed in future versio
@@ -98,18 +97,23 @@ pub struct BootNotificationRequest {
     pub meter_serial_number: Option<String>,
 }
 
+impl BootNotificationRequestBuilder {
+    pub fn build(&self) -> Result<BootNotificationRequest, OcppError> {
+        let req = self.pre_build()?;
+        return req.validate().map(|_| req).map_err(|e| e.into());
+    }
+}
 // -------------------------- RESPONSE --------------------------
+/// Field definition of the BootNotification.conf PDU sent by the Central System to the Charge Point in response to a BootNotification.req PDU.
 #[skip_serializing_none]
 #[json_validate("../json_schemas/BootNotificationResponse.json")]
-//TODO: Implement for Chrono<Utc>
 #[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder)]
 #[builder(build_fn(name = "pre_build", error = "OcppError"))]
 #[serde(rename_all = "camelCase")]
 // Strip Optional wrapping when in production to allow setters to directly set values
 #[cfg_attr(not(test), builder(setter(strip_option)))]
-#[cfg_attr(test, derive(Arbitrary))]
 // Testing only
-/// Field definition of the BootNotification.conf PDU sent by the Central System to the Charge Point in response to a BootNotification.req PDU.
+#[cfg_attr(test, derive(Arbitrary))]
 pub struct BootNotificationResponse {
     /// Identifies whether the charge point has been registered with the central server.
     pub status: BootNotificationStatus,
@@ -119,9 +123,9 @@ pub struct BootNotificationResponse {
     pub interval: u32,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone, Arbitrary)]
-
 ///Struct Definition
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
+#[cfg_attr(test, derive(Arbitrary))]
 pub enum BootNotificationStatus {
     /// Chargepoint accepted by central system
     Accepted,
@@ -129,13 +133,6 @@ pub enum BootNotificationStatus {
     Pending,
     /// Charge point not accepted, i.e. chargepointID is not known
     Rejected,
-}
-
-impl BootNotificationRequestBuilder {
-    pub fn build(&self) -> Result<BootNotificationRequest, OcppError> {
-        let req = self.pre_build()?;
-        return req.validate().map(|_| req).map_err(|e| e.into());
-    }
 }
 
 impl BootNotificationResponseBuilder {
@@ -172,7 +169,6 @@ mod test {
         assert_eq!(builder_validated_ok, schema_validated_ok);
     }
 
-    // TODO: Enable
     #[proptest]
     fn compare_response_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationResponse) {
         let v = proptest_struct.clone();
@@ -192,17 +188,21 @@ mod utc_time {
     use serde::{Deserialize, Serialize};
     #[derive(Debug, Clone, Serialize, Deserialize)]
     #[serde(transparent)]
+    /// Newtype over Time field to allow property testing and validation
     pub struct UtcTime(DateTime<Utc>);
 
+    /// Lets us operate on this newtype as if it were the inner type
     impl std::ops::Deref for UtcTime {
         type Target = DateTime<Utc>;
         fn deref(&self) -> &Self::Target { &self.0 }
     }
 
+    /// Allows .into() syntax for DateTime<Utc>
     impl std::convert::From<DateTime<Utc>> for UtcTime {
         fn from(t: DateTime<Utc>) -> Self { Self(t) }
     }
 
+    /// Arbitrary trait allows this value to be fuzzed by proptest
     impl proptest::arbitrary::Arbitrary for UtcTime {
         type Parameters = ();
         type Strategy = BoxedStrategy<Self>;
