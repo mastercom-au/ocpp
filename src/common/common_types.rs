@@ -1,8 +1,37 @@
 //! A collection of shared types used by mutiple message structures
+use chrono::TimeZone;
 use chrono::{DateTime, Utc};
+use proptest::arbitrary::any;
+use proptest::strategy::{BoxedStrategy, Strategy};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(transparent)]
+/// Newtype over Time field to allow property testing and validation
+pub struct UtcTime(DateTime<Utc>);
+
+/// Lets us operate on this newtype as if it were the inner type
+impl std::ops::Deref for UtcTime {
+    type Target = DateTime<Utc>;
+    fn deref(&self) -> &Self::Target { &self.0 }
+}
+
+/// Allows .into() syntax for DateTime<Utc>
+impl std::convert::From<DateTime<Utc>> for UtcTime {
+    fn from(t: DateTime<Utc>) -> Self { Self(t) }
+}
+
+/// Arbitrary trait allows this value to be fuzzed by proptest
+impl proptest::arbitrary::Arbitrary for UtcTime {
+    type Parameters = ();
+    type Strategy = BoxedStrategy<Self>;
+
+    fn arbitrary_with(_args: Self::Parameters) -> Self::Strategy { any::<i64>().prop_map(|z| UtcTime(Utc.timestamp_nanos(z))).boxed() }
+
+    fn arbitrary() -> Self::Strategy { Self::arbitrary_with(Default::default()) }
+}
 
 ///Generic status message denoting Accepted or Rejected state.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]

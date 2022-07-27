@@ -102,6 +102,7 @@ extern crate lazy_static;
 
 pub mod common;
 pub mod error;
+pub mod macros;
 pub mod point_init;
 pub mod server_init;
 

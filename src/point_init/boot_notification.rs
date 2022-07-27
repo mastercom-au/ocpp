@@ -35,13 +35,12 @@
 //!
 //! While in pending state, the following Central System initiated messages are not allowed:
 //! RemoteStartTransaction.req and RemoteStopTransaction.req
-use crate::error::OcppError;
+use crate::{error::OcppError, generate_builders, UtcTime};
 use derive_builder::Builder;
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
-use utc_time::UtcTime;
 use validator::Validate;
 
 #[cfg(test)]
@@ -97,12 +96,12 @@ pub struct BootNotificationRequest {
     pub meter_serial_number: Option<String>,
 }
 
-impl BootNotificationRequestBuilder {
-    pub fn build(&self) -> Result<BootNotificationRequest, OcppError> {
-        let req = self.pre_build()?;
-        return req.validate().map(|_| req).map_err(|e| e.into());
-    }
-}
+// impl BootNotificationRequestBuilder {
+//     pub fn build(&self) -> Result<BootNotificationRequest, OcppError> {
+//         let req = self.pre_build()?;
+//         return req.validate().map(|_| req).map_err(|e| e.into());
+//     }
+// }
 // -------------------------- RESPONSE --------------------------
 /// Field definition of the BootNotification.conf PDU sent by the Central System to the Charge Point in response to a BootNotification.req PDU.
 #[skip_serializing_none]
@@ -135,12 +134,7 @@ pub enum BootNotificationStatus {
     Rejected,
 }
 
-impl BootNotificationResponseBuilder {
-    pub fn build(&self) -> Result<BootNotificationResponse, OcppError> {
-        let req = self.pre_build()?;
-        return req.validate().map(|_| req).map_err(|e| e.into());
-    }
-}
+generate_builders!(BootNotification);
 
 #[cfg(test)]
 mod test {
@@ -177,38 +171,5 @@ mod test {
         let builder_validated_ok = built_struct.is_ok();
         let schema_validated_ok = proptest_struct.schema_validate().is_ok();
         assert_eq!(builder_validated_ok, schema_validated_ok);
-    }
-}
-
-mod utc_time {
-    use chrono::TimeZone;
-    use chrono::{DateTime, Utc};
-    use proptest::arbitrary::any;
-    use proptest::strategy::{BoxedStrategy, Strategy};
-    use serde::{Deserialize, Serialize};
-    #[derive(Debug, Clone, Serialize, Deserialize)]
-    #[serde(transparent)]
-    /// Newtype over Time field to allow property testing and validation
-    pub struct UtcTime(DateTime<Utc>);
-
-    /// Lets us operate on this newtype as if it were the inner type
-    impl std::ops::Deref for UtcTime {
-        type Target = DateTime<Utc>;
-        fn deref(&self) -> &Self::Target { &self.0 }
-    }
-
-    /// Allows .into() syntax for DateTime<Utc>
-    impl std::convert::From<DateTime<Utc>> for UtcTime {
-        fn from(t: DateTime<Utc>) -> Self { Self(t) }
-    }
-
-    /// Arbitrary trait allows this value to be fuzzed by proptest
-    impl proptest::arbitrary::Arbitrary for UtcTime {
-        type Parameters = ();
-        type Strategy = BoxedStrategy<Self>;
-
-        fn arbitrary_with(_args: Self::Parameters) -> Self::Strategy { any::<i64>().prop_map(|z| UtcTime(Utc.timestamp_nanos(z))).boxed() }
-
-        fn arbitrary() -> Self::Strategy { Self::arbitrary_with(Default::default()) }
     }
 }

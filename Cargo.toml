@@ -1,13 +1,9 @@
 [package]
-authors = [
- "Mastercom <software@mastercom.com.au>",
- "Cameron Duff <cameron.duff@mastercom.com.au>",
- "Lewis Hyman <lewis.hyman@mastercom.com.au>",
-]
-edition = "2021"
-name = "ocpp"
+authors    = ["Mastercom <software@mastercom.com.au>", "Cameron Duff <cameron.duff@mastercom.com.au>", "Lewis Hyman <lewis.hyman@mastercom.com.au>"]
+edition    = "2021"
+name       = "ocpp"
 repository = "https://bitbucket.org/mastercomms/ocpp"
-version = "0.2.1"
+version    = "0.2.1"
 
 [dependencies]
 # Crates with features
@@ -18,6 +14,7 @@ serde      = {version = "^1.0", features = ["derive"]}
 # Crates without features
 derive_builder = "^0.11"
 lazy_static    = "^1.4"
+paste          = "^1.0"
 proptest       = "^1"
 serde_json     = "^1.0"
 serde_with     = "^2.0"
