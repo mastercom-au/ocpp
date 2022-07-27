@@ -16,7 +16,7 @@
 //! recipient SHALL return status ‘UnknownMessageId’. In all other cases the usage of status ‘Accepted’ or ‘Rejected’
 //! and the data element is part of the vendor-specific agreement between the parties involved.
 
-use ocpp_json_validate::json_validate;
+use crate::ocpp_json_validate::{self, json_validate};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;

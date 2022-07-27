@@ -20,7 +20,7 @@
 //! indicate whether the Charge Point is able to change to the requested availability or not. When a transaction is in progress Charge Point
 //! SHALL respond with availability status 'Scheduled' to indicate that it is scheduled to occur after the transaction has finished.
 
-use ocpp_json_validate::json_validate;
+use crate::ocpp_json_validate::{self, json_validate};
 use serde::{Deserialize, Serialize};
 use strum_macros::Display;
 

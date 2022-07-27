@@ -9,7 +9,7 @@
 //! Upon receipt of a DiagnosticsStatusNotification.req PDU, the Central System SHALL respond with a
 //! DiagnosticsStatusNotification.conf.
 
-use ocpp_json_validate::json_validate;
+use crate::ocpp_json_validate::{self, json_validate};
 use serde::{Deserialize, Serialize};
 use strum_macros::Display;
 

@@ -17,7 +17,7 @@
 //!
 
 pub use crate::common_types::SimpleStatus;
-use ocpp_json_validate::json_validate;
+use crate::ocpp_json_validate::{self, json_validate};
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------

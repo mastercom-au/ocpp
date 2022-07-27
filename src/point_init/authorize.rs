@@ -23,8 +23,8 @@
 //! value indicating acceptance or a reason for rejection.
 //!
 
-pub use crate::common::common_types::IdTagInfo;
-use ocpp_json_validate::json_validate;
+use crate::common::common_types::IdTagInfo;
+use crate::ocpp_json_validate::{self, json_validate};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 

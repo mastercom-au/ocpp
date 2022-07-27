@@ -103,21 +103,21 @@ extern crate lazy_static;
 pub mod common;
 pub mod error;
 pub mod macros;
+pub mod ocpp_json_validate;
 pub mod point_init;
 pub mod server_init;
 
 #[cfg(test)]
 pub mod test;
 
-use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
-use strum_macros::Display;
-
-use ocpp_json_validate::JsonValidate;
-use thiserror::Error;
-
 pub use common::*;
+use ocpp_json_validate::JsonValidate;
 pub use point_init::*;
 pub use server_init::*;
+
+use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
+use strum_macros::Display;
+use thiserror::Error;
 
 /// Overarching OCPP Message use to encapsulate calls, call results and call errors
 #[derive(Serialize, Deserialize, Debug, Clone)]

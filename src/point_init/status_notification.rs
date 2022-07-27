@@ -31,8 +31,8 @@
 //! # Response
 //! Upon receipt of a StatusNotification.req PDU, the Central System SHALL respond with a StatusNotification.conf PDU.
 
+use crate::ocpp_json_validate::{self, json_validate};
 use chrono::{DateTime, Utc};
-use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;

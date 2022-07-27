@@ -17,9 +17,9 @@
 //! If the Charge Point is not able to report the requested schedule, for instance if the connectorId is unknown, it SHALL respond with a status Rejected
 //!
 
+use crate::ocpp_json_validate::{self, json_validate};
 pub use crate::{ChargingRateUnit, ChargingSchedule, SimpleStatus};
 use chrono::{DateTime, Utc};
-use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 

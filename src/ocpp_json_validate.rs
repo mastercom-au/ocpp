@@ -1,8 +1,11 @@
+//! Validator trait for structs with an associated schema
 use std::error::Error;
 use std::fmt;
 
 #[derive(Debug, PartialEq)]
+/// Errors associated with validating against a json schema
 pub enum JsonValidateError {
+    /// Error if validation fails
     ValidationError(Vec<String>),
 }
 
@@ -16,7 +19,9 @@ impl fmt::Display for JsonValidateError {
 
 impl Error for JsonValidateError {}
 
+/// Trait for structures that can be validated against a schema
 pub trait JsonValidate {
+    /// Validate schema against json document
     fn schema_validate(&self) -> Result<(), JsonValidateError>;
 }
 

@@ -1,7 +1,6 @@
-use crate::point_init::boot_notification::*;
+use crate::{ocpp_json_validate::JsonValidate, point_init::boot_notification::*};
 //use crate::server_init::*;
 use chrono::Utc;
-use ocpp_json_validate::JsonValidate;
 
 #[test]
 fn test_boot_notification_response_validates() {
