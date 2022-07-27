@@ -49,3 +49,80 @@ pub fn json_validate(attr: TokenStream, item: TokenStream) -> TokenStream {
     };
     result.into()
 }
+
+#[proc_macro_attribute]
+pub fn generate_test(attr: TokenStream, item: TokenStream) -> TokenStream {
+    let item = parse_macro_input!(item as ItemStruct);
+    let fields = &item.fields;
+    let struct_name = &item.ident;
+
+    let fn_name = struct_name.to_string() + "Builder";
+
+    let mut result = quote! {
+        use super::*;
+        use ocpp_json_validate::JsonValidate;
+        use test_strategy::proptest;
+
+        /// Test validation via builder against validation via schema
+        #[proptest]
+        fn compare_request_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationRequest) {
+            let v = proptest_struct.clone();
+            let built_struct = #fn_name::default()
+
+
+    }};
+
+    for field in fields {
+        let builder_field = quote! {
+            .#field(v.#field)
+        };
+        result.extend(builder_field);
+    }
+
+    result.extend(quote! {
+        .build();
+        let builder_validated_ok = built_struct.is_ok();
+        let schema_validated_ok = proptest_struct.schema_validate().is_ok();
+        assert_eq!(builder_validated_ok, schema_validated_ok);
+
+    });
+    result.into()
+}
+// Sample to assist writing above macro.
+// DELETEABLE WHEN MACRO IS FINISHED
+// mod test {
+//     use super::*;
+//     use ocpp_json_validate::JsonValidate;
+//     use test_strategy::proptest;
+
+//     /// Test validation via builder against validation via schema
+//     #[proptest]
+//     fn compare_request_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationRequest) {
+//         let v = proptest_struct.clone();
+//         let built_struct = BootNotificationRequestBuilder::default()
+//             .charge_point_vendor(v.charge_point_vendor)
+//             .charge_point_model(v.charge_point_model.clone())
+//             .charge_point_serial_number(v.charge_point_serial_number)
+//             .charge_box_serial_number(v.charge_box_serial_number)
+//             .firmware_version(v.firmware_version)
+//             .iccid(v.iccid)
+//             .imsi(v.imsi)
+//             .meter_type(v.meter_type)
+//             .meter_serial_number(v.meter_serial_number)
+//             .build();
+
+//         let builder_validated_ok = built_struct.is_ok();
+//         let schema_validated_ok = proptest_struct.schema_validate().is_ok();
+//         assert_eq!(builder_validated_ok, schema_validated_ok);
+//     }
+
+//     #[proptest]
+//     fn compare_response_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationResponse) {
+//         let v = proptest_struct.clone();
+//         let built_struct = BootNotificationResponseBuilder::default().status(v.status).current_time(v.current_time).interval(v.interval).build();
+
+//         let builder_validated_ok = built_struct.is_ok();
+//         let schema_validated_ok = proptest_struct.schema_validate().is_ok();
+//         assert_eq!(builder_validated_ok, schema_validated_ok);
+//     }
+// }
