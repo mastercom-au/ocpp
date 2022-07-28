@@ -1,8 +1,5 @@
 //! A collection of shared types used by mutiple message structures
-use chrono::TimeZone;
 use chrono::{DateTime, Utc};
-use proptest::arbitrary::any;
-use proptest::strategy::{BoxedStrategy, Strategy};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
@@ -21,16 +18,6 @@ impl std::ops::Deref for UtcTime {
 /// Allows .into() syntax for DateTime<Utc>
 impl std::convert::From<DateTime<Utc>> for UtcTime {
     fn from(t: DateTime<Utc>) -> Self { Self(t) }
-}
-
-/// Arbitrary trait allows this value to be fuzzed by proptest
-impl proptest::arbitrary::Arbitrary for UtcTime {
-    type Parameters = ();
-    type Strategy = BoxedStrategy<Self>;
-
-    fn arbitrary_with(_args: Self::Parameters) -> Self::Strategy { any::<i64>().prop_map(|z| UtcTime(Utc.timestamp_nanos(z))).boxed() }
-
-    fn arbitrary() -> Self::Strategy { Self::arbitrary_with(Default::default()) }
 }
 
 ///Generic status message denoting Accepted or Rejected state.
@@ -69,4 +56,21 @@ pub enum AuthorizationStatus {
     Invalid,
     /// Identifier is already involved in another transaction and multiple transactions are not allowed. (Only relevant for a StartTransaction.req.)
     ConcurrentTx,
+}
+
+#[cfg(test)]
+mod testing {
+    use super::*;
+    use chrono::TimeZone;
+    use proptest::arbitrary::any;
+    use proptest::strategy::{BoxedStrategy, Strategy};
+    /// Arbitrary trait allows this value to be fuzzed by proptest
+    impl proptest::arbitrary::Arbitrary for UtcTime {
+        type Parameters = ();
+        type Strategy = BoxedStrategy<Self>;
+
+        fn arbitrary_with(_args: Self::Parameters) -> Self::Strategy { any::<i64>().prop_map(|z| UtcTime(Utc.timestamp_nanos(z))).boxed() }
+
+        fn arbitrary() -> Self::Strategy { Self::arbitrary_with(Default::default()) }
+    }
 }
