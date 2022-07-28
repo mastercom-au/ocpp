@@ -16,7 +16,7 @@
 //! start retrieving the firmware as soon as possible after retrieve-date. During downloading and installation of the firmware, the
 //! Charge Point MUST send FirmwareStatusNotification.req PDUs to keep the Central System updated with the status of the update process.
 
-use crate::ocpp_json_validate::{self, json_validate};
+use crate::validation_macros::{self, json_validate};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;

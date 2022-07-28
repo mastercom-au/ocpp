@@ -45,7 +45,7 @@
 //! If no other ChargingProfile is available, the Charge Point SHALL allow charging as if no ChargingProfile is installed.
 //! If the chargingSchedulePeriod and/or duration is longer then the recurrence period duration, the remainder periods SHALL not be executed.
 
-use crate::ocpp_json_validate::{self, json_validate};
+use crate::validation_macros::{self, json_validate};
 pub use crate::ChargingProfile;
 use serde::{Deserialize, Serialize};
 use strum_macros::Display;

@@ -2,6 +2,8 @@
 use std::error::Error;
 use std::fmt;
 
+pub use macros::json_validate;
+
 #[derive(Debug, PartialEq)]
 /// Errors associated with validating against a json schema
 pub enum JsonValidateError {
@@ -25,4 +27,4 @@ pub trait JsonValidate {
     fn schema_validate(&self) -> Result<(), JsonValidateError>;
 }
 
-pub use macros::json_validate;
+pub use macros::ValidateCompare;

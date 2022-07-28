@@ -10,7 +10,7 @@
 //! state. Unrecognized keys SHALL be placed in the response PDU as part of the optional unknown key list element of GetConfiguration.conf.
 //!
 
-use crate::ocpp_json_validate::{self, json_validate};
+use crate::validation_macros::{self, json_validate};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 

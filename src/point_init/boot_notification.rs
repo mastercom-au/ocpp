@@ -35,8 +35,7 @@
 //!
 //! While in pending state, the following Central System initiated messages are not allowed:
 //! RemoteStartTransaction.req and RemoteStopTransaction.req
-use crate::ocpp_json_validate::{self, json_validate};
-use crate::validate_compare::impl_print_struct_names;
+use crate::validation_macros::{self, json_validate};
 use crate::{error::OcppError, generate_builders, UtcTime};
 use macros::ValidateCompare;
 
@@ -133,8 +132,8 @@ generate_builders!(BootNotification);
 #[cfg(test)]
 mod test {
     use super::*;
-    use ocpp_json_validate::JsonValidate;
     use test_strategy::proptest;
+    use validation_macros::JsonValidate;
 
     #[test]
     fn test_macro() { BootNotificationRequest::print_field_names(); }
@@ -142,17 +141,17 @@ mod test {
     /// Test validation via builder against validation via schema
     #[proptest]
     fn compare_request_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationRequest) {
-        let v = proptest_struct.clone();
+        let test = proptest_struct.clone();
         let built_struct = BootNotificationRequestBuilder::default()
-            .charge_point_vendor(v.charge_point_vendor)
-            .charge_point_model(v.charge_point_model.clone())
-            .charge_point_serial_number(v.charge_point_serial_number)
-            .charge_box_serial_number(v.charge_box_serial_number)
-            .firmware_version(v.firmware_version)
-            .iccid(v.iccid)
-            .imsi(v.imsi)
-            .meter_type(v.meter_type)
-            .meter_serial_number(v.meter_serial_number)
+            .charge_point_vendor(test.charge_point_vendor)
+            .charge_point_model(test.charge_point_model.clone())
+            .charge_point_serial_number(test.charge_point_serial_number)
+            .charge_box_serial_number(test.charge_box_serial_number)
+            .firmware_version(test.firmware_version)
+            .iccid(test.iccid)
+            .imsi(test.imsi)
+            .meter_type(test.meter_type)
+            .meter_serial_number(test.meter_serial_number)
             .build();
 
         let builder_validated_ok = built_struct.is_ok();
@@ -162,8 +161,8 @@ mod test {
 
     #[proptest]
     fn compare_response_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationResponse) {
-        let v = proptest_struct.clone();
-        let built_struct = BootNotificationResponseBuilder::default().status(v.status).current_time(v.current_time).interval(v.interval).build();
+        let test = proptest_struct.clone();
+        let built_struct = BootNotificationResponseBuilder::default().status(test.status).current_time(test.current_time).interval(test.interval).build();
 
         let builder_validated_ok = built_struct.is_ok();
         let schema_validated_ok = proptest_struct.schema_validate().is_ok();

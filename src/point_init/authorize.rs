@@ -24,7 +24,7 @@
 //!
 
 use crate::common::common_types::IdTagInfo;
-use crate::ocpp_json_validate::{self, json_validate};
+use crate::validation_macros::{self, json_validate};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 

@@ -8,7 +8,7 @@ use syn::LitStr;
 use syn::{Field, Fields::Named, FieldsNamed, Path, Type, TypePath};
 
 #[proc_macro_derive(ValidateCompare)]
-pub fn impl_print_struct_names(item: TokenStream) -> TokenStream {
+pub fn validate_compare(item: TokenStream) -> TokenStream {
     let item = parse_macro_input!(item as ItemStruct);
     let fields = if let Named(FieldsNamed { ref named, .. }) = &item.fields {
         named
@@ -24,8 +24,8 @@ pub fn impl_print_struct_names(item: TokenStream) -> TokenStream {
         fields: fields.iter().filter_map(|field| get_field_medatada(field)).collect(),
     };
 
-    let fields: Vec<String> = data.fields.iter().map(|field| field.name.to_string()).collect();
-    let print_str = fields.join(", ");
+    let fields: Vec<String> = data.fields.iter().map(|field| format!("{}(test.{}.clone())", field.name.to_string(), field.name.to_string())).collect();
+    let print_str = fields.join(".");
     let result = quote! {
         impl #struct_name {
             pub fn print_field_names() {
@@ -62,12 +62,12 @@ pub fn json_validate(attr: TokenStream, item: TokenStream) -> TokenStream {
             static ref #validator_name: jsonschema::JSONSchema = jsonschema::JSONSchema::compile(&#json_name).expect(&format!("Invalid Schema File: {}", #filename));
         }
 
-        impl ocpp_json_validate::JsonValidate for #struct_name {
+        impl validation_macros::JsonValidate for #struct_name {
 
-            fn schema_validate(&self) -> Result<(), ocpp_json_validate::JsonValidateError> {
+            fn schema_validate(&self) -> Result<(), validation_macros::JsonValidateError> {
                 use tracing::{warn, trace};
 
-                if let Err(val) = #validator_name.validate(&serde_json::json!(self)).map_err(|errors| ocpp_json_validate::JsonValidateError::ValidationError(Vec::from_iter(errors.map(|e| e.to_string())))){
+                if let Err(val) = #validator_name.validate(&serde_json::json!(self)).map_err(|errors| validation_macros::JsonValidateError::ValidationError(Vec::from_iter(errors.map(|e| e.to_string())))){
                     warn!("Validate failed on Json Value Struct {:?}, with error: {} ", &self, val);
                     return Err(val);
                 } else {
@@ -97,7 +97,7 @@ struct FieldMetaData {
 // DELETEABLE WHEN MACRO IS FINISHED
 // mod test {
 //     use super::*;
-//     use ocpp_json_validate::JsonValidate;
+//     use validation_macros::JsonValidate;
 //     use test_strategy::proptest;
 
 //     /// Test validation via builder against validation via schema
