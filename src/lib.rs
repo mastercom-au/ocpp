@@ -100,9 +100,9 @@
 #[macro_use]
 extern crate lazy_static;
 
+pub mod builder_macro;
 pub mod common;
 pub mod error;
-pub mod macros;
 pub mod ocpp_json_validate;
 pub mod point_init;
 pub mod server_init;
