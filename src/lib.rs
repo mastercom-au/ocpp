@@ -106,6 +106,7 @@ pub mod macros;
 pub mod ocpp_json_validate;
 pub mod point_init;
 pub mod server_init;
+pub mod validate_compare;
 
 #[cfg(test)]
 pub mod test;

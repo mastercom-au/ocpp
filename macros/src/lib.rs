@@ -5,6 +5,37 @@ use syn::parse_macro_input;
 use syn::Ident;
 use syn::ItemStruct;
 use syn::LitStr;
+use syn::{Field, Fields::Named, FieldsNamed, Path, Type, TypePath};
+
+#[proc_macro_derive(ValidateCompare)]
+pub fn impl_print_struct_names(item: TokenStream) -> TokenStream {
+    let item = parse_macro_input!(item as ItemStruct);
+    let fields = if let Named(FieldsNamed { ref named, .. }) = &item.fields {
+        named
+    } else {
+        panic!("We couldn't get the struct fields?");
+    };
+
+    let struct_name = &item.ident;
+    //let fn_name = struct_name.to_string() + "Builder";
+
+    let data = StructMetaData {
+        name: format!("{}", item.ident),
+        fields: fields.iter().filter_map(|field| get_field_medatada(field)).collect(),
+    };
+
+    let fields: Vec<String> = data.fields.iter().map(|field| field.name.to_string()).collect();
+    let print_str = fields.join(", ");
+    let result = quote! {
+        impl #struct_name {
+            pub fn print_field_names() {
+                let fields = ::std::string::String::from(#print_str);
+                println!("{}", fields);
+            }
+        }
+    };
+    result.into()
+}
 
 #[proc_macro_attribute]
 pub fn json_validate(attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -50,44 +81,18 @@ pub fn json_validate(attr: TokenStream, item: TokenStream) -> TokenStream {
     result.into()
 }
 
-#[proc_macro_attribute]
-pub fn generate_test(attr: TokenStream, item: TokenStream) -> TokenStream {
-    let item = parse_macro_input!(item as ItemStruct);
-    let fields = &item.fields;
-    let struct_name = &item.ident;
-
-    let fn_name = struct_name.to_string() + "Builder";
-
-    let mut result = quote! {
-        use super::*;
-        use ocpp_json_validate::JsonValidate;
-        use test_strategy::proptest;
-
-        /// Test validation via builder against validation via schema
-        #[proptest]
-        fn compare_request_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationRequest) {
-            let v = proptest_struct.clone();
-            let built_struct = #fn_name::default()
-
-
-    }};
-
-    for field in fields {
-        let builder_field = quote! {
-            .#field(v.#field)
-        };
-        result.extend(builder_field);
-    }
-
-    result.extend(quote! {
-        .build();
-        let builder_validated_ok = built_struct.is_ok();
-        let schema_validated_ok = proptest_struct.schema_validate().is_ok();
-        assert_eq!(builder_validated_ok, schema_validated_ok);
-
-    });
-    result.into()
+#[derive(Debug)]
+struct StructMetaData {
+    name: String,
+    fields: Vec<FieldMetaData>,
 }
+
+#[derive(Debug)]
+struct FieldMetaData {
+    name: String,
+    ty: String,
+}
+
 // Sample to assist writing above macro.
 // DELETEABLE WHEN MACRO IS FINISHED
 // mod test {
@@ -126,3 +131,21 @@ pub fn generate_test(attr: TokenStream, item: TokenStream) -> TokenStream {
 //         assert_eq!(builder_validated_ok, schema_validated_ok);
 //     }
 // }
+
+fn get_field_medatada(field: &Field) -> Option<FieldMetaData> {
+    let ident = match &field.ident {
+        Some(id) => Some(format!("{}", id)),
+        None => {
+            return None;
+        }
+    };
+
+    let ty_ident = match &field.ty {
+        Type::Path(TypePath { path: Path { segments, .. }, .. }) => segments.first().and_then(|s| Some(format!("{}", s.ident))),
+        _ => {
+            return None;
+        }
+    };
+    let entity_field = FieldMetaData { name: ident.unwrap(), ty: ty_ident.unwrap() };
+    Some(entity_field)
+}

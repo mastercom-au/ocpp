@@ -36,9 +36,9 @@
 //! While in pending state, the following Central System initiated messages are not allowed:
 //! RemoteStartTransaction.req and RemoteStopTransaction.req
 use crate::ocpp_json_validate::{self, json_validate};
+use crate::validate_compare::impl_print_struct_names;
 use crate::{error::OcppError, generate_builders, UtcTime};
-
-use ocpp_json_validate_attribute::generate_test;
+use macros::ValidateCompare;
 
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
@@ -53,8 +53,7 @@ use test_strategy::Arbitrary;
 /// Field definition of the BootNotification.req PDU sent by the Charge Point to the Central System.
 #[skip_serializing_none]
 #[json_validate("../json_schemas/BootNotification.json")] // Creates and defines validator function which checks struct against schema definition defined in path
-#[generate_test]
-#[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder)]
+#[derive(ValidateCompare, Serialize, Validate, Deserialize, Debug, Clone, Builder)]
 #[builder(build_fn(name = "pre_build", error = "OcppError"))] // Allows us to call pre_build inside our own builder which includes validation
 #[serde(rename_all = "camelCase")] // Serialize field names into CamelCase to fit OCPP naming
 #[skip_serializing_none] // Doesn't include None values in the output after serializing
@@ -136,6 +135,9 @@ mod test {
     use super::*;
     use ocpp_json_validate::JsonValidate;
     use test_strategy::proptest;
+
+    #[test]
+    fn test_macro() { BootNotificationRequest::print_field_names(); }
 
     /// Test validation via builder against validation via schema
     #[proptest]

@@ -25,4 +25,4 @@ pub trait JsonValidate {
     fn schema_validate(&self) -> Result<(), JsonValidateError>;
 }
 
-pub use ocpp_json_validate_attribute::json_validate;
+pub use macros::json_validate;
