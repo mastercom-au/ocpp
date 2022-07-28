@@ -17,21 +17,27 @@ pub fn validate_compare(item: TokenStream) -> TokenStream {
     };
 
     let struct_name = &item.ident;
-    //let fn_name = struct_name.to_string() + "Builder";
-
+    let fn_name = &item.ident.to_string();
+    let builder_name = format!("{}Builder", fn_name);
     let data = StructMetaData {
         name: format!("{}", item.ident),
         fields: fields.iter().filter_map(|field| get_field_medatada(field)).collect(),
     };
 
     let fields: Vec<String> = data.fields.iter().map(|field| format!("{}(test.{}.clone())", field.name.to_string(), field.name.to_string())).collect();
-    let print_str = fields.join(".");
+    let builder_fields = fields.join(".");
+    let builder_declare = format!("let build_struct = {}::default().", builder_name);
+    let builder_build = format!(".build();");
+
+    let builder = format!("{}{}{}", builder_declare, builder_fields, builder_build);
     let result = quote! {
         impl #struct_name {
             pub fn print_field_names() {
-                let fields = ::std::string::String::from(#print_str);
+                println!("{}", ::std::string::String::from(#fn_name));
+                let fields = ::std::string::String::from(#builder);
                 println!("{}", fields);
             }
+
         }
     };
     result.into()
