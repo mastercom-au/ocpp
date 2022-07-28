@@ -52,12 +52,12 @@ use test_strategy::Arbitrary;
 /// Field definition of the BootNotification.req PDU sent by the Charge Point to the Central System.
 #[skip_serializing_none]
 #[json_validate("../json_schemas/BootNotification.json")] // Creates and defines validator function which checks struct against schema definition defined in path
-#[derive(ValidateCompare, Serialize, Validate, Deserialize, Debug, Clone, Builder)]
+#[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder)]
 #[builder(build_fn(name = "pre_build", error = "OcppError"))] // Allows us to call pre_build inside our own builder which includes validation
 #[serde(rename_all = "camelCase")] // Serialize field names into CamelCase to fit OCPP naming
 #[skip_serializing_none] // Doesn't include None values in the output after serializing
 #[cfg_attr(not(test), builder(setter(strip_option)))] // Strip Optional wrapping in production to allow builders to be set without specifying 'Some(val)'
-#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
+#[cfg_attr(test, derive(Arbitrary, ValidateCompare))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
 pub struct BootNotificationRequest {
     /// Optional. This contains a value that identifies the serial number of the Charge Box inside the Charge Point.
     /// Deprecated, will be removed in future versio
