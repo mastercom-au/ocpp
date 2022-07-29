@@ -2,7 +2,7 @@
 //!
 //! The Charge Point SHALL respond with a ClearChargingProfile.conf PDU specifying whether it was able to process the request.
 
-use crate::validation_macros::{self, json_validate};
+use crate::macros::{self, json_validate};
 use crate::ChargingProfilePurpose;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;

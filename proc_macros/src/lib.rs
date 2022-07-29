@@ -2,8 +2,8 @@ use proc_macro::TokenStream;
 use quote::{format_ident, quote};
 use syn::{parse_macro_input, Ident, ItemStruct, LitStr};
 
-#[proc_macro_derive(ValidateCompare)]
-pub fn validate_compare(item: TokenStream) -> TokenStream {
+#[proc_macro_derive(BuilderValidator)]
+pub fn derive_builder_and_validation(item: TokenStream) -> TokenStream {
     // Parse attached item as ItemStruct
     let item = parse_macro_input!(item as ItemStruct);
     // Grab struct name and fields
@@ -13,12 +13,21 @@ pub fn validate_compare(item: TokenStream) -> TokenStream {
     let builder_name = format_ident!("{}Builder", struct_identifier);
 
     let result = quote! {
+        #[cfg(test)]
         impl #struct_identifier {
-            pub fn test_build(fuzz_struct: Self) -> bool {
+            pub fn compare_validation_methods(fuzz_struct: Self) -> bool {
                 let built_struct = #builder_name ::default()#(.#field_names(fuzz_struct.#field_names .clone()))* .build();
                 let builder_validated_ok = built_struct.is_ok();
                 let schema_validated_ok = fuzz_struct.schema_validate().is_ok();
                 return builder_validated_ok == schema_validated_ok;
+            }
+        }
+
+        impl #builder_name {
+            /// Builder function for [<$i>] struct
+            pub fn build(&self) -> Result<#struct_identifier, OcppError> {
+                let req = self.pre_build()?;
+                return req.validate().map(|_| req).map_err(|e| e.into());
             }
         }
     };
@@ -46,12 +55,12 @@ pub fn json_validate(attr: TokenStream, item: TokenStream) -> TokenStream {
             static ref #validator_name: jsonschema::JSONSchema = jsonschema::JSONSchema::compile(&#json_name).expect(&format!("Invalid Schema File: {}", #filename));
         }
 
-        impl validation_macros::JsonValidate for #struct_name {
+        impl macros::JsonValidate for #struct_name {
 
-            fn schema_validate(&self) -> Result<(), validation_macros::JsonValidateError> {
+            fn schema_validate(&self) -> Result<(), macros::JsonValidateError> {
                 use tracing::{warn, trace};
 
-                if let Err(val) = #validator_name.validate(&serde_json::json!(self)).map_err(|errors| validation_macros::JsonValidateError::ValidationError(Vec::from_iter(errors.map(|e| e.to_string())))){
+                if let Err(val) = #validator_name.validate(&serde_json::json!(self)).map_err(|errors| macros::JsonValidateError::ValidationError(Vec::from_iter(errors.map(|e| e.to_string())))){
                     warn!("Validate failed on Json Value Struct {:?}, with error: {} ", &self, val);
                     return Err(val);
                 } else {

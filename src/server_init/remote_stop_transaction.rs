@@ -17,7 +17,7 @@
 //!
 
 pub use crate::common_types::SimpleStatus;
-use crate::validation_macros::{self, json_validate};
+use crate::macros::{self, json_validate};
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------

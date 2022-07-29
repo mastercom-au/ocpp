@@ -12,7 +12,7 @@
 //! indicate whether the Charge Point was able to unlock its connector. If there was a transaction in progress on the specific connector,
 //! then Charge Point SHALL finish the transaction first as described in Stop Transaction.
 
-use crate::validation_macros::{self, json_validate};
+use crate::macros::{self, json_validate};
 use serde::{Deserialize, Serialize};
 use strum_macros::Display;
 

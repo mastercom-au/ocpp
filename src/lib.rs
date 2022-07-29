@@ -100,20 +100,19 @@
 #[macro_use]
 extern crate lazy_static;
 
-pub mod builder_macro;
 pub mod common;
 pub mod error;
+pub mod macros;
 pub mod point_init;
 pub mod server_init;
-pub mod validation_macros;
 
 #[cfg(test)]
 pub mod test;
 
 pub use common::*;
+use macros::JsonValidate;
 pub use point_init::*;
 pub use server_init::*;
-use validation_macros::JsonValidate;
 
 use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
 use strum_macros::Display;
@@ -517,8 +516,8 @@ impl OCPPCallPayload {
     }
 }
 
-impl validation_macros::JsonValidate for OCPPCallPayload {
-    fn schema_validate(&self) -> Result<(), validation_macros::JsonValidateError> {
+impl macros::JsonValidate for OCPPCallPayload {
+    fn schema_validate(&self) -> Result<(), macros::JsonValidateError> {
         match self {
             OCPPCallPayload::Authorize(req) => req.schema_validate(),
             OCPPCallPayload::BootNotification(req) => req.schema_validate(),
@@ -584,8 +583,8 @@ pub enum OCPPCallResultPayload {
     UpdateFirmware(UpdateFirmwareResponse),
 }
 
-impl validation_macros::JsonValidate for OCPPCallResultPayload {
-    fn schema_validate(&self) -> Result<(), validation_macros::JsonValidateError> {
+impl macros::JsonValidate for OCPPCallResultPayload {
+    fn schema_validate(&self) -> Result<(), macros::JsonValidateError> {
         match self {
             OCPPCallResultPayload::Authorize(r) => r.schema_validate(),
             OCPPCallResultPayload::BootNotification(r) => r.schema_validate(),

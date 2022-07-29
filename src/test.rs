@@ -1,4 +1,4 @@
-use crate::{point_init::boot_notification::*, validation_macros::JsonValidate};
+use crate::{macros::JsonValidate, point_init::boot_notification::*};
 //use crate::server_init::*;
 use chrono::Utc;
 

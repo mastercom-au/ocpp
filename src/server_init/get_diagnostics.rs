@@ -13,7 +13,7 @@
 //! During uploading of a diagnostics file, the Charge Point MUST send DiagnosticsStatusNotification.req PDUs to keep the Central
 //! System updated with the status of the upload process.
 
-use crate::validation_macros::{self, json_validate};
+use crate::macros::{self, json_validate};
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;

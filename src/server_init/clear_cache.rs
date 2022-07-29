@@ -8,7 +8,7 @@ pub use crate::common_types::SimpleStatus;
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------
-use crate::validation_macros::{self, json_validate};
+use crate::macros::{self, json_validate};
 #[json_validate("../json_schemas/ClearCache.json")]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
