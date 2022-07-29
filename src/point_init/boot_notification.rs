@@ -35,7 +35,7 @@
 //!
 //! While in pending state, the following Central System initiated messages are not allowed:
 //! RemoteStartTransaction.req and RemoteStopTransaction.req
-use crate::validation_macros::{self, *};
+use crate::validation_macros::{self, json_validate};
 use crate::{error::OcppError, generate_builders, UtcTime};
 
 use derive_builder::Builder;
@@ -45,7 +45,10 @@ use strum_macros::Display;
 use validator::Validate;
 
 #[cfg(test)]
-use test_strategy::Arbitrary;
+use {
+    crate::validation_macros::{JsonValidate, ValidateCompare},
+    test_strategy::Arbitrary,
+};
 
 // -------------------------- REQUEST --------------------------
 /// Field definition of the BootNotification.req PDU sent by the Charge Point to the Central System.
@@ -103,7 +106,7 @@ pub struct BootNotificationRequest {
 #[serde(rename_all = "camelCase")] // Serialize field names into CamelCase to fit OCPP naming
 #[skip_serializing_none] // Doesn't include None values in the output after serializing
 #[cfg_attr(not(test), builder(setter(strip_option)))] // Strip Optional wrapping in production to allow builders to be set without specifying 'Some(val)'
-#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
+#[cfg_attr(test, derive(ValidateCompare, Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
 
 pub struct BootNotificationResponse {
     /// Identifies whether the charge point has been registered with the central server.
@@ -132,39 +135,14 @@ generate_builders!(BootNotification);
 mod test {
     use super::*;
     use test_strategy::proptest;
-    use validation_macros::JsonValidate;
-
-    #[proptest]
-    fn test_builder(proptest_struct: super::BootNotificationRequest) { BootNotificationRequest::test_build(proptest_struct); }
-
-    /// Test validation via builder against validation via schema
     #[proptest]
     fn compare_request_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationRequest) {
-        let test = proptest_struct.clone();
-        let built_struct = BootNotificationRequestBuilder::default()
-            .charge_point_vendor(test.charge_point_vendor)
-            .charge_point_model(test.charge_point_model.clone())
-            .charge_point_serial_number(test.charge_point_serial_number)
-            .charge_box_serial_number(test.charge_box_serial_number)
-            .firmware_version(test.firmware_version)
-            .iccid(test.iccid)
-            .imsi(test.imsi)
-            .meter_type(test.meter_type)
-            .meter_serial_number(test.meter_serial_number)
-            .build();
-
-        let builder_validated_ok = built_struct.is_ok();
-        let schema_validated_ok = proptest_struct.schema_validate().is_ok();
-        assert_eq!(builder_validated_ok, schema_validated_ok);
+        //let test_struct = any
+        assert!(BootNotificationRequest::test_build(proptest_struct));
     }
 
     #[proptest]
     fn compare_response_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationResponse) {
-        let test = proptest_struct.clone();
-        let built_struct = BootNotificationResponseBuilder::default().status(test.status).current_time(test.current_time).interval(test.interval).build();
-
-        let builder_validated_ok = built_struct.is_ok();
-        let schema_validated_ok = proptest_struct.schema_validate().is_ok();
-        assert_eq!(builder_validated_ok, schema_validated_ok);
+        assert!(BootNotificationResponse::test_build(proptest_struct));
     }
 }
