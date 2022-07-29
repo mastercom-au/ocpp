@@ -41,6 +41,7 @@ macro_rules! generate_validation_comparison_tests {
         
             #[proptest]
             fn request_struct_validation_matches_schema_validation(fuzzed_struct: [<$i Request>]) {
+                println!("{:?}", fuzzed_struct);
                 assert!([<$i Request>]::compare_validation_methods(fuzzed_struct));
             }
             #[proptest]

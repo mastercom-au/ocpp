@@ -1,16 +1,19 @@
 //! Definition for the meter value type
-use chrono::{DateTime, Utc};
+use crate::common::UtcTime;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::{Display, EnumIter};
+#[cfg(test)]
+use test_strategy::Arbitrary;
 
 /// Collection of one or more sampled values (as seen in [MeterValues.req](crate::point_init::meter_values) and [StopTransaction.req](crate::point_init::stop_transaction)), all sampled at the same time.
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
 pub struct MeterValue {
     /// Required. Timestamp for measured value(s).
-    pub timestamp: DateTime<Utc>,
+    pub timestamp: UtcTime,
     /// Required. One or more measured values
     pub sampled_value: Vec<SampledValue>,
 }
@@ -19,6 +22,7 @@ pub struct MeterValue {
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
 pub struct SampledValue {
     /// Required. Value as a “Raw” (decimal) number or “SignedData”. Field Type is “string” to allow for digitally signed data readings. Decimal numeric values are also acceptable to allow fractional values for measurands such as Temperature and Current.
     pub value: String,
@@ -38,6 +42,7 @@ pub struct SampledValue {
 
 /// Values of the context field of a value in SampledValue.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
+#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
 pub enum SampledContext {
     /// Value taken at start of interruption.
     #[serde(rename = "Interruption.Begin")]
@@ -66,6 +71,7 @@ pub enum SampledContext {
 
 /// Format that specifies how the value element in SampledValue is to be interpreted.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
+#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
 pub enum SampledFormat {
     /// Data is to be interpreted as integer/decimal numeric data.
     Raw,
@@ -75,6 +81,7 @@ pub enum SampledFormat {
 
 /// Allowable values of the optional "measurand" field of a Value element, as used in MeterValuesRequest and StopTransaction.req messages. Default value of "measurand" is always "Energy.Active.Import.Register"
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone, EnumIter)]
+#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
 pub enum SampledMeasurand {
     /// Numerical value read from the "active electrical energy" (Wh or kWh) register of the (most authoritative) electrical meter measuring energy exported (to the grid).
     #[serde(rename = "Energy.Active.Export.Register")]
@@ -145,6 +152,7 @@ pub enum SampledMeasurand {
 
 /// Phase as used in SampledValue. Phase specifies how a measured value is to be interpreted. Please note that not all values of Phase are applicable to all Measurands.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
+#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
 pub enum SampledPhase {
     /// Measured on L1
     L1,
@@ -176,6 +184,7 @@ pub enum SampledPhase {
 
 /// Allowable values of the optional "location" field of a value element in SampledValue.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
+#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
 pub enum SampledLocation {
     /// Measurement inside body of Charge Point (e.g. Temperature)
     Body,
@@ -191,6 +200,7 @@ pub enum SampledLocation {
 
 /// Allowable values of the optional "unit" field of a Value element, as used in SampledValue. Default value of "unit" is always "Wh".
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
+#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
 #[warn(non_camel_case_types)]
 pub enum SampledUnit {
     /// Watt-hours (energy). Default.

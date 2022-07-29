@@ -43,16 +43,28 @@
 //! It is likely that The Central System applies sanity checks to the data contained in a MeterValues.req it received.
 //! The outcome of such sanity checks SHOULD NOT ever cause the Central System to not respond with a MeterValues.conf. Failing to respond with a MeterValues.conf will only cause the Charge Point to try the same message again as specified in Error responses to transaction-related messages.
 
+use crate::error::OcppError;
+use crate::generate_validation_comparison_tests;
+use crate::macros::BuilderValidator;
 use crate::macros::{self, json_validate};
 pub use crate::MeterValue;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
+use derive_builder::Builder;
+use validator::Validate;
+
+#[cfg(test)]
+use test_strategy::Arbitrary;
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/MeterValues.json")]
 #[skip_serializing_none]
-#[derive(Serialize, Deserialize, Debug, Clone)]
-#[serde(rename_all = "camelCase")]
+#[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder, BuilderValidator)]
+#[builder(build_fn(name = "pre_build", error = "OcppError"))] // Allows us to call pre_build inside our own builder which includes validation
+#[serde(rename_all = "camelCase")] // Serialize field names into CamelCase to fit OCPP naming
+#[cfg_attr(not(test), builder(setter(strip_option)))] // Strip Optional wrapping in production to allow builders to be set without specifying 'Some(val)'
+#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
+
 /// Field definition of the MeterValues.req PDU sent by the Charge Point to the Central System.
 pub struct MeterValuesRequest {
     /// Required. This contains a number (>0) designating a connector of the ChargePoint.‘0’ (zero) is used to designate the main powermeter.
@@ -65,7 +77,11 @@ pub struct MeterValuesRequest {
 
 // -------------------------- RESPONSE --------------------------
 #[json_validate("../json_schemas/MeterValuesResponse.json")]
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder, BuilderValidator)]
+#[builder(build_fn(name = "pre_build", error = "OcppError"))] // Allows us to call pre_build inside our own builder which includes validation
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
 /// Field definition of the MeterValues.conf PDU sent by the Central System to the Charge Point in response to a MeterValues.req PDU.
 pub struct MeterValuesResponse {}
+
+generate_validation_comparison_tests!(MeterValues);
