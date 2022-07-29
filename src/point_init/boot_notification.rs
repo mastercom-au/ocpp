@@ -36,7 +36,7 @@
 //! While in pending state, the following Central System initiated messages are not allowed:
 //! RemoteStartTransaction.req and RemoteStopTransaction.req
 use crate::macros::BuilderValidator;
-use crate::macros::{self, json_validate, JsonValidate};
+use crate::macros::{self, json_validate};
 use crate::{error::OcppError, UtcTime};
 
 use derive_builder::Builder;

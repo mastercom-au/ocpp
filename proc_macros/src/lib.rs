@@ -16,6 +16,7 @@ pub fn derive_builder_and_validation(item: TokenStream) -> TokenStream {
         #[cfg(test)]
         impl #struct_identifier {
             pub fn compare_validation_methods(fuzz_struct: Self) -> bool {
+                use macros::JsonValidate;
                 let built_struct = #builder_name ::default()#(.#field_names(fuzz_struct.#field_names .clone()))* .build();
                 let builder_validated_ok = built_struct.is_ok();
                 let schema_validated_ok = fuzz_struct.schema_validate().is_ok();

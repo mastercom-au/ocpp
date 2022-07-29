@@ -26,3 +26,7 @@ validator = {version = "0.16", features = ["derive"]}
 
 # Internal crates
 proc_macros = {version = "^1.0", path = "./proc_macros"}
+
+[dev-dependencies]
+proptest      = "^1"
+test-strategy = "^0.2"

@@ -74,20 +74,3 @@ pub enum AuthorizationStatus {
     /// Identifier is already involved in another transaction and multiple transactions are not allowed. (Only relevant for a StartTransaction.req.)
     ConcurrentTx,
 }
-
-#[cfg(test)]
-mod testing {
-    use super::*;
-    use chrono::TimeZone;
-    use proptest::arbitrary::any;
-    use proptest::strategy::{BoxedStrategy, Strategy};
-    /// Arbitrary trait allows this value to be fuzzed by proptest
-    impl proptest::arbitrary::Arbitrary for UtcTime {
-        type Parameters = ();
-        type Strategy = BoxedStrategy<Self>;
-
-        fn arbitrary_with(_args: Self::Parameters) -> Self::Strategy { any::<i64>().prop_map(|z| UtcTime(Utc.timestamp_nanos(z))).boxed() }
-
-        fn arbitrary() -> Self::Strategy { Self::arbitrary_with(Default::default()) }
-    }
-}
