@@ -3,6 +3,7 @@ use std::error::Error;
 use std::fmt;
 
 pub use proc_macros::json_validate;
+pub use proc_macros::BuilderValidator;
 
 #[derive(Debug, PartialEq)]
 /// Errors associated with validating against a json schema
@@ -27,4 +28,26 @@ pub trait JsonValidate {
     fn schema_validate(&self) -> Result<(), JsonValidateError>;
 }
 
-pub use proc_macros::BuilderValidator;
+
+#[macro_export]
+/// Expands to the builder for a particular OCPP structure
+macro_rules! generate_validation_comparison_tests {
+    ($i:expr) => {
+        paste::paste!{
+        #[cfg(test)]
+        mod test {
+            use super::*;
+            use test_strategy::proptest;
+        
+            #[proptest]
+            fn request_struct_validation_matches_schema_validation(fuzzed_struct: [<$i Request>]) {
+                assert!([<$i Request>]::compare_validation_methods(fuzzed_struct));
+            }
+            #[proptest]
+            fn response_struct_validation_matches_schema_validation(fuzzed_struct: [<$i Response>]) {
+                assert!([<$i Response>]::compare_validation_methods(fuzzed_struct));
+            }
+        }
+    }
+    };
+}

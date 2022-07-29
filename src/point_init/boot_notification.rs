@@ -127,18 +127,4 @@ pub enum BootNotificationStatus {
     Rejected,
 }
 
-#[cfg(test)]
-mod test {
-    use super::*;
-    use test_strategy::proptest;
-
-    #[proptest]
-    fn request_struct_validation_matches_schema_validation(proptest_struct: BootNotificationRequest) {
-        assert!(BootNotificationRequest::compare_validation_methods(proptest_struct));
-    }
-
-    #[proptest]
-    fn response_struct_validation_matches_schema_validation(proptest_struct: BootNotificationResponse) {
-        assert!(BootNotificationResponse::compare_validation_methods(proptest_struct));
-    }
-}
+crate::generate_validation_comparison_tests!(BootNotification);
