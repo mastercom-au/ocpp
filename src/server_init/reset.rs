@@ -21,7 +21,7 @@
 //! whether the Charge Point will attempt to reset itself.
 
 pub use crate::common_types::SimpleStatus;
-use crate::ocpp_json_validate::{self, json_validate};
+use crate::macros::{self, json_validate};
 use serde::{Deserialize, Serialize};
 use strum_macros::Display;
 

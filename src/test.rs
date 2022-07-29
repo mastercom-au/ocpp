@@ -1,4 +1,4 @@
-use crate::{ocpp_json_validate::JsonValidate, point_init::boot_notification::*};
+use crate::{macros::JsonValidate, point_init::boot_notification::*};
 //use crate::server_init::*;
 use chrono::Utc;
 

@@ -40,7 +40,7 @@
 //! idTag is not in the Local Authorization List, with the IdTagInfo value from the response as described under Authorization Cache.
 
 pub use crate::common_types::IdTagInfo;
-use crate::ocpp_json_validate::{self, json_validate};
+use crate::macros::{self, json_validate};
 pub use crate::MeterValue;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};

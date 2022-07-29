@@ -103,7 +103,6 @@ extern crate lazy_static;
 pub mod common;
 pub mod error;
 pub mod macros;
-pub mod ocpp_json_validate;
 pub mod point_init;
 pub mod server_init;
 
@@ -111,7 +110,7 @@ pub mod server_init;
 pub mod test;
 
 pub use common::*;
-use ocpp_json_validate::JsonValidate;
+use macros::JsonValidate;
 pub use point_init::*;
 pub use server_init::*;
 
@@ -517,8 +516,8 @@ impl OCPPCallPayload {
     }
 }
 
-impl ocpp_json_validate::JsonValidate for OCPPCallPayload {
-    fn schema_validate(&self) -> Result<(), ocpp_json_validate::JsonValidateError> {
+impl macros::JsonValidate for OCPPCallPayload {
+    fn schema_validate(&self) -> Result<(), macros::JsonValidateError> {
         match self {
             OCPPCallPayload::Authorize(req) => req.schema_validate(),
             OCPPCallPayload::BootNotification(req) => req.schema_validate(),
@@ -584,8 +583,8 @@ pub enum OCPPCallResultPayload {
     UpdateFirmware(UpdateFirmwareResponse),
 }
 
-impl ocpp_json_validate::JsonValidate for OCPPCallResultPayload {
-    fn schema_validate(&self) -> Result<(), ocpp_json_validate::JsonValidateError> {
+impl macros::JsonValidate for OCPPCallResultPayload {
+    fn schema_validate(&self) -> Result<(), macros::JsonValidateError> {
         match self {
             OCPPCallResultPayload::Authorize(r) => r.schema_validate(),
             OCPPCallResultPayload::BootNotification(r) => r.schema_validate(),

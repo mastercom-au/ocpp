@@ -35,8 +35,9 @@
 //!
 //! While in pending state, the following Central System initiated messages are not allowed:
 //! RemoteStartTransaction.req and RemoteStopTransaction.req
-use crate::ocpp_json_validate::{self, json_validate};
-use crate::{error::OcppError, generate_builders, UtcTime};
+use crate::macros::BuilderValidator;
+use crate::macros::{self, json_validate, JsonValidate};
+use crate::{error::OcppError, UtcTime};
 
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
@@ -51,13 +52,12 @@ use test_strategy::Arbitrary;
 /// Field definition of the BootNotification.req PDU sent by the Charge Point to the Central System.
 #[skip_serializing_none]
 #[json_validate("../json_schemas/BootNotification.json")] // Creates and defines validator function which checks struct against schema definition defined in path
-#[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder)]
+#[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder, BuilderValidator)]
 #[builder(build_fn(name = "pre_build", error = "OcppError"))] // Allows us to call pre_build inside our own builder which includes validation
 #[serde(rename_all = "camelCase")] // Serialize field names into CamelCase to fit OCPP naming
 #[skip_serializing_none] // Doesn't include None values in the output after serializing
 #[cfg_attr(not(test), builder(setter(strip_option)))] // Strip Optional wrapping in production to allow builders to be set without specifying 'Some(val)'
 #[cfg_attr(test, derive(Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
-
 pub struct BootNotificationRequest {
     /// Optional. This contains a value that identifies the serial number of the Charge Box inside the Charge Point.
     /// Deprecated, will be removed in future versio
@@ -99,7 +99,7 @@ pub struct BootNotificationRequest {
 // -------------------------- RESPONSE --------------------------
 /// Field definition of the BootNotification.conf PDU sent by the Central System to the Charge Point in response to a BootNotification.req PDU.
 #[json_validate("../json_schemas/BootNotificationResponse.json")] // Creates and defines validator function which checks struct against schema definition defined in path
-#[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder)]
+#[derive(Serialize, Validate, Deserialize, Debug, Clone, Builder, BuilderValidator)]
 #[builder(build_fn(name = "pre_build", error = "OcppError"))] // Allows us to call pre_build inside our own builder which includes validation
 #[serde(rename_all = "camelCase")] // Serialize field names into CamelCase to fit OCPP naming
 #[skip_serializing_none] // Doesn't include None values in the output after serializing
@@ -127,42 +127,18 @@ pub enum BootNotificationStatus {
     Rejected,
 }
 
-generate_builders!(BootNotification);
-
 #[cfg(test)]
 mod test {
     use super::*;
-    use ocpp_json_validate::JsonValidate;
     use test_strategy::proptest;
 
-    /// Test validation via builder against validation via schema
     #[proptest]
-    fn compare_request_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationRequest) {
-        let v = proptest_struct.clone();
-        let built_struct = BootNotificationRequestBuilder::default()
-            .charge_point_vendor(v.charge_point_vendor)
-            .charge_point_model(v.charge_point_model.clone())
-            .charge_point_serial_number(v.charge_point_serial_number)
-            .charge_box_serial_number(v.charge_box_serial_number)
-            .firmware_version(v.firmware_version)
-            .iccid(v.iccid)
-            .imsi(v.imsi)
-            .meter_type(v.meter_type)
-            .meter_serial_number(v.meter_serial_number)
-            .build();
-
-        let builder_validated_ok = built_struct.is_ok();
-        let schema_validated_ok = proptest_struct.schema_validate().is_ok();
-        assert_eq!(builder_validated_ok, schema_validated_ok);
+    fn request_struct_validation_matches_schema_validation(proptest_struct: super::BootNotificationRequest) {
+        assert!(BootNotificationRequest::compare_validation_methods(proptest_struct));
     }
 
     #[proptest]
-    fn compare_response_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationResponse) {
-        let v = proptest_struct.clone();
-        let built_struct = BootNotificationResponseBuilder::default().status(v.status).current_time(v.current_time).interval(v.interval).build();
-
-        let builder_validated_ok = built_struct.is_ok();
-        let schema_validated_ok = proptest_struct.schema_validate().is_ok();
-        assert_eq!(builder_validated_ok, schema_validated_ok);
+    fn response_struct_validation_matches_schema_validation(proptest_struct: super::BootNotificationResponse) {
+        assert!(BootNotificationResponse::compare_validation_methods(proptest_struct));
     }
 }

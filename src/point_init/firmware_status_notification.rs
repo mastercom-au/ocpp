@@ -10,7 +10,7 @@
 //! FirmwareStatusNotification.req PDUs SHALL be sent to keep the Central System updated with the status of the update process,
 //! started by the Central System with a FirmwareUpdate.req PDU.
 
-use crate::ocpp_json_validate::{self, json_validate};
+use crate::macros::{self, json_validate};
 use serde::{Deserialize, Serialize};
 use strum_macros::Display;
 

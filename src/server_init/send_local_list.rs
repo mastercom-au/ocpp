@@ -15,7 +15,7 @@
 //! and the updateType was Differential, then Central System SHOULD retry sending the full local authorization list with updateType Full.
 
 use crate::common_types::IdTagInfo;
-use crate::ocpp_json_validate::{self, json_validate};
+use crate::macros::{self, json_validate};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;

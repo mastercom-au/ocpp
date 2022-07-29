@@ -19,7 +19,7 @@
 //! for a statusNotification without connectorId is a request for multiple statusNotifications: the notification for the Charge
 //! Point itself and a notification for each of its connectors.
 
-use crate::ocpp_json_validate::{self, json_validate};
+use crate::macros::{self, json_validate};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;

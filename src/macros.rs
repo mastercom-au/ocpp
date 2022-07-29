@@ -1,25 +1,30 @@
-//! QoL macros 
+//! Validator trait for structs with an associated schema
+use std::error::Error;
+use std::fmt;
 
-#[macro_export]
-/// Expands to the builder for a particular OCPP structure
-macro_rules! generate_builders {
-    ($i:expr) => {
-        paste::paste!{            
-        impl [<$i RequestBuilder>] {
-            /// Builder function for [<$i>] struct
-            pub fn build(&self) -> Result<[<$i Request>], OcppError> {
-                let req = self.pre_build()?;
-                return req.validate().map(|_| req).map_err(|e| e.into());
-            }
-        }
-        impl [<$i ResponseBuilder>] {
-            /// Builder function for [<$i>] struct
-            pub fn build(&self) -> Result<[<$i Response>], OcppError> {
-                let req = self.pre_build()?;
-                return req.validate().map(|_| req).map_err(|e| e.into());
-            }
-        }
-        }
+pub use proc_macros::json_validate;
 
-    };
+#[derive(Debug, PartialEq)]
+/// Errors associated with validating against a json schema
+pub enum JsonValidateError {
+    /// Error if validation fails
+    ValidationError(Vec<String>),
 }
+
+impl fmt::Display for JsonValidateError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::ValidationError(e) => write!(f, "Validation Error: {:?}", e),
+        }
+    }
+}
+
+impl Error for JsonValidateError {}
+
+/// Trait for structures that can be validated against a schema
+pub trait JsonValidate {
+    /// Validate schema against json document
+    fn schema_validate(&self) -> Result<(), JsonValidateError>;
+}
+
+pub use proc_macros::BuilderValidator;

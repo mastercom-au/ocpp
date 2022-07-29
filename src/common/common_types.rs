@@ -20,6 +20,23 @@ impl std::convert::From<DateTime<Utc>> for UtcTime {
     fn from(t: DateTime<Utc>) -> Self { Self(t) }
 }
 
+/// Arbitrary trait allows this value to be fuzzed by proptest
+#[cfg(test)]
+impl proptest::arbitrary::Arbitrary for UtcTime {
+    type Parameters = ();
+    type Strategy = proptest::strategy::BoxedStrategy<Self>;
+
+    fn arbitrary_with(_args: Self::Parameters) -> Self::Strategy {
+        use chrono::TimeZone;
+        use proptest::arbitrary::any;
+        use proptest::strategy::Strategy;
+
+        any::<i64>().prop_map(|z| UtcTime(Utc.timestamp_nanos(z))).boxed()
+    }
+
+    fn arbitrary() -> Self::Strategy { Self::arbitrary_with(Default::default()) }
+}
+
 ///Generic status message denoting Accepted or Rejected state.
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone)]
 pub enum SimpleStatus {

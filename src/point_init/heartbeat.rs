@@ -14,7 +14,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST ---------------------------
-use crate::ocpp_json_validate::{self, json_validate};
+use crate::macros::{self, json_validate};
 #[json_validate("../json_schemas/Heartbeat.json")]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]

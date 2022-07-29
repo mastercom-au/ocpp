@@ -10,7 +10,7 @@
 //! authorization list is empty, and a version number of -1 SHALL be used to indicate that the Charge Point does not support Local
 //! Authorization Lists.
 
-use crate::ocpp_json_validate::{self, json_validate};
+use crate::macros::{self, json_validate};
 use serde::{Deserialize, Serialize};
 
 // -------------------------- REQUEST --------------------------
