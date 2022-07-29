@@ -1,46 +1,30 @@
 use proc_macro::TokenStream;
 use proc_macro2::Span;
+use quote::format_ident;
 use quote::quote;
 use syn::parse_macro_input;
 use syn::Ident;
 use syn::ItemStruct;
 use syn::LitStr;
-use syn::{Field, Fields::Named, FieldsNamed, Path, Type, TypePath};
 
 #[proc_macro_derive(ValidateCompare)]
 pub fn validate_compare(item: TokenStream) -> TokenStream {
     let item = parse_macro_input!(item as ItemStruct);
-    let fields = if let Named(FieldsNamed { ref named, .. }) = &item.fields {
-        named
-    } else {
-        panic!("We couldn't get the struct fields?");
-    };
 
-    let struct_name = &item.ident;
-    let fn_name = &item.ident.to_string();
-    let builder_name = format!("{}Builder", fn_name);
-    let data = StructMetaData {
-        name: format!("{}", item.ident),
-        fields: fields.iter().filter_map(|field| get_field_medatada(field)).collect(),
-    };
+    let name = item.ident.clone();
+    let field_names: Vec<Ident> = item.fields.iter().filter_map(|field| field.ident.clone()).map(|ident| ident).collect();
+    let builder_name = format_ident!("{}Builder", name);
 
-    let fields: Vec<String> = data.fields.iter().map(|field| format!("{}(test.{}.clone())", field.name.to_string(), field.name.to_string())).collect();
-    let builder_fields = fields.join(".");
-    let builder_declare = format!("let build_struct = {}::default().", builder_name);
-    let builder_build = format!(".build();");
-
-    let builder = format!("{}{}{}", builder_declare, builder_fields, builder_build);
-    let result = quote! {
-        impl #struct_name {
-            pub fn print_field_names() {
-                println!("{}", ::std::string::String::from(#fn_name));
-                let fields = ::std::string::String::from(#builder);
-                println!("{}", fields);
+    let print_statement = quote! {
+        impl #name {
+            pub fn test_build(fuzz_struct: Self) {
+                let test = fuzz_struct.clone();
+                let built_struct = #builder_name ::default()#(.#field_names(test.#field_names))* .build();
+                println!("{:?}", built_struct);
             }
-
         }
     };
-    result.into()
+    print_statement.into()
 }
 
 #[proc_macro_attribute]
@@ -85,73 +69,4 @@ pub fn json_validate(attr: TokenStream, item: TokenStream) -> TokenStream {
         #item
     };
     result.into()
-}
-
-#[derive(Debug)]
-struct StructMetaData {
-    name: String,
-    fields: Vec<FieldMetaData>,
-}
-
-#[derive(Debug)]
-struct FieldMetaData {
-    name: String,
-    ty: String,
-}
-
-// Sample to assist writing above macro.
-// DELETEABLE WHEN MACRO IS FINISHED
-// mod test {
-//     use super::*;
-//     use validation_macros::JsonValidate;
-//     use test_strategy::proptest;
-
-//     /// Test validation via builder against validation via schema
-//     #[proptest]
-//     fn compare_request_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationRequest) {
-//         let v = proptest_struct.clone();
-//         let built_struct = BootNotificationRequestBuilder::default()
-//             .charge_point_vendor(v.charge_point_vendor)
-//             .charge_point_model(v.charge_point_model.clone())
-//             .charge_point_serial_number(v.charge_point_serial_number)
-//             .charge_box_serial_number(v.charge_box_serial_number)
-//             .firmware_version(v.firmware_version)
-//             .iccid(v.iccid)
-//             .imsi(v.imsi)
-//             .meter_type(v.meter_type)
-//             .meter_serial_number(v.meter_serial_number)
-//             .build();
-
-//         let builder_validated_ok = built_struct.is_ok();
-//         let schema_validated_ok = proptest_struct.schema_validate().is_ok();
-//         assert_eq!(builder_validated_ok, schema_validated_ok);
-//     }
-
-//     #[proptest]
-//     fn compare_response_builder_validation_with_schema_validation(proptest_struct: super::BootNotificationResponse) {
-//         let v = proptest_struct.clone();
-//         let built_struct = BootNotificationResponseBuilder::default().status(v.status).current_time(v.current_time).interval(v.interval).build();
-
-//         let builder_validated_ok = built_struct.is_ok();
-//         let schema_validated_ok = proptest_struct.schema_validate().is_ok();
-//         assert_eq!(builder_validated_ok, schema_validated_ok);
-//     }
-// }
-
-fn get_field_medatada(field: &Field) -> Option<FieldMetaData> {
-    let ident = match &field.ident {
-        Some(id) => Some(format!("{}", id)),
-        None => {
-            return None;
-        }
-    };
-
-    let ty_ident = match &field.ty {
-        Type::Path(TypePath { path: Path { segments, .. }, .. }) => segments.first().and_then(|s| Some(format!("{}", s.ident))),
-        _ => {
-            return None;
-        }
-    };
-    let entity_field = FieldMetaData { name: ident.unwrap(), ty: ty_ident.unwrap() };
-    Some(entity_field)
 }

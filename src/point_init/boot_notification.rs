@@ -35,9 +35,8 @@
 //!
 //! While in pending state, the following Central System initiated messages are not allowed:
 //! RemoteStartTransaction.req and RemoteStopTransaction.req
-use crate::validation_macros::{self, json_validate};
+use crate::validation_macros::{self, *};
 use crate::{error::OcppError, generate_builders, UtcTime};
-use macros::ValidateCompare;
 
 use derive_builder::Builder;
 use serde::{Deserialize, Serialize};
@@ -57,7 +56,7 @@ use test_strategy::Arbitrary;
 #[serde(rename_all = "camelCase")] // Serialize field names into CamelCase to fit OCPP naming
 #[skip_serializing_none] // Doesn't include None values in the output after serializing
 #[cfg_attr(not(test), builder(setter(strip_option)))] // Strip Optional wrapping in production to allow builders to be set without specifying 'Some(val)'
-#[cfg_attr(test, derive(Arbitrary, ValidateCompare))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
+#[cfg_attr(test, derive(ValidateCompare, Arbitrary))] // Derive proptest arbitrary trait to allow fuzzing of all struct values ONLY in testing
 pub struct BootNotificationRequest {
     /// Optional. This contains a value that identifies the serial number of the Charge Box inside the Charge Point.
     /// Deprecated, will be removed in future versio
@@ -135,8 +134,8 @@ mod test {
     use test_strategy::proptest;
     use validation_macros::JsonValidate;
 
-    #[test]
-    fn test_macro() { BootNotificationRequest::print_field_names(); }
+    #[proptest]
+    fn test_builder(proptest_struct: super::BootNotificationRequest) { BootNotificationRequest::test_build(proptest_struct); }
 
     /// Test validation via builder against validation via schema
     #[proptest]
