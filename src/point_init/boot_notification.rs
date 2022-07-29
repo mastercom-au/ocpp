@@ -133,12 +133,12 @@ mod test {
     use test_strategy::proptest;
 
     #[proptest]
-    fn request_struct_validation_matches_schema_validation(proptest_struct: super::BootNotificationRequest) {
+    fn request_struct_validation_matches_schema_validation(proptest_struct: BootNotificationRequest) {
         assert!(BootNotificationRequest::compare_validation_methods(proptest_struct));
     }
 
     #[proptest]
-    fn response_struct_validation_matches_schema_validation(proptest_struct: super::BootNotificationResponse) {
+    fn response_struct_validation_matches_schema_validation(proptest_struct: BootNotificationResponse) {
         assert!(BootNotificationResponse::compare_validation_methods(proptest_struct));
     }
 }
