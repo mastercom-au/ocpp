@@ -275,18 +275,14 @@ impl<I, L> ChargingProfileBuilder<I, L> {
     }
 
     /// Add period to periods vector without any phases
-    pub fn add_period(mut self, start_period: u32, limit: f32) -> Self {
-        self.charging_schedule.charging_schedule_period.push(ChargingSchedulePeriod { start_period, limit, number_phases: None });
+    pub fn add_period(mut self, start_period: u32, limit: f32, number_phases: Option<u32>) -> Self {
+        self.charging_schedule.charging_schedule_period.push(ChargingSchedulePeriod { start_period, limit, number_phases });
         self
     }
 
-    /// add period to schedule periods and include phase
-    pub fn add_period_with_phases(mut self, start_period: u32, limit: f32, number_phases: u32) -> Self {
-        self.charging_schedule.charging_schedule_period.push(ChargingSchedulePeriod {
-            start_period,
-            limit,
-            number_phases: Some(number_phases),
-        });
+    /// Clear periods of charging profile
+    pub fn clear_periods(mut self) -> Self {
+        self.charging_schedule.charging_schedule_period.clear();
         self
     }
 
