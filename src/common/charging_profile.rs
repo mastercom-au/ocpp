@@ -19,7 +19,7 @@
 //!             Limit                   f32
 //!             NumberPhases            Option<u32>
 //! ```
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, Duration, Utc};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
@@ -187,6 +187,35 @@ impl ChargingProfileBuilder<NoId, NoLevel> {
             valid_from: None,
             valid_to: None,
             /// Charging schedule with empty period vec
+            charging_schedule,
+        }
+    }
+
+    /// QoL method for generating a basic TxProfile from scratch
+    /// By default applies to the current transaction until that transaction finishes, and has no associated schedule.
+    /// I.e. this will simply limit power for a transaction until it completes.
+    pub fn new_tx_profile(charging_rate_unit: ChargingRateUnit, limit: f32, id: u32, stack_level: u32) -> ChargingProfileBuilder<Id, Level> {
+        let charging_schedule_period = vec![ChargingSchedulePeriod { start_period: 0, limit, number_phases: None }];
+
+        let charging_schedule = ChargingSchedule {
+            duration: None,
+            start_schedule: None,
+            charging_rate_unit,
+            charging_schedule_period,
+            min_charging_rate: None,
+        };
+        ChargingProfileBuilder {
+            charging_profile_id: Id(id),
+            transaction_id: None,
+            stack_level: Level(stack_level),
+            /// Default profile purpose
+            charging_profile_purpose: ChargingProfilePurpose::TxProfile,
+            /// Default profile kind
+            charging_profile_kind: ChargingProfileKind::Relative,
+            recurrency_kind: None,
+            valid_from: None,
+            valid_to: None,
+            /// Charging schedule with simple power limit
             charging_schedule,
         }
     }
