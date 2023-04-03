@@ -19,7 +19,7 @@
 //!             Limit                   f32
 //!             NumberPhases            Option<u32>
 //! ```
-use chrono::{DateTime, Duration, Utc};
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
@@ -274,13 +274,13 @@ impl<I, L> ChargingProfileBuilder<I, L> {
         }
     }
 
-    /// Add period to periods vector without any phases
+    /// Add period to periods vector
     pub fn add_period(mut self, start_period: u32, limit: f32, number_phases: Option<u32>) -> Self {
         self.charging_schedule.charging_schedule_period.push(ChargingSchedulePeriod { start_period, limit, number_phases });
         self
     }
 
-    /// Clear periods of charging profile
+    /// Remove all periods from charging profile builder
     pub fn clear_periods(mut self) -> Self {
         self.charging_schedule.charging_schedule_period.clear();
         self
