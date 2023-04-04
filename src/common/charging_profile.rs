@@ -194,16 +194,7 @@ impl ChargingProfileBuilder<NoId, NoLevel> {
     /// QoL method for generating a basic TxProfile from scratch
     /// By default applies to the current transaction until that transaction finishes, and has no associated schedule.
     /// I.e. this will simply limit power for a transaction until it completes.
-    pub fn new_tx_profile(charging_rate_unit: ChargingRateUnit, limit: f32, id: u32, stack_level: u32) -> ChargingProfileBuilder<Id, Level> {
-        let charging_schedule_period = vec![ChargingSchedulePeriod { start_period: 0, limit, number_phases: None }];
-
-        let charging_schedule = ChargingSchedule {
-            duration: None,
-            start_schedule: None,
-            charging_rate_unit,
-            charging_schedule_period,
-            min_charging_rate: None,
-        };
+    pub fn new_tx_profile(self, limit: f32, id: u32, stack_level: u32) -> ChargingProfileBuilder<Id, Level> {
         ChargingProfileBuilder {
             charging_profile_id: Id(id),
             transaction_id: None,
@@ -215,9 +206,9 @@ impl ChargingProfileBuilder<NoId, NoLevel> {
             recurrency_kind: None,
             valid_from: None,
             valid_to: None,
-            /// Charging schedule with simple power limit
-            charging_schedule,
+            charging_schedule: self.charging_schedule,
         }
+        .add_period(0, limit, None)
     }
 }
 
@@ -249,7 +240,7 @@ impl<I, L> ChargingProfileBuilder<I, L> {
     }
 
     /// Add Level field and update typestate to verify it has been added
-    pub fn level(self, stack_level: u32) -> ChargingProfileBuilder<I, Level> {
+    pub fn stack_level(self, stack_level: u32) -> ChargingProfileBuilder<I, Level> {
         let Self {
             charging_profile_id,
             transaction_id,
@@ -317,13 +308,13 @@ impl<I, L> ChargingProfileBuilder<I, L> {
     }
 
     /// Add charging_profile_purpose field
-    pub fn charging_profile_purpose(mut self, charging_profile_purpose: ChargingProfilePurpose) -> Self {
+    pub fn purpose(mut self, charging_profile_purpose: ChargingProfilePurpose) -> Self {
         self.charging_profile_purpose = charging_profile_purpose;
         self
     }
 
     /// Add charging_profile_kind field
-    pub fn charging_profile_kind(mut self, charging_profile_kind: ChargingProfileKind) -> Self {
+    pub fn kind(mut self, charging_profile_kind: ChargingProfileKind) -> Self {
         self.charging_profile_kind = charging_profile_kind;
         self
     }
