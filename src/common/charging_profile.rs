@@ -262,7 +262,7 @@ impl<I, L> ChargingProfileBuilder<I, L> {
         self
     }
 
-    /// Add transaction_id field
+    /// Add schedule_duration field
     pub fn schedule_duration(mut self, duration: u32) -> Self {
         self.charging_schedule.duration = Some(duration);
         self
