@@ -573,7 +573,7 @@ impl OCPPCallPayload {
             UpdateFirmware(_) => OCPPCallResult::from_unknown(&OCPPCallAction::UpdateFirmware, result)?,
         };
 
-        return Ok(output.payload);
+        Ok(output.payload)
     }
 }
 

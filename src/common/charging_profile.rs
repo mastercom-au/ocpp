@@ -179,14 +179,14 @@ impl ChargingProfileBuilder<NoId, NoLevel> {
             charging_profile_id: NoId,
             transaction_id: None,
             stack_level: NoLevel,
-            /// Default profile purpose
+            // Default profile purpose
             charging_profile_purpose: ChargingProfilePurpose::TxProfile,
-            /// Default profile kind
+            // Default profile kind
             charging_profile_kind: ChargingProfileKind::Relative,
             recurrency_kind: None,
             valid_from: None,
             valid_to: None,
-            /// Charging schedule with empty period vec
+            // Charging schedule with empty period vec
             charging_schedule,
         }
     }
