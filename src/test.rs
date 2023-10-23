@@ -122,5 +122,5 @@ fn test_charge_point_builder() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     assert_eq!(profile, example_profile);
-    return Ok(());
+    Ok(())
 }
