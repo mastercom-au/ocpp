@@ -14,11 +14,11 @@ version = "0.2.1"
 chrono     = {version = "^0.4", features = ["serde"]}
 jsonschema = {version = "^0.17", default-features = false}
 serde      = {version = "^1.0", features = ["derive"]}
+serde_with = {version = "^3.4", features = ["macros"], default_features = false}
 
 # Crates without features
 lazy_static  = "^1.4"
 serde_json   = "^1.0"
-serde_with   = "^3.4"
 strum        = "^0.25.0"
 strum_macros = "^0.25"
 thiserror    = "^1"
