@@ -20,10 +20,11 @@
 //! Upon receipt of a Reset.req PDU, the Charge Point SHALL respond with a Reset.conf PDU. The response PDU SHALL include
 //! whether the Charge Point will attempt to reset itself.
 
-pub use crate::common_types::SimpleStatus;
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use strum_macros::Display;
+
+pub use crate::common_types::SimpleStatus;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/Reset.json")]

@@ -16,9 +16,10 @@
 //! accepted the request and a transaction with the given transactionId is ongoing and will be stopped.
 //!
 
-pub use crate::common_types::SimpleStatus;
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
+
+pub use crate::common_types::SimpleStatus;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/RemoteStopTransaction.json")]

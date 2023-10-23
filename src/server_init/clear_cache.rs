@@ -4,11 +4,11 @@
 //! Upon receipt of a ClearCache.req PDU, the Charge Point SHALL respond with a ClearCache.conf PDU. The response PDU
 //! SHALL indicate whether the Charge Point was able to clear its Authorization Cache.
 
-pub use crate::common_types::SimpleStatus;
-use serde::{Deserialize, Serialize};
-
 // -------------------------- REQUEST ---------------------------
 use ocpp_json_validate::json_validate;
+use serde::{Deserialize, Serialize};
+
+pub use crate::common_types::SimpleStatus;
 #[json_validate("../json_schemas/ClearCache.json")]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]

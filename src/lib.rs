@@ -107,15 +107,13 @@ pub mod server_init;
 #[cfg(test)]
 pub mod test;
 
-use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
-use strum_macros::Display;
-
-use ocpp_json_validate::JsonValidate;
-use thiserror::Error;
-
 pub use common::*;
+use ocpp_json_validate::JsonValidate;
 pub use point_init::*;
+use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
 pub use server_init::*;
+use strum_macros::Display;
+use thiserror::Error;
 
 /// Overarching OCPP Message use to encapsulate calls, call results and call errors
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -161,36 +159,85 @@ impl<'de> Deserialize<'de> for OCPPCall {
         let (message_type_id, unique_id, action, payload_raw): (u8, String, String, serde_json::Value) = Deserialize::deserialize(deserializer)?;
 
         if message_type_id != 2 {
-            return Err(de::Error::invalid_value(de::Unexpected::Unsigned(message_type_id.into()), &"Message Type ID for Call should be '2'"));
+            return Err(de::Error::invalid_value(
+                de::Unexpected::Unsigned(message_type_id.into()),
+                &"Message Type ID for Call should be '2'",
+            ));
         }
 
         let payload = match action.as_ref() {
             "Authorize" => OCPPCallPayload::Authorize(AuthorizeRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "BootNotification" => OCPPCallPayload::BootNotification(BootNotificationRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "ChangeAvailability" => OCPPCallPayload::ChangeAvailability(ChangeAvailabilityRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "ChangeConfiguration" => OCPPCallPayload::ChangeConfiguration(ChangeConfigurationRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "ClearCache" => OCPPCallPayload::ClearCache(ClearCacheRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "ClearChargingProfile" => OCPPCallPayload::ClearChargingProfile(ClearChargingProfileRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "DataTransfer" => OCPPCallPayload::DataTransfer(DataTransferRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "DiagnosticsStatusNotification" => OCPPCallPayload::DiagnosticsStatusNotification(DiagnosticsStatusNotificationRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "FirmwareStatusNotification" => OCPPCallPayload::FirmwareStatusNotification(FirmwareStatusNotificationRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "GetCompositeSchedule" => OCPPCallPayload::GetCompositeSchedule(GetCompositeScheduleRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "GetConfiguration" => OCPPCallPayload::GetConfiguration(GetConfigurationRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "GetDiagnostics" => OCPPCallPayload::GetDiagnostics(GetDiagnosticsRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "GetLocalListVersion" => OCPPCallPayload::GetLocalListVersion(GetLocalListVersionRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
+            "BootNotification" => {
+                OCPPCallPayload::BootNotification(BootNotificationRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?)
+            },
+            "ChangeAvailability" => OCPPCallPayload::ChangeAvailability(
+                ChangeAvailabilityRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?,
+            ),
+            "ChangeConfiguration" => OCPPCallPayload::ChangeConfiguration(
+                ChangeConfigurationRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?,
+            ),
+            "ClearCache" => {
+                OCPPCallPayload::ClearCache(ClearCacheRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?)
+            },
+            "ClearChargingProfile" => OCPPCallPayload::ClearChargingProfile(
+                ClearChargingProfileRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?,
+            ),
+            "DataTransfer" => {
+                OCPPCallPayload::DataTransfer(DataTransferRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?)
+            },
+            "DiagnosticsStatusNotification" => OCPPCallPayload::DiagnosticsStatusNotification(
+                DiagnosticsStatusNotificationRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?,
+            ),
+            "FirmwareStatusNotification" => OCPPCallPayload::FirmwareStatusNotification(
+                FirmwareStatusNotificationRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?,
+            ),
+            "GetCompositeSchedule" => OCPPCallPayload::GetCompositeSchedule(
+                GetCompositeScheduleRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?,
+            ),
+            "GetConfiguration" => {
+                OCPPCallPayload::GetConfiguration(GetConfigurationRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?)
+            },
+            "GetDiagnostics" => {
+                OCPPCallPayload::GetDiagnostics(GetDiagnosticsRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?)
+            },
+            "GetLocalListVersion" => OCPPCallPayload::GetLocalListVersion(
+                GetLocalListVersionRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?,
+            ),
             "Heartbeat" => OCPPCallPayload::Heartbeat(HeartbeatRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "MeterValues" => OCPPCallPayload::MeterValues(MeterValuesRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "RemoteStartTransaction" => OCPPCallPayload::RemoteStartTransaction(RemoteStartTransactionRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "RemoteStopTransaction" => OCPPCallPayload::RemoteStopTransaction(RemoteStopTransactionRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
+            "MeterValues" => {
+                OCPPCallPayload::MeterValues(MeterValuesRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?)
+            },
+            "RemoteStartTransaction" => OCPPCallPayload::RemoteStartTransaction(
+                RemoteStartTransactionRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?,
+            ),
+            "RemoteStopTransaction" => OCPPCallPayload::RemoteStopTransaction(
+                RemoteStopTransactionRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?,
+            ),
             "Reset" => OCPPCallPayload::Reset(ResetRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "SendLocalList" => OCPPCallPayload::SendLocalList(SendLocalListRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "SetChargingProfile" => OCPPCallPayload::SetChargingProfile(SetChargingProfileRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "StartTransaction" => OCPPCallPayload::StartTransaction(StartTransactionRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "StatusNotification" => OCPPCallPayload::StatusNotification(StatusNotificationRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "StopTransaction" => OCPPCallPayload::StopTransaction(StopTransactionRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "TriggerMessage" => OCPPCallPayload::TriggerMessage(TriggerMessageRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "UnlockConnector" => OCPPCallPayload::UnlockConnector(UnlockConnectorRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
-            "UpdateFirmware" => OCPPCallPayload::UpdateFirmware(UpdateFirmwareRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?),
+            "SendLocalList" => {
+                OCPPCallPayload::SendLocalList(SendLocalListRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?)
+            },
+            "SetChargingProfile" => OCPPCallPayload::SetChargingProfile(
+                SetChargingProfileRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?,
+            ),
+            "StartTransaction" => {
+                OCPPCallPayload::StartTransaction(StartTransactionRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?)
+            },
+            "StatusNotification" => OCPPCallPayload::StatusNotification(
+                StatusNotificationRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?,
+            ),
+            "StopTransaction" => {
+                OCPPCallPayload::StopTransaction(StopTransactionRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?)
+            },
+            "TriggerMessage" => {
+                OCPPCallPayload::TriggerMessage(TriggerMessageRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?)
+            },
+            "UnlockConnector" => {
+                OCPPCallPayload::UnlockConnector(UnlockConnectorRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?)
+            },
+            "UpdateFirmware" => {
+                OCPPCallPayload::UpdateFirmware(UpdateFirmwareRequest::deserialize(payload_raw).map_err(|e| de::Error::custom(format!("{}", e)))?)
+            },
             _ => {
                 return Err(de::Error::unknown_variant(
                     &action,
@@ -223,7 +270,7 @@ impl<'de> Deserialize<'de> for OCPPCall {
                         "UpdateFirmware",
                     ],
                 ));
-            }
+            },
         };
 
         Ok(OCPPCall { unique_id, action, payload })
@@ -304,7 +351,10 @@ impl<'de> Deserialize<'de> for OCPPCallResultUnknown {
         let (message_type_id, unique_id, payload): (u8, String, serde_json::Value) = Deserialize::deserialize(deserializer)?;
 
         if message_type_id != 3 {
-            return Err(de::Error::invalid_value(de::Unexpected::Unsigned(message_type_id.into()), &"Message Type ID for Call Result should be '3'"));
+            return Err(de::Error::invalid_value(
+                de::Unexpected::Unsigned(message_type_id.into()),
+                &"Message Type ID for Call Result should be '3'",
+            ));
         }
 
         Ok(OCPPCallResultUnknown { unique_id, payload })
@@ -345,16 +395,24 @@ impl OCPPCallResult {
             OCPPCallAction::ClearCache => OCPPCallResultPayload::ClearCache(ClearCacheResponse::deserialize(payload)?),
             OCPPCallAction::ClearChargingProfile => OCPPCallResultPayload::ClearChargingProfile(ClearChargingProfileResponse::deserialize(payload)?),
             OCPPCallAction::DataTransfer => OCPPCallResultPayload::DataTransfer(DataTransferResponse::deserialize(payload)?),
-            OCPPCallAction::DiagnosticsStatusNotification => OCPPCallResultPayload::DiagnosticsStatusNotification(DiagnosticsStatusNotificationResponse::deserialize(payload)?),
-            OCPPCallAction::FirmwareStatusNotification => OCPPCallResultPayload::FirmwareStatusNotification(FirmwareStatusNotificationResponse::deserialize(payload)?),
+            OCPPCallAction::DiagnosticsStatusNotification => {
+                OCPPCallResultPayload::DiagnosticsStatusNotification(DiagnosticsStatusNotificationResponse::deserialize(payload)?)
+            },
+            OCPPCallAction::FirmwareStatusNotification => {
+                OCPPCallResultPayload::FirmwareStatusNotification(FirmwareStatusNotificationResponse::deserialize(payload)?)
+            },
             OCPPCallAction::GetCompositeSchedule => OCPPCallResultPayload::GetCompositeSchedule(GetCompositeScheduleResponse::deserialize(payload)?),
             OCPPCallAction::GetConfiguration => OCPPCallResultPayload::GetConfiguration(GetConfigurationResponse::deserialize(payload)?),
             OCPPCallAction::GetDiagnostics => OCPPCallResultPayload::GetDiagnostics(GetDiagnosticsResponse::deserialize(payload)?),
             OCPPCallAction::GetLocalListVersion => OCPPCallResultPayload::GetLocalListVersion(GetLocalListVersionResponse::deserialize(payload)?),
             OCPPCallAction::Heartbeat => OCPPCallResultPayload::Heartbeat(HeartbeatResponse::deserialize(payload)?),
             OCPPCallAction::MeterValues => OCPPCallResultPayload::MeterValues(MeterValuesResponse::deserialize(payload)?),
-            OCPPCallAction::RemoteStartTransaction => OCPPCallResultPayload::RemoteStartTransaction(RemoteStartTransactionResponse::deserialize(payload)?),
-            OCPPCallAction::RemoteStopTransaction => OCPPCallResultPayload::RemoteStopTransaction(RemoteStopTransactionResponse::deserialize(payload)?),
+            OCPPCallAction::RemoteStartTransaction => {
+                OCPPCallResultPayload::RemoteStartTransaction(RemoteStartTransactionResponse::deserialize(payload)?)
+            },
+            OCPPCallAction::RemoteStopTransaction => {
+                OCPPCallResultPayload::RemoteStopTransaction(RemoteStopTransactionResponse::deserialize(payload)?)
+            },
             OCPPCallAction::Reset => OCPPCallResultPayload::Reset(ResetResponse::deserialize(payload)?),
             OCPPCallAction::SendLocalList => OCPPCallResultPayload::SendLocalList(SendLocalListResponse::deserialize(payload)?),
             OCPPCallAction::SetChargingProfile => OCPPCallResultPayload::SetChargingProfile(SetChargingProfileResponse::deserialize(payload)?),
@@ -397,10 +455,14 @@ impl<'de> Deserialize<'de> for OCPPCallError {
     where
         D: Deserializer<'de>,
     {
-        let (message_type_id, unique_id, error_code, error_description, error_details): (u8, String, OCPPCallErrorCode, String, serde_json::Value) = Deserialize::deserialize(deserializer)?;
+        let (message_type_id, unique_id, error_code, error_description, error_details): (u8, String, OCPPCallErrorCode, String, serde_json::Value) =
+            Deserialize::deserialize(deserializer)?;
 
         if message_type_id != 4 {
-            return Err(de::Error::invalid_value(de::Unexpected::Unsigned(message_type_id.into()), &"Message Type ID for Call Error should be '4'"));
+            return Err(de::Error::invalid_value(
+                de::Unexpected::Unsigned(message_type_id.into()),
+                &"Message Type ID for Call Error should be '4'",
+            ));
         }
 
         Ok(OCPPCallError {
@@ -715,55 +777,103 @@ pub trait OCPPCallResultBuilder {
     /// Handle AuthorizeRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
     fn authorize(&mut self, _req: AuthorizeRequest) -> Result<AuthorizeResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle BootNotificationRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn boot_notification(&mut self, _req: BootNotificationRequest) -> Result<BootNotificationResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn boot_notification(&mut self, _req: BootNotificationRequest) -> Result<BootNotificationResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle ChangeAvailabilityRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn change_availability(&mut self, _req: ChangeAvailabilityRequest) -> Result<ChangeAvailabilityResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn change_availability(&mut self, _req: ChangeAvailabilityRequest) -> Result<ChangeAvailabilityResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle ChangeConfigurationRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn change_configuration(&mut self, _req: ChangeConfigurationRequest) -> Result<ChangeConfigurationResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn change_configuration(&mut self, _req: ChangeConfigurationRequest) -> Result<ChangeConfigurationResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle ClearCacheRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
     fn clear_cache(&mut self, _req: ClearCacheRequest) -> Result<ClearCacheResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle ClearChargingProfileRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn clear_charging_profile(&mut self, _req: ClearChargingProfileRequest) -> Result<ClearChargingProfileResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn clear_charging_profile(&mut self, _req: ClearChargingProfileRequest) -> Result<ClearChargingProfileResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle DataTransferRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn data_transfer(&mut self, _req: DataTransferRequest) -> Result<DataTransferResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn data_transfer(&mut self, _req: DataTransferRequest) -> Result<DataTransferResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle DiagnosticsStatusNotificationRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn diagnostics_status_notification(&mut self, _req: DiagnosticsStatusNotificationRequest) -> Result<DiagnosticsStatusNotificationResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn diagnostics_status_notification(
+        &mut self,
+        _req: DiagnosticsStatusNotificationRequest,
+    ) -> Result<DiagnosticsStatusNotificationResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle FirmwareStatusNotificationRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn firmware_status_notification(&mut self, _req: FirmwareStatusNotificationRequest) -> Result<FirmwareStatusNotificationResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn firmware_status_notification(
+        &mut self,
+        _req: FirmwareStatusNotificationRequest,
+    ) -> Result<FirmwareStatusNotificationResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle GetCompositeScheduleRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn get_composite_schedule(&mut self, _req: GetCompositeScheduleRequest) -> Result<GetCompositeScheduleResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn get_composite_schedule(&mut self, _req: GetCompositeScheduleRequest) -> Result<GetCompositeScheduleResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle GetConfigurationRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn get_configuration(&mut self, _req: GetConfigurationRequest) -> Result<GetConfigurationResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn get_configuration(&mut self, _req: GetConfigurationRequest) -> Result<GetConfigurationResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle GetDiagnosticsRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn get_diagnostics(&mut self, _req: GetDiagnosticsRequest) -> Result<GetDiagnosticsResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn get_diagnostics(&mut self, _req: GetDiagnosticsRequest) -> Result<GetDiagnosticsResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle GetLocalListVersionRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn get_local_list_version(&mut self, _req: GetLocalListVersionRequest) -> Result<GetLocalListVersionResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn get_local_list_version(&mut self, _req: GetLocalListVersionRequest) -> Result<GetLocalListVersionResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle HeartbeatRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
     fn heartbeat(&mut self, _req: HeartbeatRequest) -> Result<HeartbeatResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle MeterValuesRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
     fn meter_values(&mut self, _req: MeterValuesRequest) -> Result<MeterValuesResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle RemoteStartTransactionRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn remote_start_transaction(&mut self, _req: RemoteStartTransactionRequest) -> Result<RemoteStartTransactionResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn remote_start_transaction(&mut self, _req: RemoteStartTransactionRequest) -> Result<RemoteStartTransactionResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle RemoteStopTransactionRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn remote_stop_transaction(&mut self, _req: RemoteStopTransactionRequest) -> Result<RemoteStopTransactionResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn remote_stop_transaction(&mut self, _req: RemoteStopTransactionRequest) -> Result<RemoteStopTransactionResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle ResetRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
     fn reset(&mut self, _req: ResetRequest) -> Result<ResetResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
     /// Handle SendLocalListRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn send_local_list(&mut self, _req: SendLocalListRequest) -> Result<SendLocalListResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn send_local_list(&mut self, _req: SendLocalListRequest) -> Result<SendLocalListResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle SetChargingProfileRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn set_charging_profile(&mut self, _req: SetChargingProfileRequest) -> Result<SetChargingProfileResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn set_charging_profile(&mut self, _req: SetChargingProfileRequest) -> Result<SetChargingProfileResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle StartTransactionRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn start_transaction(&mut self, _req: StartTransactionRequest) -> Result<StartTransactionResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn start_transaction(&mut self, _req: StartTransactionRequest) -> Result<StartTransactionResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle StatusNotificationRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn status_notification(&mut self, _req: StatusNotificationRequest) -> Result<StatusNotificationResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn status_notification(&mut self, _req: StatusNotificationRequest) -> Result<StatusNotificationResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle StopTransactionRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn stop_transaction(&mut self, _req: StopTransactionRequest) -> Result<StopTransactionResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn stop_transaction(&mut self, _req: StopTransactionRequest) -> Result<StopTransactionResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle TriggerMessageRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn trigger_message(&mut self, _req: TriggerMessageRequest) -> Result<TriggerMessageResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn trigger_message(&mut self, _req: TriggerMessageRequest) -> Result<TriggerMessageResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle UnlockConnectorRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn unlock_connector(&mut self, _req: UnlockConnectorRequest) -> Result<UnlockConnectorResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn unlock_connector(&mut self, _req: UnlockConnectorRequest) -> Result<UnlockConnectorResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
     /// Handle UpdateFirmwareRequest. Returns [OCPPCallErrorCode::NotImplemented] by default.
-    fn update_firmware(&mut self, _req: UpdateFirmwareRequest) -> Result<UpdateFirmwareResponse, OCPPCallErrorCode> { Err(OCPPCallErrorCode::NotImplemented) }
+    fn update_firmware(&mut self, _req: UpdateFirmwareRequest) -> Result<UpdateFirmwareResponse, OCPPCallErrorCode> {
+        Err(OCPPCallErrorCode::NotImplemented)
+    }
 
     /// Build [OCPPCallResult] from [OCPPCall]
     fn build_response(&mut self, call: OCPPCall) -> Result<OCPPCallResult, OCPPCallError> {
@@ -776,32 +886,93 @@ pub trait OCPPCallResultBuilder {
         }
 
         let payload = match payload {
-            OCPPCallPayload::Authorize(req) => self.authorize(req).map(OCPPCallResultPayload::Authorize).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::BootNotification(req) => self.boot_notification(req).map(OCPPCallResultPayload::BootNotification).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::ChangeAvailability(req) => self.change_availability(req).map(OCPPCallResultPayload::ChangeAvailability).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::ChangeConfiguration(req) => self.change_configuration(req).map(OCPPCallResultPayload::ChangeConfiguration).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::ClearCache(req) => self.clear_cache(req).map(OCPPCallResultPayload::ClearCache).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::ClearChargingProfile(req) => self.clear_charging_profile(req).map(OCPPCallResultPayload::ClearChargingProfile).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::DataTransfer(req) => self.data_transfer(req).map(OCPPCallResultPayload::DataTransfer).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::DiagnosticsStatusNotification(req) => self.diagnostics_status_notification(req).map(OCPPCallResultPayload::DiagnosticsStatusNotification).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::FirmwareStatusNotification(req) => self.firmware_status_notification(req).map(OCPPCallResultPayload::FirmwareStatusNotification).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::GetCompositeSchedule(req) => self.get_composite_schedule(req).map(OCPPCallResultPayload::GetCompositeSchedule).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::GetConfiguration(req) => self.get_configuration(req).map(OCPPCallResultPayload::GetConfiguration).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::GetDiagnostics(req) => self.get_diagnostics(req).map(OCPPCallResultPayload::GetDiagnostics).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::GetLocalListVersion(req) => self.get_local_list_version(req).map(OCPPCallResultPayload::GetLocalListVersion).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::Heartbeat(req) => self.heartbeat(req).map(OCPPCallResultPayload::Heartbeat).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::MeterValues(req) => self.meter_values(req).map(OCPPCallResultPayload::MeterValues).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::RemoteStartTransaction(req) => self.remote_start_transaction(req).map(OCPPCallResultPayload::RemoteStartTransaction).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::RemoteStopTransaction(req) => self.remote_stop_transaction(req).map(OCPPCallResultPayload::RemoteStopTransaction).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
+            OCPPCallPayload::Authorize(req) => {
+                self.authorize(req).map(OCPPCallResultPayload::Authorize).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::BootNotification(req) => {
+                self.boot_notification(req).map(OCPPCallResultPayload::BootNotification).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::ChangeAvailability(req) => self
+                .change_availability(req)
+                .map(OCPPCallResultPayload::ChangeAvailability)
+                .map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
+            OCPPCallPayload::ChangeConfiguration(req) => self
+                .change_configuration(req)
+                .map(OCPPCallResultPayload::ChangeConfiguration)
+                .map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
+            OCPPCallPayload::ClearCache(req) => {
+                self.clear_cache(req).map(OCPPCallResultPayload::ClearCache).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::ClearChargingProfile(req) => self
+                .clear_charging_profile(req)
+                .map(OCPPCallResultPayload::ClearChargingProfile)
+                .map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
+            OCPPCallPayload::DataTransfer(req) => {
+                self.data_transfer(req).map(OCPPCallResultPayload::DataTransfer).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::DiagnosticsStatusNotification(req) => self
+                .diagnostics_status_notification(req)
+                .map(OCPPCallResultPayload::DiagnosticsStatusNotification)
+                .map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
+            OCPPCallPayload::FirmwareStatusNotification(req) => self
+                .firmware_status_notification(req)
+                .map(OCPPCallResultPayload::FirmwareStatusNotification)
+                .map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
+            OCPPCallPayload::GetCompositeSchedule(req) => self
+                .get_composite_schedule(req)
+                .map(OCPPCallResultPayload::GetCompositeSchedule)
+                .map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
+            OCPPCallPayload::GetConfiguration(req) => {
+                self.get_configuration(req).map(OCPPCallResultPayload::GetConfiguration).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::GetDiagnostics(req) => {
+                self.get_diagnostics(req).map(OCPPCallResultPayload::GetDiagnostics).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::GetLocalListVersion(req) => self
+                .get_local_list_version(req)
+                .map(OCPPCallResultPayload::GetLocalListVersion)
+                .map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
+            OCPPCallPayload::Heartbeat(req) => {
+                self.heartbeat(req).map(OCPPCallResultPayload::Heartbeat).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::MeterValues(req) => {
+                self.meter_values(req).map(OCPPCallResultPayload::MeterValues).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::RemoteStartTransaction(req) => self
+                .remote_start_transaction(req)
+                .map(OCPPCallResultPayload::RemoteStartTransaction)
+                .map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
+            OCPPCallPayload::RemoteStopTransaction(req) => self
+                .remote_stop_transaction(req)
+                .map(OCPPCallResultPayload::RemoteStopTransaction)
+                .map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
             OCPPCallPayload::Reset(req) => self.reset(req).map(OCPPCallResultPayload::Reset).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::SendLocalList(req) => self.send_local_list(req).map(OCPPCallResultPayload::SendLocalList).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::SetChargingProfile(req) => self.set_charging_profile(req).map(OCPPCallResultPayload::SetChargingProfile).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::StartTransaction(req) => self.start_transaction(req).map(OCPPCallResultPayload::StartTransaction).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::StatusNotification(req) => self.status_notification(req).map(OCPPCallResultPayload::StatusNotification).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::StopTransaction(req) => self.stop_transaction(req).map(OCPPCallResultPayload::StopTransaction).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::TriggerMessage(req) => self.trigger_message(req).map(OCPPCallResultPayload::TriggerMessage).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::UnlockConnector(req) => self.unlock_connector(req).map(OCPPCallResultPayload::UnlockConnector).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
-            OCPPCallPayload::UpdateFirmware(req) => self.update_firmware(req).map(OCPPCallResultPayload::UpdateFirmware).map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
+            OCPPCallPayload::SendLocalList(req) => {
+                self.send_local_list(req).map(OCPPCallResultPayload::SendLocalList).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::SetChargingProfile(req) => self
+                .set_charging_profile(req)
+                .map(OCPPCallResultPayload::SetChargingProfile)
+                .map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
+            OCPPCallPayload::StartTransaction(req) => {
+                self.start_transaction(req).map(OCPPCallResultPayload::StartTransaction).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::StatusNotification(req) => self
+                .status_notification(req)
+                .map(OCPPCallResultPayload::StatusNotification)
+                .map_err(|e| OCPPCallError::from_call(&unique_id, e))?,
+            OCPPCallPayload::StopTransaction(req) => {
+                self.stop_transaction(req).map(OCPPCallResultPayload::StopTransaction).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::TriggerMessage(req) => {
+                self.trigger_message(req).map(OCPPCallResultPayload::TriggerMessage).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::UnlockConnector(req) => {
+                self.unlock_connector(req).map(OCPPCallResultPayload::UnlockConnector).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
+            OCPPCallPayload::UpdateFirmware(req) => {
+                self.update_firmware(req).map(OCPPCallResultPayload::UpdateFirmware).map_err(|e| OCPPCallError::from_call(&unique_id, e))?
+            },
         };
 
         // Validate outgoing payload

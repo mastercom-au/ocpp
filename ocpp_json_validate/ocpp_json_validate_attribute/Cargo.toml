@@ -1,13 +1,13 @@
 [package]
-name = "ocpp_json_validate_attribute"
-version = "1.0.0"
 edition = "2021"
+name    = "ocpp_json_validate_attribute"
+version = "1.0.0"
 
 [dependencies]
-quote = "^1.0"
 proc-macro2 = "^1.0"
-syn = { version = "^1.0", features = ["full"] }
-tracing = "^0.1"
+quote       = "^1.0"
+syn         = {version = "^1.0", features = ["full"]}
+tracing     = "^0.1"
 
 [lib]
 proc-macro = true

@@ -14,11 +14,12 @@
 //! indicate whether the Charge Point has accepted the update of the local authorization list. If the status is Failed or VersionMismatch
 //! and the updateType was Differential, then Central System SHOULD retry sending the full local authorization list with updateType Full.
 
-use crate::common_types::IdTagInfo;
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 use strum_macros::Display;
+
+use crate::common_types::IdTagInfo;
 
 /*Structure
 listVersion u32

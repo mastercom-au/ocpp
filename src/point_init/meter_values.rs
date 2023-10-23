@@ -43,10 +43,11 @@
 //! It is likely that The Central System applies sanity checks to the data contained in a MeterValues.req it received.
 //! The outcome of such sanity checks SHOULD NOT ever cause the Central System to not respond with a MeterValues.conf. Failing to respond with a MeterValues.conf will only cause the Charge Point to try the same message again as specified in Error responses to transaction-related messages.
 
-pub use crate::MeterValue;
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
+
+pub use crate::MeterValue;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/MeterValues.json")]

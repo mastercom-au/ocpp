@@ -1,7 +1,9 @@
-use crate::{point_init::boot_notification::*, ChargingSchedulePeriod};
 //use crate::server_init::*;
 use chrono::Utc;
 use ocpp_json_validate::JsonValidate;
+
+use crate::point_init::boot_notification::*;
+use crate::ChargingSchedulePeriod;
 
 #[test]
 fn test_boot_notification_response_validates() {

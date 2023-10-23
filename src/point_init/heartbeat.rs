@@ -11,10 +11,9 @@
 //! With JSON over WebSocket, sending heartbeats is not mandatory. However, for time synchronization it is advised to at least send one heartbeat per 24 hour.
 
 use chrono::{DateTime, Utc};
-use serde::{Deserialize, Serialize};
-
 // -------------------------- REQUEST ---------------------------
 use ocpp_json_validate::json_validate;
+use serde::{Deserialize, Serialize};
 #[json_validate("../json_schemas/Heartbeat.json")]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]

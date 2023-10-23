@@ -15,11 +15,12 @@
 //! checks SHOULD NOT ever cause the Central System to not respond with a StartTransaction.conf. Failing to respond with a StartTransaction.conf will
 //! only cause the Charge Point to try the same message again as specified in Error responses to transaction-related messages.
 
-pub use crate::common_types::IdTagInfo;
 use chrono::{DateTime, Utc};
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
+
+pub use crate::common_types::IdTagInfo;
 
 // -------------------------- REQUEST ---------------------------
 #[json_validate("../json_schemas/StartTransaction.json")]

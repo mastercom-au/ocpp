@@ -9,7 +9,6 @@ pub mod start_transaction;
 pub mod status_notification;
 pub mod stop_transaction;
 
-pub use crate::common::data_transfer::*;
 pub use authorize::*;
 pub use boot_notification::*;
 pub use diagnostic_status_notification::*;
@@ -19,3 +18,5 @@ pub use meter_values::*;
 pub use start_transaction::*;
 pub use status_notification::*;
 pub use stop_transaction::*;
+
+pub use crate::common::data_transfer::*;

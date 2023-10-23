@@ -194,7 +194,13 @@ impl ChargingProfileBuilder<NoId, NoLevel> {
     /// QoL method for generating a basic TxProfile from scratch
     /// By default applies to the current transaction until that transaction finishes, and has no associated schedule.
     /// I.e. this will simply limit power for a transaction until it completes.
-    pub fn new_tx_profile(self, limit: f32, id: u32, stack_level: u32, transaction_id: u32) -> ChargingProfileBuilder<Id, Level> { self.purpose(ChargingProfilePurpose::TxProfile).id(id).stack_level(stack_level).transaction_id(transaction_id).add_period(0, limit, None) }
+    pub fn new_tx_profile(self, limit: f32, id: u32, stack_level: u32, transaction_id: u32) -> ChargingProfileBuilder<Id, Level> {
+        self.purpose(ChargingProfilePurpose::TxProfile)
+            .id(id)
+            .stack_level(stack_level)
+            .transaction_id(transaction_id)
+            .add_period(0, limit, None)
+    }
 }
 
 impl<I, L> ChargingProfileBuilder<I, L> {
@@ -252,7 +258,11 @@ impl<I, L> ChargingProfileBuilder<I, L> {
 
     /// Add period to periods vector
     pub fn add_period(mut self, start_period: u32, limit: f32, number_phases: Option<u32>) -> Self {
-        self.charging_schedule.charging_schedule_period.push(ChargingSchedulePeriod { start_period, limit, number_phases });
+        self.charging_schedule.charging_schedule_period.push(ChargingSchedulePeriod {
+            start_period,
+            limit,
+            number_phases,
+        });
         self
     }
 

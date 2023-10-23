@@ -16,7 +16,6 @@ pub mod trigger_message;
 pub mod unlock_connector;
 pub mod update_firmware;
 
-pub use crate::common::data_transfer::*;
 pub use change_availability::*;
 pub use change_configuration::*;
 pub use clear_cache::*;
@@ -33,3 +32,5 @@ pub use set_charging_profile::*;
 pub use trigger_message::*;
 pub use unlock_connector::*;
 pub use update_firmware::*;
+
+pub use crate::common::data_transfer::*;

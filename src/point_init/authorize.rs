@@ -23,10 +23,11 @@
 //! value indicating acceptance or a reason for rejection.
 //!
 
-pub use crate::common::common_types::IdTagInfo;
 use ocpp_json_validate::json_validate;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
+
+pub use crate::common::common_types::IdTagInfo;
 
 // -------------------------- REQUEST --------------------------
 #[json_validate("../json_schemas/Authorize.json")]
