@@ -3,7 +3,6 @@ use chrono::Utc;
 use ocpp_json_validate::JsonValidate;
 
 use crate::point_init::boot_notification::*;
-use crate::ChargingSchedulePeriod;
 
 #[test]
 fn test_boot_notification_response_validates() {
@@ -101,7 +100,7 @@ fn test_serialize_get_configuration_call() -> Result<(), Box<dyn std::error::Err
 #[test]
 fn test_charge_point_builder() -> Result<(), Box<dyn std::error::Error>> {
     use crate::charging_profile::*;
-    let builder = ChargingProfile::builder(ChargingRateUnit::W).id(999).level(5);
+    let builder = ChargingProfile::builder(ChargingRateUnit::W).id(999).stack_level(5);
     let profile = builder.build();
 
     let example_profile = ChargingProfile {
