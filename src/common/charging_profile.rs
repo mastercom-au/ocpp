@@ -157,7 +157,11 @@ pub struct ChargingProfileBuilder<I, L> {
 
 impl ChargingProfile {
     /// Create a new charging profile builder
-    pub fn builder(charging_rate_unit: ChargingRateUnit) -> ChargingProfileBuilder<NoId, NoLevel> { ChargingProfileBuilder::new(charging_rate_unit) }
+    pub fn builder(
+        charging_rate_unit: ChargingRateUnit,
+    ) -> ChargingProfileBuilder<NoId, NoLevel> {
+        ChargingProfileBuilder::new(charging_rate_unit)
+    }
 }
 
 impl ChargingProfileBuilder<NoId, NoLevel> {
@@ -194,7 +198,13 @@ impl ChargingProfileBuilder<NoId, NoLevel> {
     /// QoL method for generating a basic TxProfile from scratch
     /// By default applies to the current transaction until that transaction finishes, and has no associated schedule.
     /// I.e. this will simply limit power for a transaction until it completes.
-    pub fn new_tx_profile(self, limit: f32, id: u32, stack_level: u32, transaction_id: u32) -> ChargingProfileBuilder<Id, Level> {
+    pub fn new_tx_profile(
+        self,
+        limit: f32,
+        id: u32,
+        stack_level: u32,
+        transaction_id: u32,
+    ) -> ChargingProfileBuilder<Id, Level> {
         self.purpose(ChargingProfilePurpose::TxProfile)
             .id(id)
             .stack_level(stack_level)
@@ -231,7 +241,10 @@ impl<I, L> ChargingProfileBuilder<I, L> {
     }
 
     /// Add Level field and update typestate to verify it has been added
-    pub fn stack_level(self, stack_level: u32) -> ChargingProfileBuilder<I, Level> {
+    pub fn stack_level(
+        self,
+        stack_level: u32,
+    ) -> ChargingProfileBuilder<I, Level> {
         let Self {
             charging_profile_id,
             transaction_id,
@@ -257,12 +270,19 @@ impl<I, L> ChargingProfileBuilder<I, L> {
     }
 
     /// Add period to periods vector
-    pub fn add_period(mut self, start_period: u32, limit: f32, number_phases: Option<u32>) -> Self {
-        self.charging_schedule.charging_schedule_period.push(ChargingSchedulePeriod {
-            start_period,
-            limit,
-            number_phases,
-        });
+    pub fn add_period(
+        mut self,
+        start_period: u32,
+        limit: f32,
+        number_phases: Option<u32>,
+    ) -> Self {
+        self.charging_schedule.charging_schedule_period.push(
+            ChargingSchedulePeriod {
+                start_period,
+                limit,
+                number_phases,
+            },
+        );
         self
     }
 
@@ -285,13 +305,19 @@ impl<I, L> ChargingProfileBuilder<I, L> {
     }
 
     /// Add charging_rate_unit field
-    pub fn schedule_charging_rate_unit(mut self, charging_rate_unit: ChargingRateUnit) -> Self {
+    pub fn schedule_charging_rate_unit(
+        mut self,
+        charging_rate_unit: ChargingRateUnit,
+    ) -> Self {
         self.charging_schedule.charging_rate_unit = charging_rate_unit;
         self
     }
 
     /// Add min_charging_rate field
-    pub fn schedule_min_charging_rate(mut self, min_charging_rate: f32) -> Self {
+    pub fn schedule_min_charging_rate(
+        mut self,
+        min_charging_rate: f32,
+    ) -> Self {
         self.charging_schedule.min_charging_rate = Some(min_charging_rate);
         self
     }
@@ -303,7 +329,10 @@ impl<I, L> ChargingProfileBuilder<I, L> {
     }
 
     /// Add charging_profile_purpose field
-    pub fn purpose(mut self, charging_profile_purpose: ChargingProfilePurpose) -> Self {
+    pub fn purpose(
+        mut self,
+        charging_profile_purpose: ChargingProfilePurpose,
+    ) -> Self {
         self.charging_profile_purpose = charging_profile_purpose;
         self
     }

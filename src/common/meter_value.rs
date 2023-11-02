@@ -74,7 +74,9 @@ pub enum SampledFormat {
 }
 
 /// Allowable values of the optional "measurand" field of a Value element, as used in MeterValuesRequest and StopTransaction.req messages. Default value of "measurand" is always "Energy.Active.Import.Register"
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone, EnumIter)]
+#[derive(
+    Serialize, Deserialize, Debug, PartialEq, Eq, Display, Clone, EnumIter,
+)]
 pub enum SampledMeasurand {
     /// Numerical value read from the "active electrical energy" (Wh or kWh) register of the (most authoritative) electrical meter measuring energy exported (to the grid).
     #[serde(rename = "Energy.Active.Export.Register")]

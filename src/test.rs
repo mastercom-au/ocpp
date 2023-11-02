@@ -17,7 +17,9 @@ fn test_boot_notification_response_validates() {
 
 fn implements_display<T: std::fmt::Display>() {}
 #[test]
-fn test_enum_display() { implements_display::<crate::common_types::SimpleStatus>(); }
+fn test_enum_display() {
+    implements_display::<crate::common_types::SimpleStatus>();
+}
 
 #[test]
 fn test_boot_notification_request_validates() {
@@ -39,7 +41,9 @@ fn test_boot_notification_request_validates() {
 fn test_boot_notification_request_charge_point_model_string_length_limit() {
     let bn_req = BootNotificationRequest {
         charge_point_vendor: "test1".to_string(),
-        charge_point_model: "test2 AND SOME ARBITRARILY LONG STRING HERE TO BREAK THINGS".to_string(),
+        charge_point_model:
+            "test2 AND SOME ARBITRARILY LONG STRING HERE TO BREAK THINGS"
+                .to_string(),
         charge_point_serial_number: Some("test3".to_string()),
         charge_box_serial_number: Some("test4".to_string()),
         firmware_version: Some("test5".to_string()),
@@ -60,34 +64,51 @@ fn test_deserialize_json_call() -> Result<(), Box<dyn std::error::Error>> {
     assert!(matches!(value, crate::OCPPMessage::Call(..)));
 
     if let crate::OCPPMessage::Call(call) = value {
-        assert!(matches!(call.payload, crate::OCPPCallPayload::StatusNotification(..)));
+        assert!(matches!(
+            call.payload,
+            crate::OCPPCallPayload::StatusNotification(..)
+        ));
     }
 
     Ok(())
 }
 
 #[test]
-fn test_deserialize_json_call_result() -> Result<(), Box<dyn std::error::Error>> {
+fn test_deserialize_json_call_result() -> Result<(), Box<dyn std::error::Error>>
+{
     let json = "[3,\"63:2\",{}]";
     let value: crate::OCPPMessage = serde_json::from_str(json)?;
 
     assert!(matches!(value, crate::OCPPMessage::CallResultUnknown(..)));
 
     if let crate::OCPPMessage::CallResultUnknown(unknown) = value {
-        let result = crate::OCPPCallResult::from_unknown(&crate::OCPPCallAction::StatusNotification, unknown)?;
+        let result = crate::OCPPCallResult::from_unknown(
+            &crate::OCPPCallAction::StatusNotification,
+            unknown,
+        )?;
 
-        assert!(matches!(result.payload, crate::OCPPCallResultPayload::StatusNotification(..)));
+        assert!(matches!(
+            result.payload,
+            crate::OCPPCallResultPayload::StatusNotification(..)
+        ));
     }
 
     Ok(())
 }
 
 #[test]
-fn test_serialize_get_configuration_call() -> Result<(), Box<dyn std::error::Error>> {
+fn test_serialize_get_configuration_call(
+) -> Result<(), Box<dyn std::error::Error>> {
     let req = crate::GetConfigurationRequest { key: None };
     req.validate()?;
 
-    let message = crate::OCPPMessage::Call((String::from("64:1"), crate::OCPPCallPayload::GetConfiguration(req)).into());
+    let message = crate::OCPPMessage::Call(
+        (
+            String::from("64:1"),
+            crate::OCPPCallPayload::GetConfiguration(req),
+        )
+            .into(),
+    );
     let json = serde_json::to_string(&message)?;
 
     let expected = "[2,\"64:1\",\"GetConfiguration\",{}]";
@@ -100,7 +121,8 @@ fn test_serialize_get_configuration_call() -> Result<(), Box<dyn std::error::Err
 #[test]
 fn test_charge_point_builder() -> Result<(), Box<dyn std::error::Error>> {
     use crate::charging_profile::*;
-    let builder = ChargingProfile::builder(ChargingRateUnit::W).id(999).stack_level(5);
+    let builder =
+        ChargingProfile::builder(ChargingRateUnit::W).id(999).stack_level(5);
     let profile = builder.build();
 
     let example_profile = ChargingProfile {
