@@ -6,8 +6,10 @@ authors = [
 ]
 edition = "2021"
 name = "ocpp"
-repository = "https://bitbucket.org/mastercomms/ocpp"
+repository = "https://github.com/mastercom-au/ocpp"
 version = "0.2.1"
+license = "Apache-2.0"
+license-file = "LICENSE.txt"
 
 [dependencies]
 # Crates with features
